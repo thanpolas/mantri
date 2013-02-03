@@ -1,3 +1,5 @@
 temp
 dist
 node_modules
+closure-library
+build/closure_compiler/sscompiler.jar

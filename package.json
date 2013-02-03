@@ -1,7 +1,12 @@
 {
-  "author": "",
-  "name": "",
-  "version": "0.0.0",
-  "dependencies": {},
-  "devDependencies": {}
+  "author": "Thanasis Polychronakis",
+  "name": "Deppy",
+  "version": "0.0.1",
+  "dependencies": {
+    "grunt-closure-tools": "0.6.12"
+  },
+  "devDependencies": {
+    "grunt-contrib-handlebars": "0.3.4",
+    "grunt-contrib-watch": "~0.1.4"
+  }
 }

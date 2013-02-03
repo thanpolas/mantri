@@ -2,7 +2,11 @@
 module.exports = function( grunt ) {
   'use strict';
 
+  var externsPath = 'build/externs/';
+
+
   grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-closure-tools');
 
   //
   // Grunt configuration:
@@ -12,6 +16,42 @@ module.exports = function( grunt ) {
   grunt.initConfig({
     // Project configuration
     // ---------------------
+    closureDepsWriter: {
+      deppy: {
+        closureLibraryPath: 'closure-library',
+        output_file: 'lib/deps.js',
+        options: {
+          root_with_prefix: ['"lib ../../../lib"']
+        }
+      },
+    },
+
+    closureBuilder: {
+      deppyTest: {
+        closureLibraryPath: 'closure-library',
+        inputs: ['lib/main.js'],
+        root: ['lib', 'closure-library'],
+        output_file: 'test/todoApp/js/lib/deppy/deppy.js',
+        compile: true,
+        compiler: 'build/closure_compiler/sscompiler.jar',
+        compiler_options: {
+          compilation_level: 'ADVANCED_OPTIMIZATIONS',
+          externs: [externsPath + '*.js'],
+          define: [
+            "'goog.DEBUG=false'"
+            ],
+          warning_level: 'verbose',
+          jscomp_off: ['checkTypes', 'fileoverviewTags'],
+          summary_detail_level: 3,
+          only_closure_dependencies: null,
+          closure_entry_point: 'Deppy',
+          output_wrapper: '(function(){%output%}).call(this);'
+        }
+
+      }
+    },
+
+
     handlebars: {
       todoApp: {
         options: {
@@ -27,9 +67,12 @@ module.exports = function( grunt ) {
         }
       }
     }
+
+
   });
 
   // Alias the `test` task to run the `mocha` task instead
   grunt.registerTask('test', 'server:phantom mocha');
 
+  grunt.registerTask('default', 'closureDepsWriter');
 };
