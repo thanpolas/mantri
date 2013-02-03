@@ -6,6 +6,7 @@ module.exports = function( grunt ) {
 
 
   grunt.loadNpmTasks('grunt-contrib-handlebars');
+//  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-closure-tools');
 
   //
@@ -26,28 +27,47 @@ module.exports = function( grunt ) {
       },
     },
 
+    watch: {
+      autoBuild: {
+        files: 'lib/**/*.js',
+        tasks: ['buildTest']
+      }
+    },
+
     closureBuilder: {
       deppyTest: {
         closureLibraryPath: 'closure-library',
         inputs: ['lib/main.js'],
         root: ['lib', 'closure-library'],
-        output_file: 'test/todoApp/js/lib/deppy/deppy.js',
-        compile: true,
-        compiler: 'build/closure_compiler/sscompiler.jar',
-        compiler_options: {
-          compilation_level: 'ADVANCED_OPTIMIZATIONS',
-          externs: [externsPath + '*.js'],
-          define: [
-            "'goog.DEBUG=false'"
-            ],
-          warning_level: 'verbose',
-          jscomp_off: ['checkTypes', 'fileoverviewTags'],
-          summary_detail_level: 3,
-          only_closure_dependencies: null,
-          closure_entry_point: 'Deppy',
-          output_wrapper: '(function(){%output%}).call(this);'
-        }
+        output_mode: 'script',
+        namespaces: ['Deppy', 'deppy'],
+        output_file: 'temp/tempBuilt.js'
+        // compile: true,
+        // compiler: 'build/closure_compiler/sscompiler.jar',
+        // compiler_options: {
+        //   compilation_level: 'WHITESPACE_ONLY',
+        //   externs: [externsPath + '*.js'],
+        //   define: [
+        //     "'goog.DEBUG=false'"
+        //     ],
+        //   warning_level: 'verbose',
+        //   jscomp_off: [
+        //     '"checkTypes"',
+        //     '"strictModuleDepCheck"'
+        //   ],
+        //   summary_detail_level: 3,
+        //   only_closure_dependencies: null,
+        //   closure_entry_point: 'Deppy',
+        //   output_wrapper: '(function(){%output%}).call(this);'
+        // }
 
+      }
+    },
+
+    concat: {
+      dist: {
+        src: ['lib/core/closure-hacks.js', 'temp/tempBuilt.js'],
+        dest: 'test/todoApp/js/lib/deppy/deppy.js'
       }
     },
 
@@ -73,6 +93,7 @@ module.exports = function( grunt ) {
 
   // Alias the `test` task to run the `mocha` task instead
   grunt.registerTask('test', 'server:phantom mocha');
-
+  grunt.registerTask('buildTest', 'closureBuilder:deppyTest concat');
   grunt.registerTask('default', 'closureDepsWriter');
 };
+

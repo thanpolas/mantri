@@ -7,6 +7,6 @@
   },
   "devDependencies": {
     "grunt-contrib-handlebars": "0.3.4",
-    "grunt-contrib-watch": "~0.1.4"
+    "grunt-contrib-watch": "~0.1.4",
   }
 }

@@ -1,3 +1,4 @@
+console.log('conf.loaded');
 // Define libraries.
 // They will be included as soon as this method is invoked, find them in their
 // respective global namespaces.
