@@ -57,7 +57,25 @@ module.exports = function( grunt ) {
         root: ['lib', 'closure-library'],
         output_mode: 'script',
         namespaces: ['Deppy', 'deppy'],
-        output_file: 'temp/tempBuilt.js'
+        output_file: 'temp/tempBuilt.js',
+        compile: true,
+        compiler: 'build/closure_compiler/sscompiler.jar',
+        compiler_options: {
+          compilation_level: 'WHITESPACE_ONLY',
+          externs: [externsPath + '*.js'],
+          define: [
+            "'goog.DEBUG=false'"
+            ],
+          warning_level: 'verbose',
+          jscomp_off: [
+            '"checkTypes"',
+            '"strictModuleDepCheck"'
+          ],
+          summary_detail_level: 3,
+          only_closure_dependencies: null,
+          closure_entry_point: 'Deppy',
+          output_wrapper: '(function(){%output%}).call(this);'
+        }
       }
     },
 
