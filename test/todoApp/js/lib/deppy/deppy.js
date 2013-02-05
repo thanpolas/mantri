@@ -1571,641 +1571,6 @@ goog.scope = function(fn) {
 // limitations under the License.
 
 /**
- * @fileoverview Utilities for manipulating objects/maps/hashes.
- */
-
-goog.provide('goog.object');
-
-
-/**
- * Calls a function for each element in an object/map/hash.
- *
- * @param {Object.<K,V>} obj The object over which to iterate.
- * @param {function(this:T,V,?,Object.<K,V>):?} f The function to call
- *     for every element. This function takes 3 arguments (the element, the
- *     index and the object) and the return value is ignored.
- * @param {T=} opt_obj This is used as the 'this' object within f.
- * @template T,K,V
- */
-goog.object.forEach = function(obj, f, opt_obj) {
-  for (var key in obj) {
-    f.call(opt_obj, obj[key], key, obj);
-  }
-};
-
-
-/**
- * Calls a function for each element in an object/map/hash. If that call returns
- * true, adds the element to a new object.
- *
- * @param {Object.<K,V>} obj The object over which to iterate.
- * @param {function(this:T,V,?,Object.<K,V>):boolean} f The function to call
- *     for every element. This
- *     function takes 3 arguments (the element, the index and the object)
- *     and should return a boolean. If the return value is true the
- *     element is added to the result object. If it is false the
- *     element is not included.
- * @param {T=} opt_obj This is used as the 'this' object within f.
- * @return {!Object.<K,V>} a new object in which only elements that passed the
- *     test are present.
- * @template T,K,V
- */
-goog.object.filter = function(obj, f, opt_obj) {
-  var res = {};
-  for (var key in obj) {
-    if (f.call(opt_obj, obj[key], key, obj)) {
-      res[key] = obj[key];
-    }
-  }
-  return res;
-};
-
-
-/**
- * For every element in an object/map/hash calls a function and inserts the
- * result into a new object.
- *
- * @param {Object.<K,V>} obj The object over which to iterate.
- * @param {function(this:T,V,?,Object.<K,V>):R} f The function to call
- *     for every element. This function
- *     takes 3 arguments (the element, the index and the object)
- *     and should return something. The result will be inserted
- *     into a new object.
- * @param {T=} opt_obj This is used as the 'this' object within f.
- * @return {!Object.<T,R>} a new object with the results from f.
- * @template T,K,V,R
- */
-goog.object.map = function(obj, f, opt_obj) {
-  var res = {};
-  for (var key in obj) {
-    res[key] = f.call(opt_obj, obj[key], key, obj);
-  }
-  return res;
-};
-
-
-/**
- * Calls a function for each element in an object/map/hash. If any
- * call returns true, returns true (without checking the rest). If
- * all calls return false, returns false.
- *
- * @param {Object.<K,V>} obj The object to check.
- * @param {function(this:T,V,?,Object.<K,V>):boolean} f The function to
- *     call for every element. This function
- *     takes 3 arguments (the element, the index and the object) and should
- *     return a boolean.
- * @param {T=} opt_obj This is used as the 'this' object within f.
- * @return {boolean} true if any element passes the test.
- * @template T,K,V
- */
-goog.object.some = function(obj, f, opt_obj) {
-  for (var key in obj) {
-    if (f.call(opt_obj, obj[key], key, obj)) {
-      return true;
-    }
-  }
-  return false;
-};
-
-
-/**
- * Calls a function for each element in an object/map/hash. If
- * all calls return true, returns true. If any call returns false, returns
- * false at this point and does not continue to check the remaining elements.
- *
- * @param {Object.<K,V>} obj The object to check.
- * @param {?function(this:T,V,?,Object.<K,V>):boolean} f The function to
- *     call for every element. This function
- *     takes 3 arguments (the element, the index and the object) and should
- *     return a boolean.
- * @param {T=} opt_obj This is used as the 'this' object within f.
- * @return {boolean} false if any element fails the test.
- * @template T,K,V
- */
-goog.object.every = function(obj, f, opt_obj) {
-  for (var key in obj) {
-    if (!f.call(opt_obj, obj[key], key, obj)) {
-      return false;
-    }
-  }
-  return true;
-};
-
-
-/**
- * Returns the number of key-value pairs in the object map.
- *
- * @param {Object} obj The object for which to get the number of key-value
- *     pairs.
- * @return {number} The number of key-value pairs in the object map.
- */
-goog.object.getCount = function(obj) {
-  // JS1.5 has __count__ but it has been deprecated so it raises a warning...
-  // in other words do not use. Also __count__ only includes the fields on the
-  // actual object and not in the prototype chain.
-  var rv = 0;
-  for (var key in obj) {
-    rv++;
-  }
-  return rv;
-};
-
-
-/**
- * Returns one key from the object map, if any exists.
- * For map literals the returned key will be the first one in most of the
- * browsers (a know exception is Konqueror).
- *
- * @param {Object} obj The object to pick a key from.
- * @return {string|undefined} The key or undefined if the object is empty.
- */
-goog.object.getAnyKey = function(obj) {
-  for (var key in obj) {
-    return key;
-  }
-};
-
-
-/**
- * Returns one value from the object map, if any exists.
- * For map literals the returned value will be the first one in most of the
- * browsers (a know exception is Konqueror).
- *
- * @param {Object.<K,V>} obj The object to pick a value from.
- * @return {V|undefined} The value or undefined if the object is empty.
- * @template K,V
- */
-goog.object.getAnyValue = function(obj) {
-  for (var key in obj) {
-    return obj[key];
-  }
-};
-
-
-/**
- * Whether the object/hash/map contains the given object as a value.
- * An alias for goog.object.containsValue(obj, val).
- *
- * @param {Object.<K,V>} obj The object in which to look for val.
- * @param {V} val The object for which to check.
- * @return {boolean} true if val is present.
- * @template K,V
- */
-goog.object.contains = function(obj, val) {
-  return goog.object.containsValue(obj, val);
-};
-
-
-/**
- * Returns the values of the object/map/hash.
- *
- * @param {Object.<K,V>} obj The object from which to get the values.
- * @return {!Array.<V>} The values in the object/map/hash.
- * @template K,V
- */
-goog.object.getValues = function(obj) {
-  var res = [];
-  var i = 0;
-  for (var key in obj) {
-    res[i++] = obj[key];
-  }
-  return res;
-};
-
-
-/**
- * Returns the keys of the object/map/hash.
- *
- * @param {Object} obj The object from which to get the keys.
- * @return {!Array.<string>} Array of property keys.
- */
-goog.object.getKeys = function(obj) {
-  var res = [];
-  var i = 0;
-  for (var key in obj) {
-    res[i++] = key;
-  }
-  return res;
-};
-
-
-/**
- * Get a value from an object multiple levels deep.  This is useful for
- * pulling values from deeply nested objects, such as JSON responses.
- * Example usage: getValueByKeys(jsonObj, 'foo', 'entries', 3)
- *
- * @param {!Object} obj An object to get the value from.  Can be array-like.
- * @param {...(string|number|!Array.<number|string>)} var_args A number of keys
- *     (as strings, or numbers, for array-like objects).  Can also be
- *     specified as a single array of keys.
- * @return {*} The resulting value.  If, at any point, the value for a key
- *     is undefined, returns undefined.
- */
-goog.object.getValueByKeys = function(obj, var_args) {
-  var isArrayLike = goog.isArrayLike(var_args);
-  var keys = isArrayLike ? var_args : arguments;
-
-  // Start with the 2nd parameter for the variable parameters syntax.
-  for (var i = isArrayLike ? 0 : 1; i < keys.length; i++) {
-    obj = obj[keys[i]];
-    if (!goog.isDef(obj)) {
-      break;
-    }
-  }
-
-  return obj;
-};
-
-
-/**
- * Whether the object/map/hash contains the given key.
- *
- * @param {Object} obj The object in which to look for key.
- * @param {*} key The key for which to check.
- * @return {boolean} true If the map contains the key.
- */
-goog.object.containsKey = function(obj, key) {
-  return key in obj;
-};
-
-
-/**
- * Whether the object/map/hash contains the given value. This is O(n).
- *
- * @param {Object.<K,V>} obj The object in which to look for val.
- * @param {V} val The value for which to check.
- * @return {boolean} true If the map contains the value.
- * @template K,V
- */
-goog.object.containsValue = function(obj, val) {
-  for (var key in obj) {
-    if (obj[key] == val) {
-      return true;
-    }
-  }
-  return false;
-};
-
-
-/**
- * Searches an object for an element that satisfies the given condition and
- * returns its key.
- * @param {Object.<K,V>} obj The object to search in.
- * @param {function(this:T,V,string,Object.<K,V>):boolean} f The
- *      function to call for every element. Takes 3 arguments (the value,
- *     the key and the object) and should return a boolean.
- * @param {T=} opt_this An optional "this" context for the function.
- * @return {string|undefined} The key of an element for which the function
- *     returns true or undefined if no such element is found.
- * @template T,K,V
- */
-goog.object.findKey = function(obj, f, opt_this) {
-  for (var key in obj) {
-    if (f.call(opt_this, obj[key], key, obj)) {
-      return key;
-    }
-  }
-  return undefined;
-};
-
-
-/**
- * Searches an object for an element that satisfies the given condition and
- * returns its value.
- * @param {Object.<K,V>} obj The object to search in.
- * @param {function(this:T,V,string,Object.<K,V>):boolean} f The function
- *     to call for every element. Takes 3 arguments (the value, the key
- *     and the object) and should return a boolean.
- * @param {T=} opt_this An optional "this" context for the function.
- * @return {V} The value of an element for which the function returns true or
- *     undefined if no such element is found.
- * @template T,K,V
- */
-goog.object.findValue = function(obj, f, opt_this) {
-  var key = goog.object.findKey(obj, f, opt_this);
-  return key && obj[key];
-};
-
-
-/**
- * Whether the object/map/hash is empty.
- *
- * @param {Object} obj The object to test.
- * @return {boolean} true if obj is empty.
- */
-goog.object.isEmpty = function(obj) {
-  for (var key in obj) {
-    return false;
-  }
-  return true;
-};
-
-
-/**
- * Removes all key value pairs from the object/map/hash.
- *
- * @param {Object} obj The object to clear.
- */
-goog.object.clear = function(obj) {
-  for (var i in obj) {
-    delete obj[i];
-  }
-};
-
-
-/**
- * Removes a key-value pair based on the key.
- *
- * @param {Object} obj The object from which to remove the key.
- * @param {*} key The key to remove.
- * @return {boolean} Whether an element was removed.
- */
-goog.object.remove = function(obj, key) {
-  var rv;
-  if ((rv = key in obj)) {
-    delete obj[key];
-  }
-  return rv;
-};
-
-
-/**
- * Adds a key-value pair to the object. Throws an exception if the key is
- * already in use. Use set if you want to change an existing pair.
- *
- * @param {Object.<K,V>} obj The object to which to add the key-value pair.
- * @param {string} key The key to add.
- * @param {V} val The value to add.
- * @template K,V
- */
-goog.object.add = function(obj, key, val) {
-  if (key in obj) {
-    throw Error('The object already contains the key "' + key + '"');
-  }
-  goog.object.set(obj, key, val);
-};
-
-
-/**
- * Returns the value for the given key.
- *
- * @param {Object.<K,V>} obj The object from which to get the value.
- * @param {string} key The key for which to get the value.
- * @param {R=} opt_val The value to return if no item is found for the given
- *     key (default is undefined).
- * @return {V|R|undefined} The value for the given key.
- * @template K,V,R
- */
-goog.object.get = function(obj, key, opt_val) {
-  if (key in obj) {
-    return obj[key];
-  }
-  return opt_val;
-};
-
-
-/**
- * Adds a key-value pair to the object/map/hash.
- *
- * @param {Object.<K,V>} obj The object to which to add the key-value pair.
- * @param {string} key The key to add.
- * @param {K} value The value to add.
- * @template K,V
- */
-goog.object.set = function(obj, key, value) {
-  obj[key] = value;
-};
-
-
-/**
- * Adds a key-value pair to the object/map/hash if it doesn't exist yet.
- *
- * @param {Object.<K,V>} obj The object to which to add the key-value pair.
- * @param {string} key The key to add.
- * @param {V} value The value to add if the key wasn't present.
- * @return {V} The value of the entry at the end of the function.
- * @template K,V
- */
-goog.object.setIfUndefined = function(obj, key, value) {
-  return key in obj ? obj[key] : (obj[key] = value);
-};
-
-
-/**
- * Does a flat clone of the object.
- *
- * @param {Object.<K,V>} obj Object to clone.
- * @return {!Object.<K,V>} Clone of the input object.
- * @template K,V
- */
-goog.object.clone = function(obj) {
-  // We cannot use the prototype trick because a lot of methods depend on where
-  // the actual key is set.
-
-  var res = {};
-  for (var key in obj) {
-    res[key] = obj[key];
-  }
-  return res;
-  // We could also use goog.mixin but I wanted this to be independent from that.
-};
-
-
-/**
- * Clones a value. The input may be an Object, Array, or basic type. Objects and
- * arrays will be cloned recursively.
- *
- * WARNINGS:
- * <code>goog.object.unsafeClone</code> does not detect reference loops. Objects
- * that refer to themselves will cause infinite recursion.
- *
- * <code>goog.object.unsafeClone</code> is unaware of unique identifiers, and
- * copies UIDs created by <code>getUid</code> into cloned results.
- *
- * @param {*} obj The value to clone.
- * @return {*} A clone of the input value.
- */
-goog.object.unsafeClone = function(obj) {
-  var type = goog.typeOf(obj);
-  if (type == 'object' || type == 'array') {
-    if (obj.clone) {
-      return obj.clone();
-    }
-    var clone = type == 'array' ? [] : {};
-    for (var key in obj) {
-      clone[key] = goog.object.unsafeClone(obj[key]);
-    }
-    return clone;
-  }
-
-  return obj;
-};
-
-
-/**
- * Returns a new object in which all the keys and values are interchanged
- * (keys become values and values become keys). If multiple keys map to the
- * same value, the chosen transposed value is implementation-dependent.
- *
- * @param {Object} obj The object to transpose.
- * @return {!Object} The transposed object.
- */
-goog.object.transpose = function(obj) {
-  var transposed = {};
-  for (var key in obj) {
-    transposed[obj[key]] = key;
-  }
-  return transposed;
-};
-
-
-/**
- * The names of the fields that are defined on Object.prototype.
- * @type {Array.<string>}
- * @private
- */
-goog.object.PROTOTYPE_FIELDS_ = [
-  'constructor',
-  'hasOwnProperty',
-  'isPrototypeOf',
-  'propertyIsEnumerable',
-  'toLocaleString',
-  'toString',
-  'valueOf'
-];
-
-
-/**
- * Extends an object with another object.
- * This operates 'in-place'; it does not create a new Object.
- *
- * Example:
- * var o = {};
- * goog.object.extend(o, {a: 0, b: 1});
- * o; // {a: 0, b: 1}
- * goog.object.extend(o, {c: 2});
- * o; // {a: 0, b: 1, c: 2}
- *
- * @param {Object} target  The object to modify.
- * @param {...Object} var_args The objects from which values will be copied.
- */
-goog.object.extend = function(target, var_args) {
-  var key, source;
-  for (var i = 1; i < arguments.length; i++) {
-    source = arguments[i];
-    for (key in source) {
-      target[key] = source[key];
-    }
-
-    // For IE the for-in-loop does not contain any properties that are not
-    // enumerable on the prototype object (for example isPrototypeOf from
-    // Object.prototype) and it will also not include 'replace' on objects that
-    // extend String and change 'replace' (not that it is common for anyone to
-    // extend anything except Object).
-
-    for (var j = 0; j < goog.object.PROTOTYPE_FIELDS_.length; j++) {
-      key = goog.object.PROTOTYPE_FIELDS_[j];
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-};
-
-
-/**
- * Creates a new object built from the key-value pairs provided as arguments.
- * @param {...*} var_args If only one argument is provided and it is an array
- *     then this is used as the arguments,  otherwise even arguments are used as
- *     the property names and odd arguments are used as the property values.
- * @return {!Object} The new object.
- * @throws {Error} If there are uneven number of arguments or there is only one
- *     non array argument.
- */
-goog.object.create = function(var_args) {
-  var argLength = arguments.length;
-  if (argLength == 1 && goog.isArray(arguments[0])) {
-    return goog.object.create.apply(null, arguments[0]);
-  }
-
-  if (argLength % 2) {
-    throw Error('Uneven number of arguments');
-  }
-
-  var rv = {};
-  for (var i = 0; i < argLength; i += 2) {
-    rv[arguments[i]] = arguments[i + 1];
-  }
-  return rv;
-};
-
-
-/**
- * Creates a new object where the property names come from the arguments but
- * the value is always set to true
- * @param {...*} var_args If only one argument is provided and it is an array
- *     then this is used as the arguments,  otherwise the arguments are used
- *     as the property names.
- * @return {!Object} The new object.
- */
-goog.object.createSet = function(var_args) {
-  var argLength = arguments.length;
-  if (argLength == 1 && goog.isArray(arguments[0])) {
-    return goog.object.createSet.apply(null, arguments[0]);
-  }
-
-  var rv = {};
-  for (var i = 0; i < argLength; i++) {
-    rv[arguments[i]] = true;
-  }
-  return rv;
-};
-
-
-/**
- * Creates an immutable view of the underlying object, if the browser
- * supports immutable objects.
- *
- * In default mode, writes to this view will fail silently. In strict mode,
- * they will throw an error.
- *
- * @param {!Object.<K,V>} obj An object.
- * @return {!Object.<K,V>} An immutable view of that object, or the
- *     original object if this browser does not support immutables.
- * @template K,V
- */
-goog.object.createImmutableView = function(obj) {
-  var result = obj;
-  if (Object.isFrozen && !Object.isFrozen(obj)) {
-    result = Object.create(obj);
-    Object.freeze(result);
-  }
-  return result;
-};
-
-
-/**
- * @param {!Object} obj An object.
- * @return {boolean} Whether this is an immutable view of the object.
- */
-goog.object.isImmutableView = function(obj) {
-  return !!Object.isFrozen && Object.isFrozen(obj);
-};
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
  * @fileoverview Utilities for string manipulation.
  */
 
@@ -3489,7 +2854,7 @@ goog.string.parseInt = function(value) {
 
   return NaN;
 };
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+// Copyright 2009 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -3504,566 +2869,126 @@ goog.string.parseInt = function(value) {
 // limitations under the License.
 
 /**
- * @fileoverview Rendering engine detection.
- * @see <a href="http://www.useragentstring.com/">User agent strings</a>
- * For information on the browser brand (such as Safari versus Chrome), see
- * goog.userAgent.product.
- * @see ../demos/useragent.html
+ * @fileoverview Utilities for adding, removing and setting values in
+ * an Element's dataset.
+ * See {@link http://www.w3.org/TR/html5/Overview.html#dom-dataset}.
+ *
  */
 
-goog.provide('goog.userAgent');
+goog.provide('goog.dom.dataset');
 
 goog.require('goog.string');
 
 
 /**
- * @define {boolean} Whether we know at compile-time that the browser is IE.
- */
-goog.userAgent.ASSUME_IE = false;
-
-
-/**
- * @define {boolean} Whether we know at compile-time that the browser is GECKO.
- */
-goog.userAgent.ASSUME_GECKO = false;
-
-
-/**
- * @define {boolean} Whether we know at compile-time that the browser is WEBKIT.
- */
-goog.userAgent.ASSUME_WEBKIT = false;
-
-
-/**
- * @define {boolean} Whether we know at compile-time that the browser is a
- *     mobile device running WebKit e.g. iPhone or Android.
- */
-goog.userAgent.ASSUME_MOBILE_WEBKIT = false;
-
-
-/**
- * @define {boolean} Whether we know at compile-time that the browser is OPERA.
- */
-goog.userAgent.ASSUME_OPERA = false;
-
-
-/**
- * @define {boolean} Whether the {@code goog.userAgent.isVersion} function will
- *     return true for any version.
- */
-goog.userAgent.ASSUME_ANY_VERSION = false;
-
-
-/**
- * Whether we know the browser engine at compile-time.
- * @type {boolean}
- * @private
- */
-goog.userAgent.BROWSER_KNOWN_ =
-    goog.userAgent.ASSUME_IE ||
-    goog.userAgent.ASSUME_GECKO ||
-    goog.userAgent.ASSUME_MOBILE_WEBKIT ||
-    goog.userAgent.ASSUME_WEBKIT ||
-    goog.userAgent.ASSUME_OPERA;
-
-
-/**
- * Returns the userAgent string for the current browser.
- * Some user agents (I'm thinking of you, Gears WorkerPool) do not expose a
- * navigator object off the global scope.  In that case we return null.
- *
- * @return {?string} The userAgent string or null if there is none.
- */
-goog.userAgent.getUserAgentString = function() {
-  return goog.global['navigator'] ? goog.global['navigator'].userAgent : null;
-};
-
-
-/**
- * @return {Object} The native navigator object.
- */
-goog.userAgent.getNavigator = function() {
-  // Need a local navigator reference instead of using the global one,
-  // to avoid the rare case where they reference different objects.
-  // (in a WorkerPool, for example).
-  return goog.global['navigator'];
-};
-
-
-/**
- * Initializer for goog.userAgent.
- *
- * This is a named function so that it can be stripped via the jscompiler
- * option for stripping types.
- * @private
- */
-goog.userAgent.init_ = function() {
-  /**
-   * Whether the user agent string denotes Opera.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedOpera_ = false;
-
-  /**
-   * Whether the user agent string denotes Internet Explorer. This includes
-   * other browsers using Trident as its rendering engine. For example AOL
-   * and Netscape 8
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedIe_ = false;
-
-  /**
-   * Whether the user agent string denotes WebKit. WebKit is the rendering
-   * engine that Safari, Android and others use.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedWebkit_ = false;
-
-  /**
-   * Whether the user agent string denotes a mobile device.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedMobile_ = false;
-
-  /**
-   * Whether the user agent string denotes Gecko. Gecko is the rendering
-   * engine used by Mozilla, Mozilla Firefox, Camino and many more.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedGecko_ = false;
-
-  var ua;
-  if (!goog.userAgent.BROWSER_KNOWN_ &&
-      (ua = goog.userAgent.getUserAgentString())) {
-    var navigator = goog.userAgent.getNavigator();
-    goog.userAgent.detectedOpera_ = ua.indexOf('Opera') == 0;
-    goog.userAgent.detectedIe_ = !goog.userAgent.detectedOpera_ &&
-        ua.indexOf('MSIE') != -1;
-    goog.userAgent.detectedWebkit_ = !goog.userAgent.detectedOpera_ &&
-        ua.indexOf('WebKit') != -1;
-    // WebKit also gives navigator.product string equal to 'Gecko'.
-    goog.userAgent.detectedMobile_ = goog.userAgent.detectedWebkit_ &&
-        ua.indexOf('Mobile') != -1;
-    goog.userAgent.detectedGecko_ = !goog.userAgent.detectedOpera_ &&
-        !goog.userAgent.detectedWebkit_ && navigator.product == 'Gecko';
-  }
-};
-
-
-if (!goog.userAgent.BROWSER_KNOWN_) {
-  goog.userAgent.init_();
-}
-
-
-/**
- * Whether the user agent is Opera.
- * @type {boolean}
- */
-goog.userAgent.OPERA = goog.userAgent.BROWSER_KNOWN_ ?
-    goog.userAgent.ASSUME_OPERA : goog.userAgent.detectedOpera_;
-
-
-/**
- * Whether the user agent is Internet Explorer. This includes other browsers
- * using Trident as its rendering engine. For example AOL and Netscape 8
- * @type {boolean}
- */
-goog.userAgent.IE = goog.userAgent.BROWSER_KNOWN_ ?
-    goog.userAgent.ASSUME_IE : goog.userAgent.detectedIe_;
-
-
-/**
- * Whether the user agent is Gecko. Gecko is the rendering engine used by
- * Mozilla, Mozilla Firefox, Camino and many more.
- * @type {boolean}
- */
-goog.userAgent.GECKO = goog.userAgent.BROWSER_KNOWN_ ?
-    goog.userAgent.ASSUME_GECKO :
-    goog.userAgent.detectedGecko_;
-
-
-/**
- * Whether the user agent is WebKit. WebKit is the rendering engine that
- * Safari, Android and others use.
- * @type {boolean}
- */
-goog.userAgent.WEBKIT = goog.userAgent.BROWSER_KNOWN_ ?
-    goog.userAgent.ASSUME_WEBKIT || goog.userAgent.ASSUME_MOBILE_WEBKIT :
-    goog.userAgent.detectedWebkit_;
-
-
-/**
- * Whether the user agent is running on a mobile device.
- * @type {boolean}
- */
-goog.userAgent.MOBILE = goog.userAgent.ASSUME_MOBILE_WEBKIT ||
-                        goog.userAgent.detectedMobile_;
-
-
-/**
- * Used while transitioning code to use WEBKIT instead.
- * @type {boolean}
- * @deprecated Use {@link goog.userAgent.product.SAFARI} instead.
- * TODO(nicksantos): Delete this from goog.userAgent.
- */
-goog.userAgent.SAFARI = goog.userAgent.WEBKIT;
-
-
-/**
- * @return {string} the platform (operating system) the user agent is running
- *     on. Default to empty string because navigator.platform may not be defined
- *     (on Rhino, for example).
- * @private
- */
-goog.userAgent.determinePlatform_ = function() {
-  var navigator = goog.userAgent.getNavigator();
-  return navigator && navigator.platform || '';
-};
-
-
-/**
- * The platform (operating system) the user agent is running on. Default to
- * empty string because navigator.platform may not be defined (on Rhino, for
- * example).
+ * The DOM attribute name prefix that must be present for it to be considered
+ * for a dataset.
  * @type {string}
- */
-goog.userAgent.PLATFORM = goog.userAgent.determinePlatform_();
-
-
-/**
- * @define {boolean} Whether the user agent is running on a Macintosh operating
- *     system.
- */
-goog.userAgent.ASSUME_MAC = false;
-
-
-/**
- * @define {boolean} Whether the user agent is running on a Windows operating
- *     system.
- */
-goog.userAgent.ASSUME_WINDOWS = false;
-
-
-/**
- * @define {boolean} Whether the user agent is running on a Linux operating
- *     system.
- */
-goog.userAgent.ASSUME_LINUX = false;
-
-
-/**
- * @define {boolean} Whether the user agent is running on a X11 windowing
- *     system.
- */
-goog.userAgent.ASSUME_X11 = false;
-
-
-/**
- * @define {boolean} Whether the user agent is running on Android.
- */
-goog.userAgent.ASSUME_ANDROID = false;
-
-
-/**
- * @define {boolean} Whether the user agent is running on an iPhone.
- */
-goog.userAgent.ASSUME_IPHONE = false;
-
-
-/**
- * @define {boolean} Whether the user agent is running on an iPad.
- */
-goog.userAgent.ASSUME_IPAD = false;
-
-
-/**
- * @type {boolean}
- * @private
- */
-goog.userAgent.PLATFORM_KNOWN_ =
-    goog.userAgent.ASSUME_MAC ||
-    goog.userAgent.ASSUME_WINDOWS ||
-    goog.userAgent.ASSUME_LINUX ||
-    goog.userAgent.ASSUME_X11 ||
-    goog.userAgent.ASSUME_ANDROID ||
-    goog.userAgent.ASSUME_IPHONE ||
-    goog.userAgent.ASSUME_IPAD;
-
-
-/**
- * Initialize the goog.userAgent constants that define which platform the user
- * agent is running on.
- * @private
- */
-goog.userAgent.initPlatform_ = function() {
-  /**
-   * Whether the user agent is running on a Macintosh operating system.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedMac_ = goog.string.contains(goog.userAgent.PLATFORM,
-      'Mac');
-
-  /**
-   * Whether the user agent is running on a Windows operating system.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedWindows_ = goog.string.contains(
-      goog.userAgent.PLATFORM, 'Win');
-
-  /**
-   * Whether the user agent is running on a Linux operating system.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedLinux_ = goog.string.contains(goog.userAgent.PLATFORM,
-      'Linux');
-
-  /**
-   * Whether the user agent is running on a X11 windowing system.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedX11_ = !!goog.userAgent.getNavigator() &&
-      goog.string.contains(goog.userAgent.getNavigator()['appVersion'] || '',
-          'X11');
-
-  // Need user agent string for Android/IOS detection
-  var ua = goog.userAgent.getUserAgentString();
-
-  /**
-   * Whether the user agent is running on Android.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedAndroid_ = !!ua && ua.indexOf('Android') >= 0;
-
-  /**
-   * Whether the user agent is running on an iPhone.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedIPhone_ = !!ua && ua.indexOf('iPhone') >= 0;
-
-  /**
-   * Whether the user agent is running on an iPad.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedIPad_ = !!ua && ua.indexOf('iPad') >= 0;
-};
-
-
-if (!goog.userAgent.PLATFORM_KNOWN_) {
-  goog.userAgent.initPlatform_();
-}
-
-
-/**
- * Whether the user agent is running on a Macintosh operating system.
- * @type {boolean}
- */
-goog.userAgent.MAC = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_MAC : goog.userAgent.detectedMac_;
-
-
-/**
- * Whether the user agent is running on a Windows operating system.
- * @type {boolean}
- */
-goog.userAgent.WINDOWS = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_WINDOWS : goog.userAgent.detectedWindows_;
-
-
-/**
- * Whether the user agent is running on a Linux operating system.
- * @type {boolean}
- */
-goog.userAgent.LINUX = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_LINUX : goog.userAgent.detectedLinux_;
-
-
-/**
- * Whether the user agent is running on a X11 windowing system.
- * @type {boolean}
- */
-goog.userAgent.X11 = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_X11 : goog.userAgent.detectedX11_;
-
-
-/**
- * Whether the user agent is running on Android.
- * @type {boolean}
- */
-goog.userAgent.ANDROID = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_ANDROID : goog.userAgent.detectedAndroid_;
-
-
-/**
- * Whether the user agent is running on an iPhone.
- * @type {boolean}
- */
-goog.userAgent.IPHONE = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_IPHONE : goog.userAgent.detectedIPhone_;
-
-
-/**
- * Whether the user agent is running on an iPad.
- * @type {boolean}
- */
-goog.userAgent.IPAD = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_IPAD : goog.userAgent.detectedIPad_;
-
-
-/**
- * @return {string} The string that describes the version number of the user
- *     agent.
- * @private
- */
-goog.userAgent.determineVersion_ = function() {
-  // All browsers have different ways to detect the version and they all have
-  // different naming schemes.
-
-  // version is a string rather than a number because it may contain 'b', 'a',
-  // and so on.
-  var version = '', re;
-
-  if (goog.userAgent.OPERA && goog.global['opera']) {
-    var operaVersion = goog.global['opera'].version;
-    version = typeof operaVersion == 'function' ? operaVersion() : operaVersion;
-  } else {
-    if (goog.userAgent.GECKO) {
-      re = /rv\:([^\);]+)(\)|;)/;
-    } else if (goog.userAgent.IE) {
-      re = /MSIE\s+([^\);]+)(\)|;)/;
-    } else if (goog.userAgent.WEBKIT) {
-      // WebKit/125.4
-      re = /WebKit\/(\S+)/;
-    }
-    if (re) {
-      var arr = re.exec(goog.userAgent.getUserAgentString());
-      version = arr ? arr[1] : '';
-    }
-  }
-  if (goog.userAgent.IE) {
-    // IE9 can be in document mode 9 but be reporting an inconsistent user agent
-    // version.  If it is identifying as a version lower than 9 we take the
-    // documentMode as the version instead.  IE8 has similar behavior.
-    // It is recommended to set the X-UA-Compatible header to ensure that IE9
-    // uses documentMode 9.
-    var docMode = goog.userAgent.getDocumentMode_();
-    if (docMode > parseFloat(version)) {
-      return String(docMode);
-    }
-  }
-  return version;
-};
-
-
-/**
- * @return {number|undefined} Returns the document mode (for testing).
- * @private
- */
-goog.userAgent.getDocumentMode_ = function() {
-  // NOTE(user): goog.userAgent may be used in context where there is no DOM.
-  var doc = goog.global['document'];
-  return doc ? doc['documentMode'] : undefined;
-};
-
-
-/**
- * The version of the user agent. This is a string because it might contain
- * 'b' (as in beta) as well as multiple dots.
- * @type {string}
- */
-goog.userAgent.VERSION = goog.userAgent.determineVersion_();
-
-
-/**
- * Compares two version numbers.
- *
- * @param {string} v1 Version of first item.
- * @param {string} v2 Version of second item.
- *
- * @return {number}  1 if first argument is higher
- *                   0 if arguments are equal
- *                  -1 if second argument is higher.
- * @deprecated Use goog.string.compareVersions.
- */
-goog.userAgent.compare = function(v1, v2) {
-  return goog.string.compareVersions(v1, v2);
-};
-
-
-/**
- * Cache for {@link goog.userAgent.isVersion}. Calls to compareVersions are
- * surprisingly expensive and as a browsers version number is unlikely to change
- * during a session we cache the results.
- * @type {Object}
- * @private
- */
-goog.userAgent.isVersionCache_ = {};
-
-
-/**
- * Whether the user agent version is higher or the same as the given version.
- * NOTE: When checking the version numbers for Firefox and Safari, be sure to
- * use the engine's version, not the browser's version number.  For example,
- * Firefox 3.0 corresponds to Gecko 1.9 and Safari 3.0 to Webkit 522.11.
- * Opera and Internet Explorer versions match the product release number.<br>
- * @see <a href="http://en.wikipedia.org/wiki/Safari_version_history">
- *     Webkit</a>
- * @see <a href="http://en.wikipedia.org/wiki/Gecko_engine">Gecko</a>
- *
- * @param {string|number} version The version to check.
- * @return {boolean} Whether the user agent version is higher or the same as
- *     the given version.
- */
-goog.userAgent.isVersion = function(version) {
-  return goog.userAgent.ASSUME_ANY_VERSION ||
-      goog.userAgent.isVersionCache_[version] ||
-      (goog.userAgent.isVersionCache_[version] =
-          goog.string.compareVersions(goog.userAgent.VERSION, version) >= 0);
-};
-
-
-/**
- * Whether the IE effective document mode is higher or the same as the given
- * document mode version.
- * NOTE: Only for IE, return false for another browser.
- *
- * @param {number} documentMode The document mode version to check.
- * @return {boolean} Whether the IE effective document mode is higher or the
- *     same as the given version.
- */
-goog.userAgent.isDocumentMode = function(documentMode) {
-  return goog.userAgent.IE && goog.userAgent.DOCUMENT_MODE >= documentMode;
-};
-
-
-/**
- * For IE version < 7, documentMode is undefined, so attempt to use the
- * CSS1Compat property to see if we are in standards mode. If we are in
- * standards mode, treat the browser version as the document mode. Otherwise,
- * IE is emulating version 5.
- * @type {number|undefined}
  * @const
+ * @private
  */
-goog.userAgent.DOCUMENT_MODE = (function() {
-  var doc = goog.global['document'];
-  if (!doc || !goog.userAgent.IE) {
-    return undefined;
+goog.dom.dataset.PREFIX_ = 'data-';
+
+
+/**
+ * Sets a custom data attribute on an element. The key should be
+ * in camelCase format (e.g "keyName" for the "data-key-name" attribute).
+ * @param {Element} element DOM node to set the custom data attribute on.
+ * @param {string} key Key for the custom data attribute.
+ * @param {string} value Value for the custom data attribute.
+ */
+goog.dom.dataset.set = function(element, key, value) {
+  if (element.dataset) {
+    element.dataset[key] = value;
+  } else {
+    element.setAttribute(
+        goog.dom.dataset.PREFIX_ + goog.string.toSelectorCase(key),
+        value);
   }
-  var mode = goog.userAgent.getDocumentMode_();
-  return mode || (doc['compatMode'] == 'CSS1Compat' ?
-      parseInt(goog.userAgent.VERSION, 10) : 5);
-})();
+};
+
+
+/**
+ * Gets a custom data attribute from an element. The key should be
+ * in camelCase format (e.g "keyName" for the "data-key-name" attribute).
+ * @param {Element} element DOM node to get the custom data attribute from.
+ * @param {string} key Key for the custom data attribute.
+ * @return {?string} The attribute value, if it exists.
+ */
+goog.dom.dataset.get = function(element, key) {
+  if (element.dataset) {
+    return element.dataset[key];
+  } else {
+    return element.getAttribute(goog.dom.dataset.PREFIX_ +
+                                goog.string.toSelectorCase(key));
+  }
+};
+
+
+/**
+ * Removes a custom data attribute from an element. The key should be
+  * in camelCase format (e.g "keyName" for the "data-key-name" attribute).
+ * @param {Element} element DOM node to get the custom data attribute from.
+ * @param {string} key Key for the custom data attribute.
+ */
+goog.dom.dataset.remove = function(element, key) {
+  if (element.dataset) {
+    delete element.dataset[key];
+  } else {
+    element.removeAttribute(goog.dom.dataset.PREFIX_ +
+                            goog.string.toSelectorCase(key));
+  }
+};
+
+
+/**
+ * Checks whether custom data attribute exists on an element. The key should be
+ * in camelCase format (e.g "keyName" for the "data-key-name" attribute).
+ *
+ * @param {Element} element DOM node to get the custom data attribute from.
+ * @param {string} key Key for the custom data attribute.
+ * @return {boolean} Whether the attibute exists.
+ */
+goog.dom.dataset.has = function(element, key) {
+  if (element.dataset) {
+    return key in element.dataset;
+  } else if (element.hasAttribute) {
+    return element.hasAttribute(goog.dom.dataset.PREFIX_ +
+                                goog.string.toSelectorCase(key));
+  } else {
+    return !!(element.getAttribute(goog.dom.dataset.PREFIX_ +
+                                   goog.string.toSelectorCase(key)));
+  }
+};
+
+
+/**
+ * Gets all custom data attributes as a string map.  The attribute names will be
+ * camel cased (e.g., data-foo-bar -> dataset['fooBar']).  This operation is not
+ * safe for attributes having camel-cased names clashing with already existing
+ * properties (e.g., data-to-string -> dataset['toString']).
+ * @param {!Element} element DOM node to get the data attributes from.
+ * @return {!Object} The string map containing data attributes and their
+ *     respective values.
+ */
+goog.dom.dataset.getAll = function(element) {
+  if (element.dataset) {
+    return element.dataset;
+  } else {
+    var dataset = {};
+    var attributes = element.attributes;
+    for (var i = 0; i < attributes.length; ++i) {
+      var attribute = attributes[i];
+      if (goog.string.startsWith(attribute.name,
+                                 goog.dom.dataset.PREFIX_)) {
+        // We use substr(5), since it's faster than replacing 'data-' with ''.
+        var key = goog.string.toCamelCase(attribute.name.substr(5));
+        dataset[key] = attribute.value;
+      }
+    }
+    return dataset;
+  }
+};
 // Copyright 2009 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -5833,6 +4758,711 @@ goog.array.shuffle = function(arr, opt_randFn) {
     arr[j] = tmp;
   }
 };
+// Copyright 2007 Bob Ippolito. All Rights Reserved.
+// Modifications Copyright 2009 The Closure Library Authors. All Rights
+// Reserved.
+
+/**
+ * @license Portions of this code are from MochiKit, received by
+ * The Closure Authors under the MIT license. All other code is Copyright
+ * 2005-2009 The Closure Authors. All Rights Reserved.
+ */
+
+/**
+ * @fileoverview Classes for tracking asynchronous operations and handling the
+ * results. The Deferred object here is patterned after the Deferred object in
+ * the Twisted python networking framework.
+ *
+ * See: http://twistedmatrix.com/projects/core/documentation/howto/defer.html
+ *
+ * Based on the Dojo code which in turn is based on the MochiKit code.
+ *
+ */
+
+goog.provide('goog.async.Deferred');
+goog.provide('goog.async.Deferred.AlreadyCalledError');
+goog.provide('goog.async.Deferred.CancelledError');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.debug.Error');
+
+
+
+/**
+ * A Deferred represents the result of an asynchronous operation. A Deferred
+ * instance has no result when it is created, and is "fired" (given an initial
+ * result) by calling {@code callback} or {@code errback}.
+ *
+ * Once fired, the result is passed through a sequence of callback functions
+ * registered with {@code addCallback} or {@code addErrback}. The functions may
+ * mutate the result before it is passed to the next function in the sequence.
+ *
+ * Callbacks and errbacks may be added at any time, including after the Deferred
+ * has been "fired". If there are no pending actions in the execution sequence
+ * of a fired Deferred, any new callback functions will be called with the last
+ * computed result. Adding a callback function is the only way to access the
+ * result of the Deferred.
+ *
+ * If a Deferred operation is cancelled, an optional user-provided cancellation
+ * function is invoked which may perform any special cleanup, followed by firing
+ * the Deferred's errback sequence with a {@code CancelledError}. If the
+ * Deferred has already fired, cancellation is ignored.
+ *
+ * @param {Function=} opt_onCancelFunction A function that will be called if the
+ *     Deferred is cancelled. If provided, this function runs before the
+ *     Deferred is fired with a {@code CancelledError}.
+ * @param {Object=} opt_defaultScope The default object context to call
+ *     callbacks and errbacks in.
+ * @constructor
+ */
+goog.async.Deferred = function(opt_onCancelFunction, opt_defaultScope) {
+  /**
+   * Entries in the sequence are arrays containing a callback, an errback, and
+   * an optional scope. The callback or errback in an entry may be null.
+   * @type {!Array.<!Array>}
+   * @private
+   */
+  this.sequence_ = [];
+
+  /**
+   * Optional function that will be called if the Deferred is cancelled.
+   * @type {Function|undefined}
+   * @private
+   */
+  this.onCancelFunction_ = opt_onCancelFunction;
+
+  /**
+   * The default scope to execute callbacks and errbacks in.
+   * @type {Object}
+   * @private
+   */
+  this.defaultScope_ = opt_defaultScope || null;
+};
+
+
+/**
+ * Whether the Deferred has been fired.
+ * @type {boolean}
+ * @private
+ */
+goog.async.Deferred.prototype.fired_ = false;
+
+
+/**
+ * Whether the last result in the execution sequence was an error.
+ * @type {boolean}
+ * @private
+ */
+goog.async.Deferred.prototype.hadError_ = false;
+
+
+/**
+ * The current Deferred result, updated as callbacks and errbacks are executed.
+ * @type {*}
+ * @private
+ */
+goog.async.Deferred.prototype.result_;
+
+
+/**
+ * Whether the Deferred is blocked waiting on another Deferred to fire. If a
+ * callback or errback returns a Deferred as a result, the execution sequence is
+ * blocked until that Deferred result becomes available.
+ * @type {boolean}
+ * @private
+ */
+goog.async.Deferred.prototype.blocked_ = false;
+
+
+/**
+ * Whether this Deferred is blocking execution of another Deferred. If this
+ * instance was returned as a result in another Deferred's execution sequence,
+ * that other Deferred becomes blocked until this instance's execution sequence
+ * completes. No additional callbacks may be added to a Deferred once it
+ * is blocking another instance.
+ * @type {boolean}
+ * @private
+ */
+goog.async.Deferred.prototype.blocking_ = false;
+
+
+/**
+ * Whether the Deferred has been cancelled without having a custom cancel
+ * function.
+ * @type {boolean}
+ * @private
+ */
+goog.async.Deferred.prototype.silentlyCancelled_ = false;
+
+
+/**
+ * If an error is thrown during Deferred execution with no errback to catch it,
+ * the error is rethrown after a timeout. Reporting the error after a timeout
+ * allows execution to continue in the calling context.
+ * @type {number}
+ * @private
+ */
+goog.async.Deferred.prototype.unhandledExceptionTimeoutId_;
+
+
+/**
+ * If this Deferred was created by branch(), this will be the "parent" Deferred.
+ * @type {goog.async.Deferred}
+ * @private
+ */
+goog.async.Deferred.prototype.parent_;
+
+
+/**
+ * The number of Deferred objects that have been branched off this one. This
+ * will be decremented whenever a branch is fired or cancelled.
+ * @type {number}
+ * @private
+ */
+goog.async.Deferred.prototype.branches_ = 0;
+
+
+/**
+ * Cancels a Deferred that has not yet been fired, or is blocked on another
+ * deferred operation. If this Deferred is waiting for a blocking Deferred to
+ * fire, the blocking Deferred will also be cancelled.
+ *
+ * If this Deferred was created by calling branch() on a parent Deferred with
+ * opt_propagateCancel set to true, the parent may also be cancelled. If
+ * opt_deepCancel is set, cancel() will be called on the parent (as well as any
+ * other ancestors if the parent is also a branch). If one or more branches were
+ * created with opt_propagateCancel set to true, the parent will be cancelled if
+ * cancel() is called on all of those branches.
+ *
+ * @param {boolean=} opt_deepCancel If true, cancels this Deferred's parent even
+ *     if cancel() hasn't been called on some of the parent's branches. Has no
+ *     effect on a branch without opt_propagateCancel set to true.
+ */
+goog.async.Deferred.prototype.cancel = function(opt_deepCancel) {
+  if (!this.hasFired()) {
+    if (this.parent_) {
+      // Get rid of the parent reference before potentially running the parent's
+      // canceller function to ensure that this cancellation isn't
+      // double-counted.
+      var parent = this.parent_;
+      delete this.parent_;
+      if (opt_deepCancel) {
+        parent.cancel(opt_deepCancel);
+      } else {
+        parent.branchCancel_();
+      }
+    }
+
+    if (this.onCancelFunction_) {
+      // Call in user-specified scope.
+      this.onCancelFunction_.call(this.defaultScope_, this);
+    } else {
+      this.silentlyCancelled_ = true;
+    }
+    if (!this.hasFired()) {
+      this.errback(new goog.async.Deferred.CancelledError(this));
+    }
+  } else if (this.result_ instanceof goog.async.Deferred) {
+    this.result_.cancel();
+  }
+};
+
+
+/**
+ * Handle a single branch being cancelled. Once all branches are cancelled, this
+ * Deferred will be cancelled as well.
+ *
+ * @private
+ */
+goog.async.Deferred.prototype.branchCancel_ = function() {
+  this.branches_--;
+  if (this.branches_ <= 0) {
+    this.cancel();
+  }
+};
+
+
+/**
+ * Called after a blocking Deferred fires. Unblocks this Deferred and resumes
+ * its execution sequence.
+ *
+ * @param {boolean} isSuccess Whether the result is a success or an error.
+ * @param {*} res The result of the blocking Deferred.
+ * @private
+ */
+goog.async.Deferred.prototype.continue_ = function(isSuccess, res) {
+  this.blocked_ = false;
+  this.updateResult_(isSuccess, res);
+};
+
+
+/**
+ * Updates the current result based on the success or failure of the last action
+ * in the execution sequence.
+ *
+ * @param {boolean} isSuccess Whether the new result is a success or an error.
+ * @param {*} res The result.
+ * @private
+ */
+goog.async.Deferred.prototype.updateResult_ = function(isSuccess, res) {
+  this.fired_ = true;
+  this.result_ = res;
+  this.hadError_ = !isSuccess;
+  this.fire_();
+};
+
+
+/**
+ * Verifies that the Deferred has not yet been fired.
+ *
+ * @private
+ * @throws {Error} If this has already been fired.
+ */
+goog.async.Deferred.prototype.check_ = function() {
+  if (this.hasFired()) {
+    if (!this.silentlyCancelled_) {
+      throw new goog.async.Deferred.AlreadyCalledError(this);
+    }
+    this.silentlyCancelled_ = false;
+  }
+};
+
+
+/**
+ * Fire the execution sequence for this Deferred by passing the starting result
+ * to the first registered callback.
+ * @param {*=} opt_result The starting result.
+ */
+goog.async.Deferred.prototype.callback = function(opt_result) {
+  this.check_();
+  this.assertNotDeferred_(opt_result);
+  this.updateResult_(true /* isSuccess */, opt_result);
+};
+
+
+/**
+ * Fire the execution sequence for this Deferred by passing the starting error
+ * result to the first registered errback.
+ * @param {*=} opt_result The starting error.
+ */
+goog.async.Deferred.prototype.errback = function(opt_result) {
+  this.check_();
+  this.assertNotDeferred_(opt_result);
+  this.updateResult_(false /* isSuccess */, opt_result);
+};
+
+
+/**
+ * Asserts that an object is not a Deferred.
+ * @param {*} obj The object to test.
+ * @throws {Error} Throws an exception if the object is a Deferred.
+ * @private
+ */
+goog.async.Deferred.prototype.assertNotDeferred_ = function(obj) {
+  goog.asserts.assert(
+      !(obj instanceof goog.async.Deferred),
+      'An execution sequence may not be initiated with a blocking Deferred.');
+};
+
+
+/**
+ * Register a callback function to be called with a successful result. If no
+ * value is returned by the callback function, the result value is unchanged. If
+ * a new value is returned, it becomes the Deferred result and will be passed to
+ * the next callback in the execution sequence.
+ *
+ * If the function throws an error, the error becomes the new result and will be
+ * passed to the next errback in the execution chain.
+ *
+ * If the function returns a Deferred, the execution sequence will be blocked
+ * until that Deferred fires. Its result will be passed to the next callback (or
+ * errback if it is an error result) in this Deferred's execution sequence.
+ *
+ * @param {!function(this:T,?):?} cb The function to be called with a successful
+ *     result.
+ * @param {T=} opt_scope An optional scope to call the callback in.
+ * @return {!goog.async.Deferred} This Deferred.
+ * @template T
+ */
+goog.async.Deferred.prototype.addCallback = function(cb, opt_scope) {
+  return this.addCallbacks(cb, null, opt_scope);
+};
+
+
+/**
+ * Register a callback function to be called with an error result. If no value
+ * is returned by the function, the error result is unchanged. If a new error
+ * value is returned or thrown, that error becomes the Deferred result and will
+ * be passed to the next errback in the execution sequence.
+ *
+ * If the errback function handles the error by returning a non-error value,
+ * that result will be passed to the next normal callback in the sequence.
+ *
+ * If the function returns a Deferred, the execution sequence will be blocked
+ * until that Deferred fires. Its result will be passed to the next callback (or
+ * errback if it is an error result) in this Deferred's execution sequence.
+ *
+ * @param {!function(this:T,?):?} eb The function to be called on an
+ *     unsuccessful result.
+ * @param {T=} opt_scope An optional scope to call the errback in.
+ * @return {!goog.async.Deferred} This Deferred.
+ * @template T
+ */
+goog.async.Deferred.prototype.addErrback = function(eb, opt_scope) {
+  return this.addCallbacks(null, eb, opt_scope);
+};
+
+
+/**
+ * Registers one function as both a callback and errback.
+ *
+ * @param {!function(this:T,?):?} f The function to be called on any result.
+ * @param {T=} opt_scope An optional scope to call the function in.
+ * @return {!goog.async.Deferred} This Deferred.
+ * @template T
+ */
+goog.async.Deferred.prototype.addBoth = function(f, opt_scope) {
+  return this.addCallbacks(f, f, opt_scope);
+};
+
+
+/**
+ * Registers a callback function and an errback function at the same position
+ * in the execution sequence. Only one of these functions will execute,
+ * depending on the error state during the execution sequence.
+ *
+ * NOTE: This is not equivalent to {@code def.addCallback().addErrback()}! If
+ * the callback is invoked, the errback will be skipped, and vice versa.
+ *
+ * @param {(function(this:T,?):?)|null} cb The function to be called on a
+ *     successful result.
+ * @param {(function(this:T,?):?)|null} eb The function to be called on an
+ *     unsuccessful result.
+ * @param {T=} opt_scope An optional scope to call the functions in.
+ * @return {!goog.async.Deferred} This Deferred.
+ * @template T
+ */
+goog.async.Deferred.prototype.addCallbacks = function(cb, eb, opt_scope) {
+  goog.asserts.assert(!this.blocking_, 'Blocking Deferreds can not be re-used');
+  this.sequence_.push([cb, eb, opt_scope]);
+  if (this.hasFired()) {
+    this.fire_();
+  }
+  return this;
+};
+
+
+/**
+ * Links another Deferred to the end of this Deferred's execution sequence. The
+ * result of this execution sequence will be passed as the starting result for
+ * the chained Deferred, invoking either its first callback or errback.
+ *
+ * @param {!goog.async.Deferred} otherDeferred The Deferred to chain.
+ * @return {!goog.async.Deferred} This Deferred.
+ */
+goog.async.Deferred.prototype.chainDeferred = function(otherDeferred) {
+  this.addCallbacks(
+      otherDeferred.callback, otherDeferred.errback, otherDeferred);
+  return this;
+};
+
+
+/**
+ * Makes this Deferred wait for another Deferred's execution sequence to
+ * complete before continuing.
+ *
+ * This is equivalent to adding a callback that returns {@code otherDeferred},
+ * but doesn't prevent additional callbacks from being added to
+ * {@code otherDeferred}.
+ *
+ * @param {!goog.async.Deferred} otherDeferred The Deferred to wait for.
+ * @return {!goog.async.Deferred} This Deferred.
+ */
+goog.async.Deferred.prototype.awaitDeferred = function(otherDeferred) {
+  return this.addCallback(goog.bind(otherDeferred.branch, otherDeferred));
+};
+
+
+/**
+ * Creates a branch off this Deferred's execution sequence, and returns it as a
+ * new Deferred. The branched Deferred's starting result will be shared with the
+ * parent at the point of the branch, even if further callbacks are added to the
+ * parent.
+ *
+ * All branches at the same stage in the execution sequence will receive the
+ * same starting value.
+ *
+ * @param {boolean=} opt_propagateCancel If cancel() is called on every child
+ *     branch created with opt_propagateCancel, the parent will be cancelled as
+ *     well.
+ * @return {!goog.async.Deferred} A Deferred that will be started with the
+ *     computed result from this stage in the execution sequence.
+ */
+goog.async.Deferred.prototype.branch = function(opt_propagateCancel) {
+  var d = new goog.async.Deferred();
+  this.chainDeferred(d);
+  if (opt_propagateCancel) {
+    d.parent_ = this;
+    this.branches_++;
+  }
+  return d;
+};
+
+
+/**
+ * @return {boolean} Whether the execution sequence has been started on this
+ *     Deferred by invoking {@code callback} or {@code errback}.
+ */
+goog.async.Deferred.prototype.hasFired = function() {
+  return this.fired_;
+};
+
+
+/**
+ * @param {*} res The latest result in the execution sequence.
+ * @return {boolean} Whether the current result is an error that should cause
+ *     the next errback to fire. May be overridden by subclasses to handle
+ *     special error types.
+ * @protected
+ */
+goog.async.Deferred.prototype.isError = function(res) {
+  return res instanceof Error;
+};
+
+
+/**
+ * @return {boolean} Whether an errback exists in the remaining sequence.
+ * @private
+ */
+goog.async.Deferred.prototype.hasErrback_ = function() {
+  return goog.array.some(this.sequence_, function(sequenceRow) {
+    // The errback is the second element in the array.
+    return goog.isFunction(sequenceRow[1]);
+  });
+};
+
+
+/**
+ * Exhausts the execution sequence while a result is available. The result may
+ * be modified by callbacks or errbacks, and execution will block if the
+ * returned result is an incomplete Deferred.
+ *
+ * @private
+ */
+goog.async.Deferred.prototype.fire_ = function() {
+  if (this.unhandledExceptionTimeoutId_ && this.hasFired() &&
+      this.hasErrback_()) {
+    // It is possible to add errbacks after the Deferred has fired. If a new
+    // errback is added immediately after the Deferred encountered an unhandled
+    // error, but before that error is rethrown, cancel the rethrow.
+    goog.global.clearTimeout(this.unhandledExceptionTimeoutId_);
+    delete this.unhandledExceptionTimeoutId_;
+  }
+
+  if (this.parent_) {
+    this.parent_.branches_--;
+    delete this.parent_;
+  }
+
+  var res = this.result_;
+  var unhandledException = false;
+  var isNewlyBlocked = false;
+
+  while (this.sequence_.length && !this.blocked_) {
+    var sequenceEntry = this.sequence_.shift();
+
+    var callback = sequenceEntry[0];
+    var errback = sequenceEntry[1];
+    var scope = sequenceEntry[2];
+
+    var f = this.hadError_ ? errback : callback;
+    if (f) {
+      /** @preserveTry */
+      try {
+        var ret = f.call(scope || this.defaultScope_, res);
+
+        // If no result, then use previous result.
+        if (goog.isDef(ret)) {
+          // Bubble up the error as long as the return value hasn't changed.
+          this.hadError_ = this.hadError_ && (ret == res || this.isError(ret));
+          this.result_ = res = ret;
+        }
+
+        if (res instanceof goog.async.Deferred) {
+          isNewlyBlocked = true;
+          this.blocked_ = true;
+        }
+
+      } catch (ex) {
+        res = ex;
+        this.hadError_ = true;
+
+        if (!this.hasErrback_()) {
+          // If an error is thrown with no additional errbacks in the queue,
+          // prepare to rethrow the error.
+          unhandledException = true;
+        }
+      }
+    }
+  }
+
+  this.result_ = res;
+
+  if (isNewlyBlocked) {
+    res.addCallbacks(
+        goog.bind(this.continue_, this, true /* isSuccess */),
+        goog.bind(this.continue_, this, false /* isSuccess */));
+    res.blocking_ = true;
+  }
+
+  if (unhandledException) {
+    // Rethrow the unhandled error after a timeout. Execution will continue, but
+    // the error will be seen by global handlers and the user. The throw will
+    // be canceled if another errback is appended before the timeout executes.
+    // The error's original stack trace is preserved where available.
+    this.unhandledExceptionTimeoutId_ = goog.global.setTimeout(function() {
+      throw res;
+    }, 0);
+  }
+};
+
+
+/**
+ * Creates a Deferred that has an initial result.
+ *
+ * @param {*=} opt_result The result.
+ * @return {!goog.async.Deferred} The new Deferred.
+ */
+goog.async.Deferred.succeed = function(opt_result) {
+  var d = new goog.async.Deferred();
+  d.callback(opt_result);
+  return d;
+};
+
+
+/**
+ * Creates a Deferred that has an initial error result.
+ *
+ * @param {*} res The error result.
+ * @return {!goog.async.Deferred} The new Deferred.
+ */
+goog.async.Deferred.fail = function(res) {
+  var d = new goog.async.Deferred();
+  d.errback(res);
+  return d;
+};
+
+
+/**
+ * Creates a Deferred that has already been cancelled.
+ *
+ * @return {!goog.async.Deferred} The new Deferred.
+ */
+goog.async.Deferred.cancelled = function() {
+  var d = new goog.async.Deferred();
+  d.cancel();
+  return d;
+};
+
+
+/**
+ * Normalizes values that may or may not be Deferreds.
+ *
+ * If the input value is a Deferred, the Deferred is branched (so the original
+ * execution sequence is not modified) and the input callback added to the new
+ * branch. The branch is returned to the caller.
+ *
+ * If the input value is not a Deferred, the callback will be executed
+ * immediately and an already firing Deferred will be returned to the caller.
+ *
+ * In the following (contrived) example, if <code>isImmediate</code> is true
+ * then 3 is alerted immediately, otherwise 6 is alerted after a 2-second delay.
+ *
+ * <pre>
+ * var value;
+ * if (isImmediate) {
+ *   value = 3;
+ * } else {
+ *   value = new goog.async.Deferred();
+ *   setTimeout(function() { value.callback(6); }, 2000);
+ * }
+ *
+ * var d = goog.async.Deferred.when(value, alert);
+ * </pre>
+ *
+ * @param {*} value Deferred or normal value to pass to the callback.
+ * @param {!function(this:T, ?):?} callback The callback to execute.
+ * @param {T=} opt_scope An optional scope to call the callback in.
+ * @return {!goog.async.Deferred} A new Deferred that will call the input
+ *     callback with the input value.
+ * @template T
+ */
+goog.async.Deferred.when = function(value, callback, opt_scope) {
+  if (value instanceof goog.async.Deferred) {
+    return value.branch(true).addCallback(callback, opt_scope);
+  } else {
+    return goog.async.Deferred.succeed(value).addCallback(callback, opt_scope);
+  }
+};
+
+
+
+/**
+ * An error sub class that is used when a Deferred has already been called.
+ * @param {!goog.async.Deferred} deferred The Deferred.
+ *
+ * @constructor
+ * @extends {goog.debug.Error}
+ */
+goog.async.Deferred.AlreadyCalledError = function(deferred) {
+  goog.debug.Error.call(this);
+
+  /**
+   * The Deferred that raised this error.
+   * @type {goog.async.Deferred}
+   */
+  this.deferred = deferred;
+};
+goog.inherits(goog.async.Deferred.AlreadyCalledError, goog.debug.Error);
+
+
+/** @override */
+goog.async.Deferred.AlreadyCalledError.prototype.message =
+    'Deferred has already fired';
+
+
+/** @override */
+goog.async.Deferred.AlreadyCalledError.prototype.name = 'AlreadyCalledError';
+
+
+
+/**
+ * An error sub class that is used when a Deferred is cancelled.
+ * TODO(brenneman): Cancelled -> American English Canceled.
+ *
+ * @param {!goog.async.Deferred} deferred The Deferred object.
+ * @constructor
+ * @extends {goog.debug.Error}
+ */
+goog.async.Deferred.CancelledError = function(deferred) {
+  goog.debug.Error.call(this);
+
+  /**
+   * The Deferred that raised this error.
+   * @type {goog.async.Deferred}
+   */
+  this.deferred = deferred;
+};
+goog.inherits(goog.async.Deferred.CancelledError, goog.debug.Error);
+
+
+/** @override */
+goog.async.Deferred.CancelledError.prototype.message = 'Deferred was cancelled';
+
+
+/** @override */
+goog.async.Deferred.CancelledError.prototype.name = 'CancelledError';
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -6060,6 +5690,641 @@ goog.dom.classes.toggle = function(element, className) {
   goog.dom.classes.enable(element, className, add);
   return add;
 };
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Utilities for manipulating objects/maps/hashes.
+ */
+
+goog.provide('goog.object');
+
+
+/**
+ * Calls a function for each element in an object/map/hash.
+ *
+ * @param {Object.<K,V>} obj The object over which to iterate.
+ * @param {function(this:T,V,?,Object.<K,V>):?} f The function to call
+ *     for every element. This function takes 3 arguments (the element, the
+ *     index and the object) and the return value is ignored.
+ * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @template T,K,V
+ */
+goog.object.forEach = function(obj, f, opt_obj) {
+  for (var key in obj) {
+    f.call(opt_obj, obj[key], key, obj);
+  }
+};
+
+
+/**
+ * Calls a function for each element in an object/map/hash. If that call returns
+ * true, adds the element to a new object.
+ *
+ * @param {Object.<K,V>} obj The object over which to iterate.
+ * @param {function(this:T,V,?,Object.<K,V>):boolean} f The function to call
+ *     for every element. This
+ *     function takes 3 arguments (the element, the index and the object)
+ *     and should return a boolean. If the return value is true the
+ *     element is added to the result object. If it is false the
+ *     element is not included.
+ * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @return {!Object.<K,V>} a new object in which only elements that passed the
+ *     test are present.
+ * @template T,K,V
+ */
+goog.object.filter = function(obj, f, opt_obj) {
+  var res = {};
+  for (var key in obj) {
+    if (f.call(opt_obj, obj[key], key, obj)) {
+      res[key] = obj[key];
+    }
+  }
+  return res;
+};
+
+
+/**
+ * For every element in an object/map/hash calls a function and inserts the
+ * result into a new object.
+ *
+ * @param {Object.<K,V>} obj The object over which to iterate.
+ * @param {function(this:T,V,?,Object.<K,V>):R} f The function to call
+ *     for every element. This function
+ *     takes 3 arguments (the element, the index and the object)
+ *     and should return something. The result will be inserted
+ *     into a new object.
+ * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @return {!Object.<T,R>} a new object with the results from f.
+ * @template T,K,V,R
+ */
+goog.object.map = function(obj, f, opt_obj) {
+  var res = {};
+  for (var key in obj) {
+    res[key] = f.call(opt_obj, obj[key], key, obj);
+  }
+  return res;
+};
+
+
+/**
+ * Calls a function for each element in an object/map/hash. If any
+ * call returns true, returns true (without checking the rest). If
+ * all calls return false, returns false.
+ *
+ * @param {Object.<K,V>} obj The object to check.
+ * @param {function(this:T,V,?,Object.<K,V>):boolean} f The function to
+ *     call for every element. This function
+ *     takes 3 arguments (the element, the index and the object) and should
+ *     return a boolean.
+ * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @return {boolean} true if any element passes the test.
+ * @template T,K,V
+ */
+goog.object.some = function(obj, f, opt_obj) {
+  for (var key in obj) {
+    if (f.call(opt_obj, obj[key], key, obj)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
+ * Calls a function for each element in an object/map/hash. If
+ * all calls return true, returns true. If any call returns false, returns
+ * false at this point and does not continue to check the remaining elements.
+ *
+ * @param {Object.<K,V>} obj The object to check.
+ * @param {?function(this:T,V,?,Object.<K,V>):boolean} f The function to
+ *     call for every element. This function
+ *     takes 3 arguments (the element, the index and the object) and should
+ *     return a boolean.
+ * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @return {boolean} false if any element fails the test.
+ * @template T,K,V
+ */
+goog.object.every = function(obj, f, opt_obj) {
+  for (var key in obj) {
+    if (!f.call(opt_obj, obj[key], key, obj)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+
+/**
+ * Returns the number of key-value pairs in the object map.
+ *
+ * @param {Object} obj The object for which to get the number of key-value
+ *     pairs.
+ * @return {number} The number of key-value pairs in the object map.
+ */
+goog.object.getCount = function(obj) {
+  // JS1.5 has __count__ but it has been deprecated so it raises a warning...
+  // in other words do not use. Also __count__ only includes the fields on the
+  // actual object and not in the prototype chain.
+  var rv = 0;
+  for (var key in obj) {
+    rv++;
+  }
+  return rv;
+};
+
+
+/**
+ * Returns one key from the object map, if any exists.
+ * For map literals the returned key will be the first one in most of the
+ * browsers (a know exception is Konqueror).
+ *
+ * @param {Object} obj The object to pick a key from.
+ * @return {string|undefined} The key or undefined if the object is empty.
+ */
+goog.object.getAnyKey = function(obj) {
+  for (var key in obj) {
+    return key;
+  }
+};
+
+
+/**
+ * Returns one value from the object map, if any exists.
+ * For map literals the returned value will be the first one in most of the
+ * browsers (a know exception is Konqueror).
+ *
+ * @param {Object.<K,V>} obj The object to pick a value from.
+ * @return {V|undefined} The value or undefined if the object is empty.
+ * @template K,V
+ */
+goog.object.getAnyValue = function(obj) {
+  for (var key in obj) {
+    return obj[key];
+  }
+};
+
+
+/**
+ * Whether the object/hash/map contains the given object as a value.
+ * An alias for goog.object.containsValue(obj, val).
+ *
+ * @param {Object.<K,V>} obj The object in which to look for val.
+ * @param {V} val The object for which to check.
+ * @return {boolean} true if val is present.
+ * @template K,V
+ */
+goog.object.contains = function(obj, val) {
+  return goog.object.containsValue(obj, val);
+};
+
+
+/**
+ * Returns the values of the object/map/hash.
+ *
+ * @param {Object.<K,V>} obj The object from which to get the values.
+ * @return {!Array.<V>} The values in the object/map/hash.
+ * @template K,V
+ */
+goog.object.getValues = function(obj) {
+  var res = [];
+  var i = 0;
+  for (var key in obj) {
+    res[i++] = obj[key];
+  }
+  return res;
+};
+
+
+/**
+ * Returns the keys of the object/map/hash.
+ *
+ * @param {Object} obj The object from which to get the keys.
+ * @return {!Array.<string>} Array of property keys.
+ */
+goog.object.getKeys = function(obj) {
+  var res = [];
+  var i = 0;
+  for (var key in obj) {
+    res[i++] = key;
+  }
+  return res;
+};
+
+
+/**
+ * Get a value from an object multiple levels deep.  This is useful for
+ * pulling values from deeply nested objects, such as JSON responses.
+ * Example usage: getValueByKeys(jsonObj, 'foo', 'entries', 3)
+ *
+ * @param {!Object} obj An object to get the value from.  Can be array-like.
+ * @param {...(string|number|!Array.<number|string>)} var_args A number of keys
+ *     (as strings, or numbers, for array-like objects).  Can also be
+ *     specified as a single array of keys.
+ * @return {*} The resulting value.  If, at any point, the value for a key
+ *     is undefined, returns undefined.
+ */
+goog.object.getValueByKeys = function(obj, var_args) {
+  var isArrayLike = goog.isArrayLike(var_args);
+  var keys = isArrayLike ? var_args : arguments;
+
+  // Start with the 2nd parameter for the variable parameters syntax.
+  for (var i = isArrayLike ? 0 : 1; i < keys.length; i++) {
+    obj = obj[keys[i]];
+    if (!goog.isDef(obj)) {
+      break;
+    }
+  }
+
+  return obj;
+};
+
+
+/**
+ * Whether the object/map/hash contains the given key.
+ *
+ * @param {Object} obj The object in which to look for key.
+ * @param {*} key The key for which to check.
+ * @return {boolean} true If the map contains the key.
+ */
+goog.object.containsKey = function(obj, key) {
+  return key in obj;
+};
+
+
+/**
+ * Whether the object/map/hash contains the given value. This is O(n).
+ *
+ * @param {Object.<K,V>} obj The object in which to look for val.
+ * @param {V} val The value for which to check.
+ * @return {boolean} true If the map contains the value.
+ * @template K,V
+ */
+goog.object.containsValue = function(obj, val) {
+  for (var key in obj) {
+    if (obj[key] == val) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
+ * Searches an object for an element that satisfies the given condition and
+ * returns its key.
+ * @param {Object.<K,V>} obj The object to search in.
+ * @param {function(this:T,V,string,Object.<K,V>):boolean} f The
+ *      function to call for every element. Takes 3 arguments (the value,
+ *     the key and the object) and should return a boolean.
+ * @param {T=} opt_this An optional "this" context for the function.
+ * @return {string|undefined} The key of an element for which the function
+ *     returns true or undefined if no such element is found.
+ * @template T,K,V
+ */
+goog.object.findKey = function(obj, f, opt_this) {
+  for (var key in obj) {
+    if (f.call(opt_this, obj[key], key, obj)) {
+      return key;
+    }
+  }
+  return undefined;
+};
+
+
+/**
+ * Searches an object for an element that satisfies the given condition and
+ * returns its value.
+ * @param {Object.<K,V>} obj The object to search in.
+ * @param {function(this:T,V,string,Object.<K,V>):boolean} f The function
+ *     to call for every element. Takes 3 arguments (the value, the key
+ *     and the object) and should return a boolean.
+ * @param {T=} opt_this An optional "this" context for the function.
+ * @return {V} The value of an element for which the function returns true or
+ *     undefined if no such element is found.
+ * @template T,K,V
+ */
+goog.object.findValue = function(obj, f, opt_this) {
+  var key = goog.object.findKey(obj, f, opt_this);
+  return key && obj[key];
+};
+
+
+/**
+ * Whether the object/map/hash is empty.
+ *
+ * @param {Object} obj The object to test.
+ * @return {boolean} true if obj is empty.
+ */
+goog.object.isEmpty = function(obj) {
+  for (var key in obj) {
+    return false;
+  }
+  return true;
+};
+
+
+/**
+ * Removes all key value pairs from the object/map/hash.
+ *
+ * @param {Object} obj The object to clear.
+ */
+goog.object.clear = function(obj) {
+  for (var i in obj) {
+    delete obj[i];
+  }
+};
+
+
+/**
+ * Removes a key-value pair based on the key.
+ *
+ * @param {Object} obj The object from which to remove the key.
+ * @param {*} key The key to remove.
+ * @return {boolean} Whether an element was removed.
+ */
+goog.object.remove = function(obj, key) {
+  var rv;
+  if ((rv = key in obj)) {
+    delete obj[key];
+  }
+  return rv;
+};
+
+
+/**
+ * Adds a key-value pair to the object. Throws an exception if the key is
+ * already in use. Use set if you want to change an existing pair.
+ *
+ * @param {Object.<K,V>} obj The object to which to add the key-value pair.
+ * @param {string} key The key to add.
+ * @param {V} val The value to add.
+ * @template K,V
+ */
+goog.object.add = function(obj, key, val) {
+  if (key in obj) {
+    throw Error('The object already contains the key "' + key + '"');
+  }
+  goog.object.set(obj, key, val);
+};
+
+
+/**
+ * Returns the value for the given key.
+ *
+ * @param {Object.<K,V>} obj The object from which to get the value.
+ * @param {string} key The key for which to get the value.
+ * @param {R=} opt_val The value to return if no item is found for the given
+ *     key (default is undefined).
+ * @return {V|R|undefined} The value for the given key.
+ * @template K,V,R
+ */
+goog.object.get = function(obj, key, opt_val) {
+  if (key in obj) {
+    return obj[key];
+  }
+  return opt_val;
+};
+
+
+/**
+ * Adds a key-value pair to the object/map/hash.
+ *
+ * @param {Object.<K,V>} obj The object to which to add the key-value pair.
+ * @param {string} key The key to add.
+ * @param {K} value The value to add.
+ * @template K,V
+ */
+goog.object.set = function(obj, key, value) {
+  obj[key] = value;
+};
+
+
+/**
+ * Adds a key-value pair to the object/map/hash if it doesn't exist yet.
+ *
+ * @param {Object.<K,V>} obj The object to which to add the key-value pair.
+ * @param {string} key The key to add.
+ * @param {V} value The value to add if the key wasn't present.
+ * @return {V} The value of the entry at the end of the function.
+ * @template K,V
+ */
+goog.object.setIfUndefined = function(obj, key, value) {
+  return key in obj ? obj[key] : (obj[key] = value);
+};
+
+
+/**
+ * Does a flat clone of the object.
+ *
+ * @param {Object.<K,V>} obj Object to clone.
+ * @return {!Object.<K,V>} Clone of the input object.
+ * @template K,V
+ */
+goog.object.clone = function(obj) {
+  // We cannot use the prototype trick because a lot of methods depend on where
+  // the actual key is set.
+
+  var res = {};
+  for (var key in obj) {
+    res[key] = obj[key];
+  }
+  return res;
+  // We could also use goog.mixin but I wanted this to be independent from that.
+};
+
+
+/**
+ * Clones a value. The input may be an Object, Array, or basic type. Objects and
+ * arrays will be cloned recursively.
+ *
+ * WARNINGS:
+ * <code>goog.object.unsafeClone</code> does not detect reference loops. Objects
+ * that refer to themselves will cause infinite recursion.
+ *
+ * <code>goog.object.unsafeClone</code> is unaware of unique identifiers, and
+ * copies UIDs created by <code>getUid</code> into cloned results.
+ *
+ * @param {*} obj The value to clone.
+ * @return {*} A clone of the input value.
+ */
+goog.object.unsafeClone = function(obj) {
+  var type = goog.typeOf(obj);
+  if (type == 'object' || type == 'array') {
+    if (obj.clone) {
+      return obj.clone();
+    }
+    var clone = type == 'array' ? [] : {};
+    for (var key in obj) {
+      clone[key] = goog.object.unsafeClone(obj[key]);
+    }
+    return clone;
+  }
+
+  return obj;
+};
+
+
+/**
+ * Returns a new object in which all the keys and values are interchanged
+ * (keys become values and values become keys). If multiple keys map to the
+ * same value, the chosen transposed value is implementation-dependent.
+ *
+ * @param {Object} obj The object to transpose.
+ * @return {!Object} The transposed object.
+ */
+goog.object.transpose = function(obj) {
+  var transposed = {};
+  for (var key in obj) {
+    transposed[obj[key]] = key;
+  }
+  return transposed;
+};
+
+
+/**
+ * The names of the fields that are defined on Object.prototype.
+ * @type {Array.<string>}
+ * @private
+ */
+goog.object.PROTOTYPE_FIELDS_ = [
+  'constructor',
+  'hasOwnProperty',
+  'isPrototypeOf',
+  'propertyIsEnumerable',
+  'toLocaleString',
+  'toString',
+  'valueOf'
+];
+
+
+/**
+ * Extends an object with another object.
+ * This operates 'in-place'; it does not create a new Object.
+ *
+ * Example:
+ * var o = {};
+ * goog.object.extend(o, {a: 0, b: 1});
+ * o; // {a: 0, b: 1}
+ * goog.object.extend(o, {c: 2});
+ * o; // {a: 0, b: 1, c: 2}
+ *
+ * @param {Object} target  The object to modify.
+ * @param {...Object} var_args The objects from which values will be copied.
+ */
+goog.object.extend = function(target, var_args) {
+  var key, source;
+  for (var i = 1; i < arguments.length; i++) {
+    source = arguments[i];
+    for (key in source) {
+      target[key] = source[key];
+    }
+
+    // For IE the for-in-loop does not contain any properties that are not
+    // enumerable on the prototype object (for example isPrototypeOf from
+    // Object.prototype) and it will also not include 'replace' on objects that
+    // extend String and change 'replace' (not that it is common for anyone to
+    // extend anything except Object).
+
+    for (var j = 0; j < goog.object.PROTOTYPE_FIELDS_.length; j++) {
+      key = goog.object.PROTOTYPE_FIELDS_[j];
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+};
+
+
+/**
+ * Creates a new object built from the key-value pairs provided as arguments.
+ * @param {...*} var_args If only one argument is provided and it is an array
+ *     then this is used as the arguments,  otherwise even arguments are used as
+ *     the property names and odd arguments are used as the property values.
+ * @return {!Object} The new object.
+ * @throws {Error} If there are uneven number of arguments or there is only one
+ *     non array argument.
+ */
+goog.object.create = function(var_args) {
+  var argLength = arguments.length;
+  if (argLength == 1 && goog.isArray(arguments[0])) {
+    return goog.object.create.apply(null, arguments[0]);
+  }
+
+  if (argLength % 2) {
+    throw Error('Uneven number of arguments');
+  }
+
+  var rv = {};
+  for (var i = 0; i < argLength; i += 2) {
+    rv[arguments[i]] = arguments[i + 1];
+  }
+  return rv;
+};
+
+
+/**
+ * Creates a new object where the property names come from the arguments but
+ * the value is always set to true
+ * @param {...*} var_args If only one argument is provided and it is an array
+ *     then this is used as the arguments,  otherwise the arguments are used
+ *     as the property names.
+ * @return {!Object} The new object.
+ */
+goog.object.createSet = function(var_args) {
+  var argLength = arguments.length;
+  if (argLength == 1 && goog.isArray(arguments[0])) {
+    return goog.object.createSet.apply(null, arguments[0]);
+  }
+
+  var rv = {};
+  for (var i = 0; i < argLength; i++) {
+    rv[arguments[i]] = true;
+  }
+  return rv;
+};
+
+
+/**
+ * Creates an immutable view of the underlying object, if the browser
+ * supports immutable objects.
+ *
+ * In default mode, writes to this view will fail silently. In strict mode,
+ * they will throw an error.
+ *
+ * @param {!Object.<K,V>} obj An object.
+ * @return {!Object.<K,V>} An immutable view of that object, or the
+ *     original object if this browser does not support immutables.
+ * @template K,V
+ */
+goog.object.createImmutableView = function(obj) {
+  var result = obj;
+  if (Object.isFrozen && !Object.isFrozen(obj)) {
+    result = Object.create(obj);
+    Object.freeze(result);
+  }
+  return result;
+};
+
+
+/**
+ * @param {!Object} obj An object.
+ * @return {boolean} Whether this is an immutable view of the object.
+ */
+goog.object.isImmutableView = function(obj) {
+  return !!Object.isFrozen && Object.isFrozen(obj);
+};
 // Copyright 2007 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -6219,6 +6484,581 @@ goog.dom.TagName = {
   VIDEO: 'VIDEO',
   WBR: 'WBR'
 };
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Rendering engine detection.
+ * @see <a href="http://www.useragentstring.com/">User agent strings</a>
+ * For information on the browser brand (such as Safari versus Chrome), see
+ * goog.userAgent.product.
+ * @see ../demos/useragent.html
+ */
+
+goog.provide('goog.userAgent');
+
+goog.require('goog.string');
+
+
+/**
+ * @define {boolean} Whether we know at compile-time that the browser is IE.
+ */
+goog.userAgent.ASSUME_IE = false;
+
+
+/**
+ * @define {boolean} Whether we know at compile-time that the browser is GECKO.
+ */
+goog.userAgent.ASSUME_GECKO = false;
+
+
+/**
+ * @define {boolean} Whether we know at compile-time that the browser is WEBKIT.
+ */
+goog.userAgent.ASSUME_WEBKIT = false;
+
+
+/**
+ * @define {boolean} Whether we know at compile-time that the browser is a
+ *     mobile device running WebKit e.g. iPhone or Android.
+ */
+goog.userAgent.ASSUME_MOBILE_WEBKIT = false;
+
+
+/**
+ * @define {boolean} Whether we know at compile-time that the browser is OPERA.
+ */
+goog.userAgent.ASSUME_OPERA = false;
+
+
+/**
+ * @define {boolean} Whether the {@code goog.userAgent.isVersion} function will
+ *     return true for any version.
+ */
+goog.userAgent.ASSUME_ANY_VERSION = false;
+
+
+/**
+ * Whether we know the browser engine at compile-time.
+ * @type {boolean}
+ * @private
+ */
+goog.userAgent.BROWSER_KNOWN_ =
+    goog.userAgent.ASSUME_IE ||
+    goog.userAgent.ASSUME_GECKO ||
+    goog.userAgent.ASSUME_MOBILE_WEBKIT ||
+    goog.userAgent.ASSUME_WEBKIT ||
+    goog.userAgent.ASSUME_OPERA;
+
+
+/**
+ * Returns the userAgent string for the current browser.
+ * Some user agents (I'm thinking of you, Gears WorkerPool) do not expose a
+ * navigator object off the global scope.  In that case we return null.
+ *
+ * @return {?string} The userAgent string or null if there is none.
+ */
+goog.userAgent.getUserAgentString = function() {
+  return goog.global['navigator'] ? goog.global['navigator'].userAgent : null;
+};
+
+
+/**
+ * @return {Object} The native navigator object.
+ */
+goog.userAgent.getNavigator = function() {
+  // Need a local navigator reference instead of using the global one,
+  // to avoid the rare case where they reference different objects.
+  // (in a WorkerPool, for example).
+  return goog.global['navigator'];
+};
+
+
+/**
+ * Initializer for goog.userAgent.
+ *
+ * This is a named function so that it can be stripped via the jscompiler
+ * option for stripping types.
+ * @private
+ */
+goog.userAgent.init_ = function() {
+  /**
+   * Whether the user agent string denotes Opera.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedOpera_ = false;
+
+  /**
+   * Whether the user agent string denotes Internet Explorer. This includes
+   * other browsers using Trident as its rendering engine. For example AOL
+   * and Netscape 8
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedIe_ = false;
+
+  /**
+   * Whether the user agent string denotes WebKit. WebKit is the rendering
+   * engine that Safari, Android and others use.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedWebkit_ = false;
+
+  /**
+   * Whether the user agent string denotes a mobile device.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedMobile_ = false;
+
+  /**
+   * Whether the user agent string denotes Gecko. Gecko is the rendering
+   * engine used by Mozilla, Mozilla Firefox, Camino and many more.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedGecko_ = false;
+
+  var ua;
+  if (!goog.userAgent.BROWSER_KNOWN_ &&
+      (ua = goog.userAgent.getUserAgentString())) {
+    var navigator = goog.userAgent.getNavigator();
+    goog.userAgent.detectedOpera_ = ua.indexOf('Opera') == 0;
+    goog.userAgent.detectedIe_ = !goog.userAgent.detectedOpera_ &&
+        ua.indexOf('MSIE') != -1;
+    goog.userAgent.detectedWebkit_ = !goog.userAgent.detectedOpera_ &&
+        ua.indexOf('WebKit') != -1;
+    // WebKit also gives navigator.product string equal to 'Gecko'.
+    goog.userAgent.detectedMobile_ = goog.userAgent.detectedWebkit_ &&
+        ua.indexOf('Mobile') != -1;
+    goog.userAgent.detectedGecko_ = !goog.userAgent.detectedOpera_ &&
+        !goog.userAgent.detectedWebkit_ && navigator.product == 'Gecko';
+  }
+};
+
+
+if (!goog.userAgent.BROWSER_KNOWN_) {
+  goog.userAgent.init_();
+}
+
+
+/**
+ * Whether the user agent is Opera.
+ * @type {boolean}
+ */
+goog.userAgent.OPERA = goog.userAgent.BROWSER_KNOWN_ ?
+    goog.userAgent.ASSUME_OPERA : goog.userAgent.detectedOpera_;
+
+
+/**
+ * Whether the user agent is Internet Explorer. This includes other browsers
+ * using Trident as its rendering engine. For example AOL and Netscape 8
+ * @type {boolean}
+ */
+goog.userAgent.IE = goog.userAgent.BROWSER_KNOWN_ ?
+    goog.userAgent.ASSUME_IE : goog.userAgent.detectedIe_;
+
+
+/**
+ * Whether the user agent is Gecko. Gecko is the rendering engine used by
+ * Mozilla, Mozilla Firefox, Camino and many more.
+ * @type {boolean}
+ */
+goog.userAgent.GECKO = goog.userAgent.BROWSER_KNOWN_ ?
+    goog.userAgent.ASSUME_GECKO :
+    goog.userAgent.detectedGecko_;
+
+
+/**
+ * Whether the user agent is WebKit. WebKit is the rendering engine that
+ * Safari, Android and others use.
+ * @type {boolean}
+ */
+goog.userAgent.WEBKIT = goog.userAgent.BROWSER_KNOWN_ ?
+    goog.userAgent.ASSUME_WEBKIT || goog.userAgent.ASSUME_MOBILE_WEBKIT :
+    goog.userAgent.detectedWebkit_;
+
+
+/**
+ * Whether the user agent is running on a mobile device.
+ * @type {boolean}
+ */
+goog.userAgent.MOBILE = goog.userAgent.ASSUME_MOBILE_WEBKIT ||
+                        goog.userAgent.detectedMobile_;
+
+
+/**
+ * Used while transitioning code to use WEBKIT instead.
+ * @type {boolean}
+ * @deprecated Use {@link goog.userAgent.product.SAFARI} instead.
+ * TODO(nicksantos): Delete this from goog.userAgent.
+ */
+goog.userAgent.SAFARI = goog.userAgent.WEBKIT;
+
+
+/**
+ * @return {string} the platform (operating system) the user agent is running
+ *     on. Default to empty string because navigator.platform may not be defined
+ *     (on Rhino, for example).
+ * @private
+ */
+goog.userAgent.determinePlatform_ = function() {
+  var navigator = goog.userAgent.getNavigator();
+  return navigator && navigator.platform || '';
+};
+
+
+/**
+ * The platform (operating system) the user agent is running on. Default to
+ * empty string because navigator.platform may not be defined (on Rhino, for
+ * example).
+ * @type {string}
+ */
+goog.userAgent.PLATFORM = goog.userAgent.determinePlatform_();
+
+
+/**
+ * @define {boolean} Whether the user agent is running on a Macintosh operating
+ *     system.
+ */
+goog.userAgent.ASSUME_MAC = false;
+
+
+/**
+ * @define {boolean} Whether the user agent is running on a Windows operating
+ *     system.
+ */
+goog.userAgent.ASSUME_WINDOWS = false;
+
+
+/**
+ * @define {boolean} Whether the user agent is running on a Linux operating
+ *     system.
+ */
+goog.userAgent.ASSUME_LINUX = false;
+
+
+/**
+ * @define {boolean} Whether the user agent is running on a X11 windowing
+ *     system.
+ */
+goog.userAgent.ASSUME_X11 = false;
+
+
+/**
+ * @define {boolean} Whether the user agent is running on Android.
+ */
+goog.userAgent.ASSUME_ANDROID = false;
+
+
+/**
+ * @define {boolean} Whether the user agent is running on an iPhone.
+ */
+goog.userAgent.ASSUME_IPHONE = false;
+
+
+/**
+ * @define {boolean} Whether the user agent is running on an iPad.
+ */
+goog.userAgent.ASSUME_IPAD = false;
+
+
+/**
+ * @type {boolean}
+ * @private
+ */
+goog.userAgent.PLATFORM_KNOWN_ =
+    goog.userAgent.ASSUME_MAC ||
+    goog.userAgent.ASSUME_WINDOWS ||
+    goog.userAgent.ASSUME_LINUX ||
+    goog.userAgent.ASSUME_X11 ||
+    goog.userAgent.ASSUME_ANDROID ||
+    goog.userAgent.ASSUME_IPHONE ||
+    goog.userAgent.ASSUME_IPAD;
+
+
+/**
+ * Initialize the goog.userAgent constants that define which platform the user
+ * agent is running on.
+ * @private
+ */
+goog.userAgent.initPlatform_ = function() {
+  /**
+   * Whether the user agent is running on a Macintosh operating system.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedMac_ = goog.string.contains(goog.userAgent.PLATFORM,
+      'Mac');
+
+  /**
+   * Whether the user agent is running on a Windows operating system.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedWindows_ = goog.string.contains(
+      goog.userAgent.PLATFORM, 'Win');
+
+  /**
+   * Whether the user agent is running on a Linux operating system.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedLinux_ = goog.string.contains(goog.userAgent.PLATFORM,
+      'Linux');
+
+  /**
+   * Whether the user agent is running on a X11 windowing system.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedX11_ = !!goog.userAgent.getNavigator() &&
+      goog.string.contains(goog.userAgent.getNavigator()['appVersion'] || '',
+          'X11');
+
+  // Need user agent string for Android/IOS detection
+  var ua = goog.userAgent.getUserAgentString();
+
+  /**
+   * Whether the user agent is running on Android.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedAndroid_ = !!ua && ua.indexOf('Android') >= 0;
+
+  /**
+   * Whether the user agent is running on an iPhone.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedIPhone_ = !!ua && ua.indexOf('iPhone') >= 0;
+
+  /**
+   * Whether the user agent is running on an iPad.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedIPad_ = !!ua && ua.indexOf('iPad') >= 0;
+};
+
+
+if (!goog.userAgent.PLATFORM_KNOWN_) {
+  goog.userAgent.initPlatform_();
+}
+
+
+/**
+ * Whether the user agent is running on a Macintosh operating system.
+ * @type {boolean}
+ */
+goog.userAgent.MAC = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_MAC : goog.userAgent.detectedMac_;
+
+
+/**
+ * Whether the user agent is running on a Windows operating system.
+ * @type {boolean}
+ */
+goog.userAgent.WINDOWS = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_WINDOWS : goog.userAgent.detectedWindows_;
+
+
+/**
+ * Whether the user agent is running on a Linux operating system.
+ * @type {boolean}
+ */
+goog.userAgent.LINUX = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_LINUX : goog.userAgent.detectedLinux_;
+
+
+/**
+ * Whether the user agent is running on a X11 windowing system.
+ * @type {boolean}
+ */
+goog.userAgent.X11 = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_X11 : goog.userAgent.detectedX11_;
+
+
+/**
+ * Whether the user agent is running on Android.
+ * @type {boolean}
+ */
+goog.userAgent.ANDROID = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_ANDROID : goog.userAgent.detectedAndroid_;
+
+
+/**
+ * Whether the user agent is running on an iPhone.
+ * @type {boolean}
+ */
+goog.userAgent.IPHONE = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_IPHONE : goog.userAgent.detectedIPhone_;
+
+
+/**
+ * Whether the user agent is running on an iPad.
+ * @type {boolean}
+ */
+goog.userAgent.IPAD = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_IPAD : goog.userAgent.detectedIPad_;
+
+
+/**
+ * @return {string} The string that describes the version number of the user
+ *     agent.
+ * @private
+ */
+goog.userAgent.determineVersion_ = function() {
+  // All browsers have different ways to detect the version and they all have
+  // different naming schemes.
+
+  // version is a string rather than a number because it may contain 'b', 'a',
+  // and so on.
+  var version = '', re;
+
+  if (goog.userAgent.OPERA && goog.global['opera']) {
+    var operaVersion = goog.global['opera'].version;
+    version = typeof operaVersion == 'function' ? operaVersion() : operaVersion;
+  } else {
+    if (goog.userAgent.GECKO) {
+      re = /rv\:([^\);]+)(\)|;)/;
+    } else if (goog.userAgent.IE) {
+      re = /MSIE\s+([^\);]+)(\)|;)/;
+    } else if (goog.userAgent.WEBKIT) {
+      // WebKit/125.4
+      re = /WebKit\/(\S+)/;
+    }
+    if (re) {
+      var arr = re.exec(goog.userAgent.getUserAgentString());
+      version = arr ? arr[1] : '';
+    }
+  }
+  if (goog.userAgent.IE) {
+    // IE9 can be in document mode 9 but be reporting an inconsistent user agent
+    // version.  If it is identifying as a version lower than 9 we take the
+    // documentMode as the version instead.  IE8 has similar behavior.
+    // It is recommended to set the X-UA-Compatible header to ensure that IE9
+    // uses documentMode 9.
+    var docMode = goog.userAgent.getDocumentMode_();
+    if (docMode > parseFloat(version)) {
+      return String(docMode);
+    }
+  }
+  return version;
+};
+
+
+/**
+ * @return {number|undefined} Returns the document mode (for testing).
+ * @private
+ */
+goog.userAgent.getDocumentMode_ = function() {
+  // NOTE(user): goog.userAgent may be used in context where there is no DOM.
+  var doc = goog.global['document'];
+  return doc ? doc['documentMode'] : undefined;
+};
+
+
+/**
+ * The version of the user agent. This is a string because it might contain
+ * 'b' (as in beta) as well as multiple dots.
+ * @type {string}
+ */
+goog.userAgent.VERSION = goog.userAgent.determineVersion_();
+
+
+/**
+ * Compares two version numbers.
+ *
+ * @param {string} v1 Version of first item.
+ * @param {string} v2 Version of second item.
+ *
+ * @return {number}  1 if first argument is higher
+ *                   0 if arguments are equal
+ *                  -1 if second argument is higher.
+ * @deprecated Use goog.string.compareVersions.
+ */
+goog.userAgent.compare = function(v1, v2) {
+  return goog.string.compareVersions(v1, v2);
+};
+
+
+/**
+ * Cache for {@link goog.userAgent.isVersion}. Calls to compareVersions are
+ * surprisingly expensive and as a browsers version number is unlikely to change
+ * during a session we cache the results.
+ * @type {Object}
+ * @private
+ */
+goog.userAgent.isVersionCache_ = {};
+
+
+/**
+ * Whether the user agent version is higher or the same as the given version.
+ * NOTE: When checking the version numbers for Firefox and Safari, be sure to
+ * use the engine's version, not the browser's version number.  For example,
+ * Firefox 3.0 corresponds to Gecko 1.9 and Safari 3.0 to Webkit 522.11.
+ * Opera and Internet Explorer versions match the product release number.<br>
+ * @see <a href="http://en.wikipedia.org/wiki/Safari_version_history">
+ *     Webkit</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Gecko_engine">Gecko</a>
+ *
+ * @param {string|number} version The version to check.
+ * @return {boolean} Whether the user agent version is higher or the same as
+ *     the given version.
+ */
+goog.userAgent.isVersion = function(version) {
+  return goog.userAgent.ASSUME_ANY_VERSION ||
+      goog.userAgent.isVersionCache_[version] ||
+      (goog.userAgent.isVersionCache_[version] =
+          goog.string.compareVersions(goog.userAgent.VERSION, version) >= 0);
+};
+
+
+/**
+ * Whether the IE effective document mode is higher or the same as the given
+ * document mode version.
+ * NOTE: Only for IE, return false for another browser.
+ *
+ * @param {number} documentMode The document mode version to check.
+ * @return {boolean} Whether the IE effective document mode is higher or the
+ *     same as the given version.
+ */
+goog.userAgent.isDocumentMode = function(documentMode) {
+  return goog.userAgent.IE && goog.userAgent.DOCUMENT_MODE >= documentMode;
+};
+
+
+/**
+ * For IE version < 7, documentMode is undefined, so attempt to use the
+ * CSS1Compat property to see if we are in standards mode. If we are in
+ * standards mode, treat the browser version as the document mode. Otherwise,
+ * IE is emulating version 5.
+ * @type {number|undefined}
+ * @const
+ */
+goog.userAgent.DOCUMENT_MODE = (function() {
+  var doc = goog.global['document'];
+  if (!doc || !goog.userAgent.IE) {
+    return undefined;
+  }
+  var mode = goog.userAgent.getDocumentMode_();
+  return mode || (doc['compatMode'] == 'CSS1Compat' ?
+      parseInt(goog.userAgent.VERSION, 10) : 5);
+})();
 // Copyright 2007 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -9795,711 +10635,140 @@ goog.dom.DomHelper.prototype.getAncestorByClass =
  *     no match.
  */
 goog.dom.DomHelper.prototype.getAncestor = goog.dom.getAncestor;
-// Copyright 2007 Bob Ippolito. All Rights Reserved.
-// Modifications Copyright 2009 The Closure Library Authors. All Rights
-// Reserved.
-
 /**
- * @license Portions of this code are from MochiKit, received by
- * The Closure Authors under the MIT license. All other code is Copyright
- * 2005-2009 The Closure Authors. All Rights Reserved.
+ * @fileOverview Takes care of module loading, starts with config directives.
  */
 
-/**
- * @fileoverview Classes for tracking asynchronous operations and handling the
- * results. The Deferred object here is patterned after the Deferred object in
- * the Twisted python networking framework.
- *
- * See: http://twistedmatrix.com/projects/core/documentation/howto/defer.html
- *
- * Based on the Dojo code which in turn is based on the MochiKit code.
- *
- */
+goog.provide('Deppy.ModuleLoader');
 
-goog.provide('goog.async.Deferred');
-goog.provide('goog.async.Deferred.AlreadyCalledError');
-goog.provide('goog.async.Deferred.CancelledError');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.debug.Error');
-
+goog.require('goog.dom');
+goog.require('goog.dom.dataset');
+goog.require('goog.async.Deferred');
 
 
 /**
- * A Deferred represents the result of an asynchronous operation. A Deferred
- * instance has no result when it is created, and is "fired" (given an initial
- * result) by calling {@code callback} or {@code errback}.
+ * Takes care of module loading, starts with config directives.
  *
- * Once fired, the result is passed through a sequence of callback functions
- * registered with {@code addCallback} or {@code addErrback}. The functions may
- * mutate the result before it is passed to the next function in the sequence.
- *
- * Callbacks and errbacks may be added at any time, including after the Deferred
- * has been "fired". If there are no pending actions in the execution sequence
- * of a fired Deferred, any new callback functions will be called with the last
- * computed result. Adding a callback function is the only way to access the
- * result of the Deferred.
- *
- * If a Deferred operation is cancelled, an optional user-provided cancellation
- * function is invoked which may perform any special cleanup, followed by firing
- * the Deferred's errback sequence with a {@code CancelledError}. If the
- * Deferred has already fired, cancellation is ignored.
- *
- * @param {Function=} opt_onCancelFunction A function that will be called if the
- *     Deferred is cancelled. If provided, this function runs before the
- *     Deferred is fired with a {@code CancelledError}.
- * @param {Object=} opt_defaultScope The default object context to call
- *     callbacks and errbacks in.
  * @constructor
  */
-goog.async.Deferred = function(opt_onCancelFunction, opt_defaultScope) {
+Deppy.ModuleLoader = function() {
+
+  // figure out which is our entry point
+  var scriptTags = document.getElementsByTagName('script');
+
   /**
-   * Entries in the sequence are arrays containing a callback, an errback, and
-   * an optional scope. The callback or errback in an entry may be null.
-   * @type {!Array.<!Array>}
+   * @type {Element} the script tag used to fetch this application.
    * @private
    */
-  this.sequence_ = [];
+  this._ownScriptTag = scriptTags[ scriptTags.length - 1 ];
 
   /**
-   * Optional function that will be called if the Deferred is cancelled.
-   * @type {Function|undefined}
+   * @type {string} The relative path to the user's application entry point.
    * @private
    */
-  this.onCancelFunction_ = opt_onCancelFunction;
+  this._entryPoint = '';
 
-  /**
-   * The default scope to execute callbacks and errbacks in.
-   * @type {Object}
-   * @private
-   */
-  this.defaultScope_ = opt_defaultScope || null;
+};
+goog.addSingletonGetter(Deppy.ModuleLoader);
+
+/**
+ * @const {string} The default javascript extension.
+ */
+Deppy.ModuleLoader.JS_EXT = '.js';
+
+
+/** @const {string} the data- attribute key for entry point file */
+Deppy.ModuleLoader.ENTRY_POINT_DATA_KEY = 'main'
+
+/** @const {string} the default entry point file */
+Deppy.ModuleLoader.ENTRY_POINT_DEFAULT = 'app'
+
+/** @const {string} the data- attribute key for deps file */
+Deppy.ModuleLoader.DEPS_DATA_KEY = 'deps'
+
+/** @const {string} the default deps file */
+Deppy.ModuleLoader.DEPS_DEFAULT = 'deps'
+
+
+/**
+ * Write script on document. This operation will get scripts synchronously.
+ *
+ * @param  {string} src A canonical path.
+ */
+Deppy.ModuleLoader.prototype.writeScript = function (src) {
+  document.write(
+    '<script type="text/javascript" src="' + src + '"></' + 'script>');
+
 };
 
-
 /**
- * Whether the Deferred has been fired.
- * @type {boolean}
- * @private
- */
-goog.async.Deferred.prototype.fired_ = false;
-
-
-/**
- * Whether the last result in the execution sequence was an error.
- * @type {boolean}
- * @private
- */
-goog.async.Deferred.prototype.hadError_ = false;
-
-
-/**
- * The current Deferred result, updated as callbacks and errbacks are executed.
- * @type {*}
- * @private
- */
-goog.async.Deferred.prototype.result_;
-
-
-/**
- * Whether the Deferred is blocked waiting on another Deferred to fire. If a
- * callback or errback returns a Deferred as a result, the execution sequence is
- * blocked until that Deferred result becomes available.
- * @type {boolean}
- * @private
- */
-goog.async.Deferred.prototype.blocked_ = false;
-
-
-/**
- * Whether this Deferred is blocking execution of another Deferred. If this
- * instance was returned as a result in another Deferred's execution sequence,
- * that other Deferred becomes blocked until this instance's execution sequence
- * completes. No additional callbacks may be added to a Deferred once it
- * is blocking another instance.
- * @type {boolean}
- * @private
- */
-goog.async.Deferred.prototype.blocking_ = false;
-
-
-/**
- * Whether the Deferred has been cancelled without having a custom cancel
- * function.
- * @type {boolean}
- * @private
- */
-goog.async.Deferred.prototype.silentlyCancelled_ = false;
-
-
-/**
- * If an error is thrown during Deferred execution with no errback to catch it,
- * the error is rethrown after a timeout. Reporting the error after a timeout
- * allows execution to continue in the calling context.
- * @type {number}
- * @private
- */
-goog.async.Deferred.prototype.unhandledExceptionTimeoutId_;
-
-
-/**
- * If this Deferred was created by branch(), this will be the "parent" Deferred.
- * @type {goog.async.Deferred}
- * @private
- */
-goog.async.Deferred.prototype.parent_;
-
-
-/**
- * The number of Deferred objects that have been branched off this one. This
- * will be decremented whenever a branch is fired or cancelled.
- * @type {number}
- * @private
- */
-goog.async.Deferred.prototype.branches_ = 0;
-
-
-/**
- * Cancels a Deferred that has not yet been fired, or is blocked on another
- * deferred operation. If this Deferred is waiting for a blocking Deferred to
- * fire, the blocking Deferred will also be cancelled.
+ * Triggers on config finish. Required assets have finished loading by now,
+ * it's time to get the deps file if one exists, figure out what the entry point
+ * of the application is and load it.
  *
- * If this Deferred was created by calling branch() on a parent Deferred with
- * opt_propagateCancel set to true, the parent may also be cancelled. If
- * opt_deepCancel is set, cancel() will be called on the parent (as well as any
- * other ancestors if the parent is also a branch). If one or more branches were
- * created with opt_propagateCancel set to true, the parent will be cancelled if
- * cancel() is called on all of those branches.
- *
- * @param {boolean=} opt_deepCancel If true, cancels this Deferred's parent even
- *     if cancel() hasn't been called on some of the parent's branches. Has no
- *     effect on a branch without opt_propagateCancel set to true.
+ * @param {goog.events.Event} e
  */
-goog.async.Deferred.prototype.cancel = function(opt_deepCancel) {
-  if (!this.hasFired()) {
-    if (this.parent_) {
-      // Get rid of the parent reference before potentially running the parent's
-      // canceller function to ensure that this cancellation isn't
-      // double-counted.
-      var parent = this.parent_;
-      delete this.parent_;
-      if (opt_deepCancel) {
-        parent.cancel(opt_deepCancel);
-      } else {
-        parent.branchCancel_();
-      }
-    }
+Deppy.ModuleLoader.prototype.start = function(e) {
+  this._fetchDepsFile();
 
-    if (this.onCancelFunction_) {
-      // Call in user-specified scope.
-      this.onCancelFunction_.call(this.defaultScope_, this);
-    } else {
-      this.silentlyCancelled_ = true;
-    }
-    if (!this.hasFired()) {
-      this.errback(new goog.async.Deferred.CancelledError(this));
-    }
-  } else if (this.result_ instanceof goog.async.Deferred) {
-    this.result_.cancel();
-  }
+  this._fetchEntryPoint();
 };
 
-
 /**
- * Handle a single branch being cancelled. Once all branches are cancelled, this
- * Deferred will be cancelled as well.
+ * Determine the path of the dependency file and fetch it.
  *
  * @private
  */
-goog.async.Deferred.prototype.branchCancel_ = function() {
-  this.branches_--;
-  if (this.branches_ <= 0) {
-    this.cancel();
-  }
+Deppy.ModuleLoader.prototype._fetchDepsFile = function() {
+  var configDepFile = Deppy.Config.getInstance().getDepFile();
+  var elementDepFile = goog.dom.dataset.get(this._ownScriptTag,
+    Deppy.ModuleLoader.DEPS_DATA_KEY);
+
+  // check by priority
+  var depsFile = elementDepFile || configDepFile
+    || Deppy.ModuleLoader.DEPS_DEFAULT;
+
+  this.writeScript(depsFile + Deppy.ModuleLoader.JS_EXT);
 };
 
-
 /**
- * Called after a blocking Deferred fires. Unblocks this Deferred and resumes
- * its execution sequence.
- *
- * @param {boolean} isSuccess Whether the result is a success or an error.
- * @param {*} res The result of the blocking Deferred.
- * @private
- */
-goog.async.Deferred.prototype.continue_ = function(isSuccess, res) {
-  this.blocked_ = false;
-  this.updateResult_(isSuccess, res);
-};
-
-
-/**
- * Updates the current result based on the success or failure of the last action
- * in the execution sequence.
- *
- * @param {boolean} isSuccess Whether the new result is a success or an error.
- * @param {*} res The result.
- * @private
- */
-goog.async.Deferred.prototype.updateResult_ = function(isSuccess, res) {
-  this.fired_ = true;
-  this.result_ = res;
-  this.hadError_ = !isSuccess;
-  this.fire_();
-};
-
-
-/**
- * Verifies that the Deferred has not yet been fired.
- *
- * @private
- * @throws {Error} If this has already been fired.
- */
-goog.async.Deferred.prototype.check_ = function() {
-  if (this.hasFired()) {
-    if (!this.silentlyCancelled_) {
-      throw new goog.async.Deferred.AlreadyCalledError(this);
-    }
-    this.silentlyCancelled_ = false;
-  }
-};
-
-
-/**
- * Fire the execution sequence for this Deferred by passing the starting result
- * to the first registered callback.
- * @param {*=} opt_result The starting result.
- */
-goog.async.Deferred.prototype.callback = function(opt_result) {
-  this.check_();
-  this.assertNotDeferred_(opt_result);
-  this.updateResult_(true /* isSuccess */, opt_result);
-};
-
-
-/**
- * Fire the execution sequence for this Deferred by passing the starting error
- * result to the first registered errback.
- * @param {*=} opt_result The starting error.
- */
-goog.async.Deferred.prototype.errback = function(opt_result) {
-  this.check_();
-  this.assertNotDeferred_(opt_result);
-  this.updateResult_(false /* isSuccess */, opt_result);
-};
-
-
-/**
- * Asserts that an object is not a Deferred.
- * @param {*} obj The object to test.
- * @throws {Error} Throws an exception if the object is a Deferred.
- * @private
- */
-goog.async.Deferred.prototype.assertNotDeferred_ = function(obj) {
-  goog.asserts.assert(
-      !(obj instanceof goog.async.Deferred),
-      'An execution sequence may not be initiated with a blocking Deferred.');
-};
-
-
-/**
- * Register a callback function to be called with a successful result. If no
- * value is returned by the callback function, the result value is unchanged. If
- * a new value is returned, it becomes the Deferred result and will be passed to
- * the next callback in the execution sequence.
- *
- * If the function throws an error, the error becomes the new result and will be
- * passed to the next errback in the execution chain.
- *
- * If the function returns a Deferred, the execution sequence will be blocked
- * until that Deferred fires. Its result will be passed to the next callback (or
- * errback if it is an error result) in this Deferred's execution sequence.
- *
- * @param {!function(this:T,?):?} cb The function to be called with a successful
- *     result.
- * @param {T=} opt_scope An optional scope to call the callback in.
- * @return {!goog.async.Deferred} This Deferred.
- * @template T
- */
-goog.async.Deferred.prototype.addCallback = function(cb, opt_scope) {
-  return this.addCallbacks(cb, null, opt_scope);
-};
-
-
-/**
- * Register a callback function to be called with an error result. If no value
- * is returned by the function, the error result is unchanged. If a new error
- * value is returned or thrown, that error becomes the Deferred result and will
- * be passed to the next errback in the execution sequence.
- *
- * If the errback function handles the error by returning a non-error value,
- * that result will be passed to the next normal callback in the sequence.
- *
- * If the function returns a Deferred, the execution sequence will be blocked
- * until that Deferred fires. Its result will be passed to the next callback (or
- * errback if it is an error result) in this Deferred's execution sequence.
- *
- * @param {!function(this:T,?):?} eb The function to be called on an
- *     unsuccessful result.
- * @param {T=} opt_scope An optional scope to call the errback in.
- * @return {!goog.async.Deferred} This Deferred.
- * @template T
- */
-goog.async.Deferred.prototype.addErrback = function(eb, opt_scope) {
-  return this.addCallbacks(null, eb, opt_scope);
-};
-
-
-/**
- * Registers one function as both a callback and errback.
- *
- * @param {!function(this:T,?):?} f The function to be called on any result.
- * @param {T=} opt_scope An optional scope to call the function in.
- * @return {!goog.async.Deferred} This Deferred.
- * @template T
- */
-goog.async.Deferred.prototype.addBoth = function(f, opt_scope) {
-  return this.addCallbacks(f, f, opt_scope);
-};
-
-
-/**
- * Registers a callback function and an errback function at the same position
- * in the execution sequence. Only one of these functions will execute,
- * depending on the error state during the execution sequence.
- *
- * NOTE: This is not equivalent to {@code def.addCallback().addErrback()}! If
- * the callback is invoked, the errback will be skipped, and vice versa.
- *
- * @param {(function(this:T,?):?)|null} cb The function to be called on a
- *     successful result.
- * @param {(function(this:T,?):?)|null} eb The function to be called on an
- *     unsuccessful result.
- * @param {T=} opt_scope An optional scope to call the functions in.
- * @return {!goog.async.Deferred} This Deferred.
- * @template T
- */
-goog.async.Deferred.prototype.addCallbacks = function(cb, eb, opt_scope) {
-  goog.asserts.assert(!this.blocking_, 'Blocking Deferreds can not be re-used');
-  this.sequence_.push([cb, eb, opt_scope]);
-  if (this.hasFired()) {
-    this.fire_();
-  }
-  return this;
-};
-
-
-/**
- * Links another Deferred to the end of this Deferred's execution sequence. The
- * result of this execution sequence will be passed as the starting result for
- * the chained Deferred, invoking either its first callback or errback.
- *
- * @param {!goog.async.Deferred} otherDeferred The Deferred to chain.
- * @return {!goog.async.Deferred} This Deferred.
- */
-goog.async.Deferred.prototype.chainDeferred = function(otherDeferred) {
-  this.addCallbacks(
-      otherDeferred.callback, otherDeferred.errback, otherDeferred);
-  return this;
-};
-
-
-/**
- * Makes this Deferred wait for another Deferred's execution sequence to
- * complete before continuing.
- *
- * This is equivalent to adding a callback that returns {@code otherDeferred},
- * but doesn't prevent additional callbacks from being added to
- * {@code otherDeferred}.
- *
- * @param {!goog.async.Deferred} otherDeferred The Deferred to wait for.
- * @return {!goog.async.Deferred} This Deferred.
- */
-goog.async.Deferred.prototype.awaitDeferred = function(otherDeferred) {
-  return this.addCallback(goog.bind(otherDeferred.branch, otherDeferred));
-};
-
-
-/**
- * Creates a branch off this Deferred's execution sequence, and returns it as a
- * new Deferred. The branched Deferred's starting result will be shared with the
- * parent at the point of the branch, even if further callbacks are added to the
- * parent.
- *
- * All branches at the same stage in the execution sequence will receive the
- * same starting value.
- *
- * @param {boolean=} opt_propagateCancel If cancel() is called on every child
- *     branch created with opt_propagateCancel, the parent will be cancelled as
- *     well.
- * @return {!goog.async.Deferred} A Deferred that will be started with the
- *     computed result from this stage in the execution sequence.
- */
-goog.async.Deferred.prototype.branch = function(opt_propagateCancel) {
-  var d = new goog.async.Deferred();
-  this.chainDeferred(d);
-  if (opt_propagateCancel) {
-    d.parent_ = this;
-    this.branches_++;
-  }
-  return d;
-};
-
-
-/**
- * @return {boolean} Whether the execution sequence has been started on this
- *     Deferred by invoking {@code callback} or {@code errback}.
- */
-goog.async.Deferred.prototype.hasFired = function() {
-  return this.fired_;
-};
-
-
-/**
- * @param {*} res The latest result in the execution sequence.
- * @return {boolean} Whether the current result is an error that should cause
- *     the next errback to fire. May be overridden by subclasses to handle
- *     special error types.
- * @protected
- */
-goog.async.Deferred.prototype.isError = function(res) {
-  return res instanceof Error;
-};
-
-
-/**
- * @return {boolean} Whether an errback exists in the remaining sequence.
- * @private
- */
-goog.async.Deferred.prototype.hasErrback_ = function() {
-  return goog.array.some(this.sequence_, function(sequenceRow) {
-    // The errback is the second element in the array.
-    return goog.isFunction(sequenceRow[1]);
-  });
-};
-
-
-/**
- * Exhausts the execution sequence while a result is available. The result may
- * be modified by callbacks or errbacks, and execution will block if the
- * returned result is an incomplete Deferred.
+ * Determine the namespace of the entry point file and fetch it.
  *
  * @private
  */
-goog.async.Deferred.prototype.fire_ = function() {
-  if (this.unhandledExceptionTimeoutId_ && this.hasFired() &&
-      this.hasErrback_()) {
-    // It is possible to add errbacks after the Deferred has fired. If a new
-    // errback is added immediately after the Deferred encountered an unhandled
-    // error, but before that error is rethrown, cancel the rethrow.
-    goog.global.clearTimeout(this.unhandledExceptionTimeoutId_);
-    delete this.unhandledExceptionTimeoutId_;
-  }
+Deppy.ModuleLoader.prototype._fetchEntryPoint = function() {
+  var configEntryPoint = Deppy.Config.getInstance().getDepFile();
+  var elementEntryPoint = goog.dom.dataset.get(this._ownScriptTag,
+    Deppy.ModuleLoader.ENTRY_POINT_DATA_KEY);
 
-  if (this.parent_) {
-    this.parent_.branches_--;
-    delete this.parent_;
-  }
 
-  var res = this.result_;
-  var unhandledException = false;
-  var isNewlyBlocked = false;
+  this._entryPoint = configEntryPoint || elementEntryPoint
+    || Deppy.ModuleLoader.ENTRY_POINT_DEFAULT
 
-  while (this.sequence_.length && !this.blocked_) {
-    var sequenceEntry = this.sequence_.shift();
 
-    var callback = sequenceEntry[0];
-    var errback = sequenceEntry[1];
-    var scope = sequenceEntry[2];
+  // hack goog so it won't get caught by scripts
+  var g = goog;
+  g.require(this._entryPoint);
 
-    var f = this.hadError_ ? errback : callback;
-    if (f) {
-      /** @preserveTry */
-      try {
-        var ret = f.call(scope || this.defaultScope_, res);
+};
 
-        // If no result, then use previous result.
-        if (goog.isDef(ret)) {
-          // Bubble up the error as long as the return value hasn't changed.
-          this.hadError_ = this.hadError_ && (ret == res || this.isError(ret));
-          this.result_ = res = ret;
-        }
-
-        if (res instanceof goog.async.Deferred) {
-          isNewlyBlocked = true;
-          this.blocked_ = true;
-        }
-
-      } catch (ex) {
-        res = ex;
-        this.hadError_ = true;
-
-        if (!this.hasErrback_()) {
-          // If an error is thrown with no additional errbacks in the queue,
-          // prepare to rethrow the error.
-          unhandledException = true;
-        }
-      }
-    }
-  }
-
-  this.result_ = res;
-
-  if (isNewlyBlocked) {
-    res.addCallbacks(
-        goog.bind(this.continue_, this, true /* isSuccess */),
-        goog.bind(this.continue_, this, false /* isSuccess */));
-    res.blocking_ = true;
-  }
-
-  if (unhandledException) {
-    // Rethrow the unhandled error after a timeout. Execution will continue, but
-    // the error will be seen by global handlers and the user. The throw will
-    // be canceled if another errback is appended before the timeout executes.
-    // The error's original stack trace is preserved where available.
-    this.unhandledExceptionTimeoutId_ = goog.global.setTimeout(function() {
-      throw res;
-    }, 0);
-  }
+/**
+ * On entry point load finish.
+ * @private
+ */
+Deppy.ModuleLoader.prototype._onEntryLoad = function() {
+  // nothing to do, things are rolling...
+  console.log('loading all finished');
 };
 
 
 /**
- * Creates a Deferred that has an initial result.
- *
- * @param {*=} opt_result The result.
- * @return {!goog.async.Deferred} The new Deferred.
+ * On entry point error.
+ * @private
  */
-goog.async.Deferred.succeed = function(opt_result) {
-  var d = new goog.async.Deferred();
-  d.callback(opt_result);
-  return d;
+Deppy.ModuleLoader.prototype._onEntryErr = function() {
+  throw new Error('Failed to load entry point. Check path: ' + this._entryPoint);
 };
-
-
-/**
- * Creates a Deferred that has an initial error result.
- *
- * @param {*} res The error result.
- * @return {!goog.async.Deferred} The new Deferred.
- */
-goog.async.Deferred.fail = function(res) {
-  var d = new goog.async.Deferred();
-  d.errback(res);
-  return d;
-};
-
-
-/**
- * Creates a Deferred that has already been cancelled.
- *
- * @return {!goog.async.Deferred} The new Deferred.
- */
-goog.async.Deferred.cancelled = function() {
-  var d = new goog.async.Deferred();
-  d.cancel();
-  return d;
-};
-
-
-/**
- * Normalizes values that may or may not be Deferreds.
- *
- * If the input value is a Deferred, the Deferred is branched (so the original
- * execution sequence is not modified) and the input callback added to the new
- * branch. The branch is returned to the caller.
- *
- * If the input value is not a Deferred, the callback will be executed
- * immediately and an already firing Deferred will be returned to the caller.
- *
- * In the following (contrived) example, if <code>isImmediate</code> is true
- * then 3 is alerted immediately, otherwise 6 is alerted after a 2-second delay.
- *
- * <pre>
- * var value;
- * if (isImmediate) {
- *   value = 3;
- * } else {
- *   value = new goog.async.Deferred();
- *   setTimeout(function() { value.callback(6); }, 2000);
- * }
- *
- * var d = goog.async.Deferred.when(value, alert);
- * </pre>
- *
- * @param {*} value Deferred or normal value to pass to the callback.
- * @param {!function(this:T, ?):?} callback The callback to execute.
- * @param {T=} opt_scope An optional scope to call the callback in.
- * @return {!goog.async.Deferred} A new Deferred that will call the input
- *     callback with the input value.
- * @template T
- */
-goog.async.Deferred.when = function(value, callback, opt_scope) {
-  if (value instanceof goog.async.Deferred) {
-    return value.branch(true).addCallback(callback, opt_scope);
-  } else {
-    return goog.async.Deferred.succeed(value).addCallback(callback, opt_scope);
-  }
-};
-
-
-
-/**
- * An error sub class that is used when a Deferred has already been called.
- * @param {!goog.async.Deferred} deferred The Deferred.
- *
- * @constructor
- * @extends {goog.debug.Error}
- */
-goog.async.Deferred.AlreadyCalledError = function(deferred) {
-  goog.debug.Error.call(this);
-
-  /**
-   * The Deferred that raised this error.
-   * @type {goog.async.Deferred}
-   */
-  this.deferred = deferred;
-};
-goog.inherits(goog.async.Deferred.AlreadyCalledError, goog.debug.Error);
-
-
-/** @override */
-goog.async.Deferred.AlreadyCalledError.prototype.message =
-    'Deferred has already fired';
-
-
-/** @override */
-goog.async.Deferred.AlreadyCalledError.prototype.name = 'AlreadyCalledError';
-
-
-
-/**
- * An error sub class that is used when a Deferred is cancelled.
- * TODO(brenneman): Cancelled -> American English Canceled.
- *
- * @param {!goog.async.Deferred} deferred The Deferred object.
- * @constructor
- * @extends {goog.debug.Error}
- */
-goog.async.Deferred.CancelledError = function(deferred) {
-  goog.debug.Error.call(this);
-
-  /**
-   * The Deferred that raised this error.
-   * @type {goog.async.Deferred}
-   */
-  this.deferred = deferred;
-};
-goog.inherits(goog.async.Deferred.CancelledError, goog.debug.Error);
-
-
-/** @override */
-goog.async.Deferred.CancelledError.prototype.message = 'Deferred was cancelled';
-
-
-/** @override */
-goog.async.Deferred.CancelledError.prototype.name = 'CancelledError';
 // Copyright 2011 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14624,6 +14893,8 @@ goog.require('goog.async.Deferred');
 goog.require('goog.net.jsloader');
 goog.require('goog.object');
 
+goog.require('Deppy.ModuleLoader');
+
 /**
  *
  * @extends {goog.events.EventTarget}
@@ -14632,6 +14903,12 @@ goog.require('goog.object');
 Deppy.Config = function() {
 
   goog.base(this);
+
+  /**
+   * @type {Deppy.ModuleLoader}
+   * @private
+   */
+  this._loader = Deppy.ModuleLoader.getInstance();
 
   /**
    * @type {boolean} open when config script is loaded.
@@ -14673,10 +14950,6 @@ goog.addSingletonGetter(Deppy.Config);
  */
 Deppy.Config.CONFIG_FILE = 'deppyConf.js';
 
-/**
- * @const {string} The default javascript extension.
- */
-Deppy.Config.JS_EXT = '.js';
 
 /**
  * Events triggered by this class.
@@ -14687,15 +14960,11 @@ Deppy.Config.EventType = {
   CONFIG_FINISH: 'config.finish'
 };
 
-
-
 /**
  * Fetch the config file
  */
 Deppy.Config.prototype.fetch = function() {
-  goog.net.jsloader.load(Deppy.Config.CONFIG_FILE)
-    .addCallback(this._onConfigLoad, this)
-    .addErrback(this._onConfigErr, this);
+  this._loader.writeScript(Deppy.Config.CONFIG_FILE);
 };
 
 /**
@@ -14726,15 +14995,16 @@ Deppy.Config.prototype.parse = function(config) {
 Deppy.Config.prototype._startLoading = function() {
 
   var scriptPath = this._scriptsToLoad.shift();
+  while(scriptPath) {
 
-  if (!scriptPath) {
-    this._configDone();
-    return;
+    scriptPath = this._baseUrl + scriptPath + Deppy.ModuleLoader.JS_EXT;
+
+    this._loader.writeScript(scriptPath);
+
+    scriptPath = this._scriptsToLoad.shift();
   }
 
-  scriptPath = this._baseUrl + scriptPath + Deppy.Config.JS_EXT;
-  goog.net.jsloader.load(scriptPath)
-    .addBoth(this._startLoading, this);
+  this._configDone();
 
 };
 
@@ -14749,291 +15019,12 @@ Deppy.Config.prototype._configDone = function() {
 
 
 /**
- * Config script load success.
- * @private
- */
-Deppy.Config.prototype._onConfigLoad = function() {
-  this._loadFinish = true;
-};
-
-
-/**
- * Config script load failure.
- * @private
- */
-Deppy.Config.prototype._onConfigErr = function() {
-  this._loadFinish = true;
-  this._errLoad = true;
-};
-
-/**
  * @return {string|null} Return the dependency file is set, null if not.
  */
 Deppy.Config.prototype.getDepFile = function() {
   return this._config.depsFile || null;
 };
 
-// Copyright 2009 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Utilities for adding, removing and setting values in
- * an Element's dataset.
- * See {@link http://www.w3.org/TR/html5/Overview.html#dom-dataset}.
- *
- */
-
-goog.provide('goog.dom.dataset');
-
-goog.require('goog.string');
-
-
-/**
- * The DOM attribute name prefix that must be present for it to be considered
- * for a dataset.
- * @type {string}
- * @const
- * @private
- */
-goog.dom.dataset.PREFIX_ = 'data-';
-
-
-/**
- * Sets a custom data attribute on an element. The key should be
- * in camelCase format (e.g "keyName" for the "data-key-name" attribute).
- * @param {Element} element DOM node to set the custom data attribute on.
- * @param {string} key Key for the custom data attribute.
- * @param {string} value Value for the custom data attribute.
- */
-goog.dom.dataset.set = function(element, key, value) {
-  if (element.dataset) {
-    element.dataset[key] = value;
-  } else {
-    element.setAttribute(
-        goog.dom.dataset.PREFIX_ + goog.string.toSelectorCase(key),
-        value);
-  }
-};
-
-
-/**
- * Gets a custom data attribute from an element. The key should be
- * in camelCase format (e.g "keyName" for the "data-key-name" attribute).
- * @param {Element} element DOM node to get the custom data attribute from.
- * @param {string} key Key for the custom data attribute.
- * @return {?string} The attribute value, if it exists.
- */
-goog.dom.dataset.get = function(element, key) {
-  if (element.dataset) {
-    return element.dataset[key];
-  } else {
-    return element.getAttribute(goog.dom.dataset.PREFIX_ +
-                                goog.string.toSelectorCase(key));
-  }
-};
-
-
-/**
- * Removes a custom data attribute from an element. The key should be
-  * in camelCase format (e.g "keyName" for the "data-key-name" attribute).
- * @param {Element} element DOM node to get the custom data attribute from.
- * @param {string} key Key for the custom data attribute.
- */
-goog.dom.dataset.remove = function(element, key) {
-  if (element.dataset) {
-    delete element.dataset[key];
-  } else {
-    element.removeAttribute(goog.dom.dataset.PREFIX_ +
-                            goog.string.toSelectorCase(key));
-  }
-};
-
-
-/**
- * Checks whether custom data attribute exists on an element. The key should be
- * in camelCase format (e.g "keyName" for the "data-key-name" attribute).
- *
- * @param {Element} element DOM node to get the custom data attribute from.
- * @param {string} key Key for the custom data attribute.
- * @return {boolean} Whether the attibute exists.
- */
-goog.dom.dataset.has = function(element, key) {
-  if (element.dataset) {
-    return key in element.dataset;
-  } else if (element.hasAttribute) {
-    return element.hasAttribute(goog.dom.dataset.PREFIX_ +
-                                goog.string.toSelectorCase(key));
-  } else {
-    return !!(element.getAttribute(goog.dom.dataset.PREFIX_ +
-                                   goog.string.toSelectorCase(key)));
-  }
-};
-
-
-/**
- * Gets all custom data attributes as a string map.  The attribute names will be
- * camel cased (e.g., data-foo-bar -> dataset['fooBar']).  This operation is not
- * safe for attributes having camel-cased names clashing with already existing
- * properties (e.g., data-to-string -> dataset['toString']).
- * @param {!Element} element DOM node to get the data attributes from.
- * @return {!Object} The string map containing data attributes and their
- *     respective values.
- */
-goog.dom.dataset.getAll = function(element) {
-  if (element.dataset) {
-    return element.dataset;
-  } else {
-    var dataset = {};
-    var attributes = element.attributes;
-    for (var i = 0; i < attributes.length; ++i) {
-      var attribute = attributes[i];
-      if (goog.string.startsWith(attribute.name,
-                                 goog.dom.dataset.PREFIX_)) {
-        // We use substr(5), since it's faster than replacing 'data-' with ''.
-        var key = goog.string.toCamelCase(attribute.name.substr(5));
-        dataset[key] = attribute.value;
-      }
-    }
-    return dataset;
-  }
-};
-/**
- * @fileOverview Takes care of module loading, starts with config directives.
- */
-
-goog.provide('Deppy.ModuleLoader');
-
-goog.require('goog.dom');
-goog.require('goog.dom.dataset');
-goog.require('goog.async.Deferred');
-
-goog.require('Deppy.Config');
-
-/**
- * Takes care of module loading, starts with config directives.
- *
- * @constructor
- */
-Deppy.ModuleLoader = function() {
-
-  /**
-   * Instanciate the config class
-   * @type {Deppy.Config}
-   * @private
-   */
-  this._config = Deppy.Config.getInstance();
-
-  // figure out which is our entry point
-  var scriptTags = document.getElementsByTagName('script');
-
-  /**
-   * @type {Element} the script tag used to fetch this application.
-   * @private
-   */
-  this._ownScriptTag = scriptTags[ scriptTags.length - 1 ];
-
-  /**
-   * @type {string} The relative path to the user's application entry point.
-   * @private
-   */
-  this._entryPoint = '';
-
-};
-goog.addSingletonGetter(Deppy.ModuleLoader);
-
-/** @const {string} the data- attribute key for entry point file */
-Deppy.ModuleLoader.ENTRY_POINT_DATA_KEY = 'main'
-
-/** @const {string} the default entry point file */
-Deppy.ModuleLoader.ENTRY_POINT_DEFAULT = 'app'
-
-/** @const {string} the data- attribute key for deps file */
-Deppy.ModuleLoader.DEPS_DATA_KEY = 'deps'
-
-/** @const {string} the default deps file */
-Deppy.ModuleLoader.DEPS_DEFAULT = 'deps'
-
-
-/**
- * Triggers on config finish. Required assets have finished loading by now,
- * it's time to get the deps file if one exists, figure out what the entry point
- * of the application is and load it.
- *
- * @param {goog.events.Event} e
- * @private
- */
-Deppy.ModuleLoader.prototype.start = function(e) {
-  console.log('starting app fetch');
-  this._fetchDepsFile()
-    .addBoth(this._fetchEntryPoint, this);
-};
-
-/**
- * Determine the path of the dependency file and fetch it.
- *
- * @return {goog.async.Deferred} A deferred.
- */
-Deppy.ModuleLoader.prototype._fetchDepsFile = function() {
-  var configDepFile = this._config.getDepFile();
-  var elementDepFile = goog.dom.dataset.get(this._ownScriptTag,
-    Deppy.ModuleLoader.DEPS_DATA_KEY);
-
-  // check by priority
-  var depsFile = elementDepFile || configDepFile
-    || Deppy.ModuleLoader.DEPS_DEFAULT;
-
-  return goog.net.jsloader.load(depsFile + Deppy.Config.JS_EXT)
-};
-
-/**
- * Determine the path of the dependency file and fetch it.
- *
- * @return {goog.async.Deferred} A deferred.
- */
-Deppy.ModuleLoader.prototype._fetchEntryPoint = function() {
-  var configEntryPoint = this._config.getDepFile();
-  var elementEntryPoint = goog.dom.dataset.get(this._ownScriptTag,
-    Deppy.ModuleLoader.ENTRY_POINT_DATA_KEY);
-
-
-  this._entryPoint = configEntryPoint || elementEntryPoint
-    || Deppy.ModuleLoader.ENTRY_POINT_DEFAULT
-
-  this._entryPoint = this._entryPoint + Deppy.Config.JS_EXT
-
-  goog.net.jsloader.load(this._entryPoint)
-    .addCallback(this._onEntryLoad, this)
-    .addErrback(this._onEntryErr, this);
-};
-
-/**
- * On entry point load finish.
- * @private
- */
-Deppy.ModuleLoader.prototype._onEntryLoad = function() {
-  // nothing to do, things are rolling...
-  console.log('loading all finished');
-};
-
-
-/**
- * On entry point error.
- * @private
- */
-Deppy.ModuleLoader.prototype._onEntryErr = function() {
-  throw new Error('Failed to load entry point. Check path: ' + this._entryPoint);
-};
 goog.provide('Deppy.Core');
 goog.provide('deppy');
 
@@ -15077,9 +15068,6 @@ Deppy.Core = function() {
 
 // go
 deppy = new Deppy.Core();
-
-console.log('deppy finished');
-
 /*!
  * deppy. Javascript dependency management.
  * @author Athanasios Polychronakis (thanpolas@gmail.com)

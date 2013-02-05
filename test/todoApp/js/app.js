@@ -1,11 +1,10 @@
 // Load our app
-goog.provide('Todos.App');
+goog.provide('Todos');
+
 goog.require('Todos.Router');
 goog.require('Todos.models.Store');
 goog.require('Todos.ctrls.Entries');
 goog.require('Todos.views.Application');
-
-console.log('app.js loaded');
 
 Todos.App = Ember.Application.create({
 	VERSION: '1.0',

@@ -14,5 +14,5 @@ Todos.helper = function() {
   var htmlReporter = new jasmine.HtmlReporter();
   jasmineEnv.addReporter( htmlReporter );
   jasmineEnv.execute();
-});
+};
 

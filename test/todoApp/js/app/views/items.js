@@ -11,8 +11,7 @@ Todos.views.Items = Ember.CollectionView.extend({
 	tagName: 'ul',
 	elementId: 'todo-list',
 	itemViewClass: Ember.View.extend({
-    // FIXME FIXME FIXME
-		template: Ember.Handlebars.compile( items_html ),
+		template: Todos.tpl.items,
 		classNames: [ 'view' ],
 		classNameBindings: ['content.completed', 'content.editing'],
 		doubleClick: function() {

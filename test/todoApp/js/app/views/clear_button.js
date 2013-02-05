@@ -8,8 +8,7 @@ goog.provide('Todos.views.ClearButton');
  */
 Todos.views.ClearButton = Ember.View.extend({
 	entriesBinding: 'controller.namespace.entriesController',
-	// FIXME FIXME FIXME
-  template: Ember.Handlebars.compile( button_html ),
+  template: Todos.tpl.clear_button,
 	classNameBindings: 'buttonClass',
 	buttonClass: function () {
 		if ( !this.getPath( 'entries.completed' ) )

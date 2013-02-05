@@ -7,8 +7,7 @@ goog.provide('Todos.views.Filters');
  * @returns Class
  */
 Todos.views.Filters = Ember.View.extend({
-	// FIXME FIXME
-  template: Ember.Handlebars.compile( filters_html ),
+  template: Todos.tpl.filters_html,
 	filterBinding: 'controller.namespace.entriesController.filterBy',
 	isAll: function() {
 		return Ember.empty( this.get('filter') );

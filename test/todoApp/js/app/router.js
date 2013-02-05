@@ -74,5 +74,5 @@ Todos.Router = Ember.Router.extend({
 			route: '/specs',
 			connectOutlets: Todos.helper.start
 		})
-	});
+	})
 });
