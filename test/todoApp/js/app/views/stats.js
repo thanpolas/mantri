@@ -10,7 +10,7 @@ Todos.views.Stats = Ember.View.extend({
 	entriesBinding: 'controller.namespace.entriesController',
 	elementId: 'todo-count',
 	tagName: 'span',
-	template: Todos.tpl.stats,
+	templateName: 'stats',
 	oneLeft: function() {
 		return this.getPath( 'entries.remaining' ) === 1;
 	}.property( 'entries.remaining' )

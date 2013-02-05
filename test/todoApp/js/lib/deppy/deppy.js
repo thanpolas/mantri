@@ -10747,15 +10747,12 @@ Deppy.ModuleLoader.prototype._writeCallback = function() {
  *
  */
 Deppy.ModuleLoader.prototype.startApp = function() {
-  console.log('zit');
   var configEntryPoint = Deppy.Config.getInstance().getDepFile();
   var elementEntryPoint = goog.dom.dataset.get(this._ownScriptTag,
     Deppy.ModuleLoader.ENTRY_POINT_DATA_KEY);
 
   this._entryPoint = configEntryPoint || elementEntryPoint
     || Deppy.ModuleLoader.ENTRY_POINT_DEFAULT
-
-  console.log(this._entryPoint);
 
   // hack goog so it won't get caught by scripts
   var g = goog;
@@ -15077,7 +15074,6 @@ Deppy.Core = function() {
   this._config.fetch();
 
 };
-
 
 // go
 deppy = new Deppy.Core();
