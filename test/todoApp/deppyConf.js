@@ -13,5 +13,5 @@ deppy.config({
     // http://stackoverflow.com/questions/9860512/emberjs-handlebars-precompiling
     // http://stackoverflow.com/questions/9469235/is-it-possible-to-load-a-handlebars-template-via-ajax
     hbsCompiled: 'app/templates/hbsCompiled'
-  },
+  }
 });
