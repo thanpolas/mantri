@@ -9,9 +9,6 @@
   <div id="mocha"></div>
   <script src="lib/mocha/mocha.js"></script>
   <script>
-    //mocha.setup('bdd');
-    mocha.ui('bdd');
-    mocha.reporter('html');
   </script>
 
   <!-- assertion framework -->
@@ -19,19 +16,17 @@
   <script src="lib/chai.js"></script>
 
 
-  <script>expect = chai.expect</script>
+<script>
+  mocha.ui('bdd');
+  mocha.reporter('html');
+  expect = chai.expect;
+  TESTTESTTEST = true;
+</script>
 
+  <script src="../../dist/deppy.js"></script>
 
-
-
-  <!-- -->
-
-  <!-- include source files here... -->
-
-  <!-- include spec files here... -->
   <script src="spec/web_api.test.js"></script>
 
-  <!-- trigger the mocha runner -->
   <script src="runner/mocha.js"></script>
 
 </body>
