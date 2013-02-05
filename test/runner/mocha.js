@@ -1,5 +1,9 @@
 (function() {
-  var runner = mocha.run();
+  var runner;
+
+  if (window.mochaPhantomJS) { runner = mochaPhantomJS.run(); }
+    else { runner = mocha.run(); }
+
 
   if(!window.PHANTOMJS) return;
 

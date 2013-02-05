@@ -4,7 +4,7 @@ module.exports = function( grunt ) {
 
   var externsPath = 'build/externs/';
 
-
+  grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
   grunt.loadNpmTasks('grunt-closure-tools');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -105,13 +105,32 @@ module.exports = function( grunt ) {
           'test/todoApp/js/app/templates/hbsCompiled.js': 'test/todoApp/js/app/**/*.html'
         }
       }
-    }
+    },
 
+    /**
+     * TESTING
+     *
+     */
+    mochaPhantom: 'node_modules/mocha-phantomjs/bin/mocha-phantomjs test/index.html',
+
+    shell: {
+      mochaPhantom: {
+          command: '<%= mochaPhantom %> -R min',
+          stdout: true
+      },
+      mochaPhantomSpec: {
+          command: '<%= mochaPhantom %> -R spec',
+          stdout: true
+      }
+    }
 
   });
 
+  grunt.registerTask('test', 'Test using mocha-phantom',
+    'shell:mochaPhantom');
+
   // Alias the `test` task to run the `mocha` task instead
-  grunt.registerTask('test', 'server:phantom mocha');
+  //grunt.registerTask('test', 'server:phantom mocha');
   grunt.registerTask('buildTest', 'closureBuilder:deppyTest concat copy:testBuild');
   grunt.registerTask('default', 'closureDepsWriter');
 
