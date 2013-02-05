@@ -1,4 +1,4 @@
-goog.define('Todos.views.Application');
+goog.provide('Todos.views.Application');
 
 goog.require('Todos.views.Stats');
 goog.require('Todos.views.Filters');

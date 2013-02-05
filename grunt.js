@@ -6,8 +6,8 @@ module.exports = function( grunt ) {
 
 
   grunt.loadNpmTasks('grunt-contrib-handlebars');
-//  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-closure-tools');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   //
   // Grunt configuration:
@@ -25,6 +25,14 @@ module.exports = function( grunt ) {
           root_with_prefix: ['"lib ../../../lib"']
         }
       },
+      todoApp: {
+        closureLibraryPath: 'closure-library',
+        output_file: 'test/todoApp/deps.js',
+        options: {
+          root_with_prefix: ['"test/todoApp/ ./"']
+        }
+      }
+
     },
 
     watch: {
@@ -33,6 +41,18 @@ module.exports = function( grunt ) {
         tasks: ['buildTest']
       }
     },
+
+    copy: {
+      testBuild: {
+        files: {
+          'test/todoApp/js/lib/deppy/deppy.js': 'test/todoApp/js/lib/deppy/deppy.js'
+        },
+        options: {
+          processContent: hackClosureSig
+        }
+      }
+    },
+
 
     closureBuilder: {
       deppyTest: {
@@ -71,7 +91,6 @@ module.exports = function( grunt ) {
       }
     },
 
-
     handlebars: {
       todoApp: {
         options: {
@@ -93,7 +112,23 @@ module.exports = function( grunt ) {
 
   // Alias the `test` task to run the `mocha` task instead
   grunt.registerTask('test', 'server:phantom mocha');
-  grunt.registerTask('buildTest', 'closureBuilder:deppyTest concat');
+  grunt.registerTask('buildTest', 'closureBuilder:deppyTest concat copy:testBuild');
   grunt.registerTask('default', 'closureDepsWriter');
+
+  /**
+   * Replaces the closure signature from the final built file.
+   *
+   * This is required so depsWriter operation on user's source base
+   * will not break.
+   *
+   * @param  {string} contents The contents we want to parse and replace.
+   * @return {string} replaced contents.
+   */
+  function hackClosureSig(contents) {
+    var closureSig = 'var goog = goog || {}; // Identifies this file as the Closure base.';
+    var JSreplace = 'var goog = {};';
+    return contents.replace(closureSig, JSreplace);
+  }
+
 };
 

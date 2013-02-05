@@ -1,4 +1,4 @@
-goog.define('Todos.models.Todo');
+goog.provide('Todos.models.Todo');
 
 /**
  * Todo entry model

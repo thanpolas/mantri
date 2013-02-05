@@ -1,4 +1,4 @@
-goog.define('Todos.views.ClearButton');
+goog.provide('Todos.views.ClearButton');
 
 /**
  * View to clear completed tasks

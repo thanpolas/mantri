@@ -1,4 +1,4 @@
-goog.define('Todos.models.Store');
+goog.provide('Todos.models.Store');
 
 goog.require('Todos.models.Todo');
 

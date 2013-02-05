@@ -1,4 +1,4 @@
-goog.define('Todos.views.Items');
+goog.provide('Todos.views.Items');
 
 /**
  * View to render todos items

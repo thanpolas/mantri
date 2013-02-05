@@ -1,4 +1,4 @@
-goog.define('Todos.views.Filters');
+goog.provide('Todos.views.Filters');
 
 /**
  * View to render filter links

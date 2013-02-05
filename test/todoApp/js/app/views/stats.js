@@ -1,4 +1,4 @@
-goog.define('Todos.views.Stats');
+goog.provide('Todos.views.Stats');
 
 /**
  * View to render todos stats

@@ -3,110 +3,114 @@
  *
  * Use `runs` and `waits` to make sure results are run synchroneously
  */
+goog.provide('Todos.todoMVCspec');
 
-describe( 'TodoMVC features.', function(){
+Todos.todoMVCspec = function() {
 
-	var enterEvent = $.Event('keyup', { keyCode: 13 });
-	var todoTitle = 'Foo Bar Todo';
+  describe( 'TodoMVC features.', function(){
 
-	describe( 'Todo creation:', function() {
+  	var enterEvent = $.Event('keyup', { keyCode: 13 });
+  	var todoTitle = 'Foo Bar Todo';
 
-		beforeEach( function(){
-			// Make sure we are always on the main screen
-			window.location.hash = '#/';
-		});
+  	describe( 'Todo creation:', function() {
 
-		it( 'should allow creating a new todo' , function() {
-			runs( function(){
-				$( '#new-todo' ).val( todoTitle ).trigger( enterEvent );
-			});
+  		beforeEach( function(){
+  			// Make sure we are always on the main screen
+  			window.location.hash = '#/';
+  		});
 
-			waits( 100 );
+  		it( 'should allow creating a new todo' , function() {
+  			runs( function(){
+  				$( '#new-todo' ).val( todoTitle ).trigger( enterEvent );
+  			});
 
-			runs( function() {
-				!!$( '#todo-list li' ).text().match( todoTitle );
-			});
-		});
+  			waits( 100 );
 
-		it( 'should not allow adding an empty todo' , function() {
-			var ourTodo,
-				beforeCount = $( '#todo-list li' ).length;
+  			runs( function() {
+  				!!$( '#todo-list li' ).text().match( todoTitle );
+  			});
+  		});
 
-			runs( function(){
-				$( '#new-todo' ).val( '   ' ).trigger( enterEvent );
-			});
+  		it( 'should not allow adding an empty todo' , function() {
+  			var ourTodo,
+  				beforeCount = $( '#todo-list li' ).length;
 
-			waits( 100 );
+  			runs( function(){
+  				$( '#new-todo' ).val( '   ' ).trigger( enterEvent );
+  			});
 
-			runs( function(){
-				expect( $( '#todo-list li' ).length ).toEqual( beforeCount );
-			});
-		});
-	});
+  			waits( 100 );
 
-	describe( 'Todo completion:', function() {
-		it( 'should allow marking a todo complete' , function() {
-			var ourTodo,
-				beforeCount = $( '#todo-list li.completed' ).length,
-				postTitle = ' to be completed';
+  			runs( function(){
+  				expect( $( '#todo-list li' ).length ).toEqual( beforeCount );
+  			});
+  		});
+  	});
 
-			runs( function(){
-				$( '#new-todo' ).val( todoTitle + postTitle ).trigger( enterEvent );
-			});
+  	describe( 'Todo completion:', function() {
+  		it( 'should allow marking a todo complete' , function() {
+  			var ourTodo,
+  				beforeCount = $( '#todo-list li.completed' ).length,
+  				postTitle = ' to be completed';
 
-			waits( 100 );
+  			runs( function(){
+  				$( '#new-todo' ).val( todoTitle + postTitle ).trigger( enterEvent );
+  			});
 
-			runs( function() {
-				ourTodo = $( '#todo-list li:last-child' );
+  			waits( 100 );
 
-				expect( ourTodo.text() ).toMatch( postTitle );
-				ourTodo.find( '.toggle' ).click();
-				expect( $( '#todo-list li.completed' ).length ).toEqual( beforeCount + 1 );
-			});
-		});
+  			runs( function() {
+  				ourTodo = $( '#todo-list li:last-child' );
 
-		it( 'should allow clearing completed todos' , function() {
-			var ourTodo,
-				beforeCount = $( '#todo-list li.completed' ).length,
-				postTitle = ' to be completed';
+  				expect( ourTodo.text() ).toMatch( postTitle );
+  				ourTodo.find( '.toggle' ).click();
+  				expect( $( '#todo-list li.completed' ).length ).toEqual( beforeCount + 1 );
+  			});
+  		});
 
-			runs( function(){
-				$( '#new-todo' ).val( todoTitle + postTitle ).trigger( enterEvent );
-			});
+  		it( 'should allow clearing completed todos' , function() {
+  			var ourTodo,
+  				beforeCount = $( '#todo-list li.completed' ).length,
+  				postTitle = ' to be completed';
 
-			waits( 100 );
+  			runs( function(){
+  				$( '#new-todo' ).val( todoTitle + postTitle ).trigger( enterEvent );
+  			});
 
-			runs( function() {
-				ourTodo = $( '#todo-list li:last-child' );
+  			waits( 100 );
 
-				expect( ourTodo.text() ).toMatch( postTitle );
-				ourTodo.find( '.toggle' ).click();
-				$( '#clear-completed' ).click();
-				expect( $( '#todo-list li.completed' ).length ).toEqual( 0 );
-			});
-		});
-	});
+  			runs( function() {
+  				ourTodo = $( '#todo-list li:last-child' );
 
-	describe( 'Todo deletion:', function() {
-		it( 'should allow deleting a todo' , function() {
-			var ourTodo,
-				beforeCount = $( '#todo-list li' ).length,
-				postTitle = ' to be deleted';
+  				expect( ourTodo.text() ).toMatch( postTitle );
+  				ourTodo.find( '.toggle' ).click();
+  				$( '#clear-completed' ).click();
+  				expect( $( '#todo-list li.completed' ).length ).toEqual( 0 );
+  			});
+  		});
+  	});
 
-			runs( function(){
-				$( '#new-todo' ).val( todoTitle + postTitle ).trigger( enterEvent );
-			});
+  	describe( 'Todo deletion:', function() {
+  		it( 'should allow deleting a todo' , function() {
+  			var ourTodo,
+  				beforeCount = $( '#todo-list li' ).length,
+  				postTitle = ' to be deleted';
 
-			waits( 100 );
+  			runs( function(){
+  				$( '#new-todo' ).val( todoTitle + postTitle ).trigger( enterEvent );
+  			});
 
-			runs( function() {
-				ourTodo = $( '#todo-list li:last-child' );
+  			waits( 100 );
 
-				expect( ourTodo.text() ).toMatch( postTitle );
-				ourTodo.find( '.destroy' ).click();
-				expect( $( '#todo-list li' ).length ).toEqual( beforeCount );
-			});
-		});
-	});
+  			runs( function() {
+  				ourTodo = $( '#todo-list li:last-child' );
 
-});
+  				expect( ourTodo.text() ).toMatch( postTitle );
+  				ourTodo.find( '.destroy' ).click();
+  				expect( $( '#todo-list li' ).length ).toEqual( beforeCount );
+  			});
+  		});
+  	});
+
+  });
+};
