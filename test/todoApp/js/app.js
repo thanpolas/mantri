@@ -1,5 +1,5 @@
 // Load our app
-goog.provide('Todos');
+goog.provide('Todos.app');
 
 goog.require('Todos.Router');
 goog.require('Todos.models.Store');

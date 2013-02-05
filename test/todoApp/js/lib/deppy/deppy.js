@@ -10711,7 +10711,7 @@ Deppy.ModuleLoader.prototype.writeScript = function (src) {
 Deppy.ModuleLoader.prototype.start = function(e) {
   this._fetchDepsFile();
 
-  this._fetchEntryPoint();
+  this._writeCallback();
 };
 
 /**
@@ -10732,19 +10732,30 @@ Deppy.ModuleLoader.prototype._fetchDepsFile = function() {
 };
 
 /**
- * Determine the namespace of the entry point file and fetch it.
+ * Append a synch callback on the dom after the deps file so
+ * we can start fetching user's application.
  *
  * @private
  */
-Deppy.ModuleLoader.prototype._fetchEntryPoint = function() {
+Deppy.ModuleLoader.prototype._writeCallback = function() {
+  document.write(
+    '<script type="text/javascript">deppy.startApp();</script>');
+};
+
+/**
+ * Determine the namespace of the entry point file and fetch it.
+ *
+ */
+Deppy.ModuleLoader.prototype.startApp = function() {
+  console.log('zit');
   var configEntryPoint = Deppy.Config.getInstance().getDepFile();
   var elementEntryPoint = goog.dom.dataset.get(this._ownScriptTag,
     Deppy.ModuleLoader.ENTRY_POINT_DATA_KEY);
 
-
   this._entryPoint = configEntryPoint || elementEntryPoint
     || Deppy.ModuleLoader.ENTRY_POINT_DEFAULT
 
+  console.log(this._entryPoint);
 
   // hack goog so it won't get caught by scripts
   var g = goog;
@@ -15055,6 +15066,8 @@ Deppy.Core = function() {
 
   // expose config parse method
   this.config = goog.bind(this._config.parse, this._config);
+  // expose startApp method (invoked internally)
+  this.startApp = goog.bind(this._moduleLoader.startApp, this._moduleLoader);
 
   goog.events.listen(this._config, Deppy.Config.EventType.CONFIG_FINISH,
     this._moduleLoader.start, false, this._moduleLoader);
