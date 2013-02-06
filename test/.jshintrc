@@ -1,0 +1,9 @@
+{
+    "expr": true,
+    "es5": true,
+    "predef": [
+      "expect",
+      "it",
+      "describe"
+    ]
+}

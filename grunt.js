@@ -73,8 +73,7 @@ module.exports = function( grunt ) {
           ],
           summary_detail_level: 3,
           only_closure_dependencies: null,
-          closure_entry_point: 'Deppy',
-          output_wrapper: '(function(){%output%}).call(this);'
+          closure_entry_point: 'Deppy'
         }
       }
     },
