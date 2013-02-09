@@ -6,14 +6,32 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
-
 module.exports = function(grunt) {
-
   // Please see the grunt documentation for more information regarding task
   // creation: https://github.com/gruntjs/grunt/blob/devel/docs/toc.md
 
-  grunt.registerMultiTask('deppy', 'Your task description goes here.', function() {
+  grunt.registerMultiTask('deppyRun', 'Run the dependency script', function() {
+    //grunt.config.requires('meta.name');
+
+    // Merge task-specific and/or target-specific options with these defaults.
+    var options = this.options({
+      punctuation: '.',
+      separator: ', '
+    });
+
+    console.log('out:', this.files);
+    // Iterate over all specified file groups.
+    this.files.forEach(function(fileObj) {
+      // The source files to be concatenated. The "nonull" option is used
+      // to retain invalid files/patterns so they can be warned about.
+      var files = grunt.file.expand({nonull: true}, fileObj.src);
+
+      // Print a success message.
+      grunt.log.writeln('File "' + fileObj.dest + '" created.');
+    });
+  });
+
+  grunt.registerMultiTask('deppyBuild', 'Build a deppy project', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       punctuation: '.',

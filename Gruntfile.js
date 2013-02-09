@@ -6,15 +6,20 @@
  * Licensed under the MIT license.
  */
 
+var deppy = require('./tasks/deppy-grunt');
+
 module.exports = function( grunt ) {
   'use strict';
 
+  deppy(grunt);
+
   var externsPath = 'build/externs/';
 
-  grunt.loadNpmTasks('grunt-shell');
+  // grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
   grunt.loadNpmTasks('grunt-closure-tools');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   //
   // Grunt configuration:
@@ -23,6 +28,25 @@ module.exports = function( grunt ) {
   grunt.initConfig({
     // Project configuration
     // ---------------------
+    //
+
+    deppyRun: {
+      options: {
+        foo: 'bar'
+      },
+      racket: {
+        src: ['test/*.js', 'foo', 'tasks/*.js'],
+        dst: 'goala.js',
+        cst: 1,
+        forever: true
+      },
+      basket: {
+        src: ['one', 'test/todoApp/*'],
+        dst: 'mon.js'
+      }
+    },
+
+
     closureDepsWriter: {
       deppy: {
         closureLibraryPath: 'closure-library',
@@ -45,6 +69,10 @@ module.exports = function( grunt ) {
       autoBuild: {
         files: 'lib/**/*.js',
         tasks: ['build', 'test']
+      },
+      gruntFile: {
+        files: ['Gruntfile.js', 'tasks/*.js'],
+        tasks: ['deppyRun']
       }
     },
 
