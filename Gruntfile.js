@@ -1,3 +1,4 @@
+/*jshint camelcase:false */
 /*
  * deppy
  * https://github.com/thanpolas/deppy
