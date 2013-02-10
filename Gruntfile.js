@@ -8,11 +8,14 @@
  */
 
 var deppy = require('./tasks/grunt_deps');
+var deppyBuild = require('./tasks/grunt_build');
+
 
 module.exports = function( grunt ) {
   'use strict';
 
   deppy(grunt);
+  deppyBuild(grunt);
 
   var externsPath = 'build/externs/';
 
@@ -38,6 +41,16 @@ module.exports = function( grunt ) {
       todoApp: {
         src: 'test/todoApp',
         dest: 'test/todoApp/deps.js'
+      }
+    },
+
+    deppyBuild: {
+      options: {
+
+      },
+      todoApp: {
+        src: 'test/todoApp/deppyConf.json',
+        dest: 'test/todoApp/js/dist/build.js'
       }
     },
 

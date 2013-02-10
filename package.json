@@ -23,7 +23,9 @@
 
   "dependencies": {
     "grunt-closure-tools": "0.7.1",
-    "grunt-contrib-copy": "0.4.0rc7"
+    "grunt-contrib-copy": "0.4.0rc7",
+    "underscore": "1.4.4",
+    "temporary": "~0.0.5"
   },
   "devDependencies": {
     "grunt-contrib-handlebars": "0.5.4rc7",
