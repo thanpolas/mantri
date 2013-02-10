@@ -1,7 +1,7 @@
 {
   "name": "deppy",
   "description": "Simple Dependency Management for Javascript",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "homepage": "https://github.com/thanpolas/deppy",
 
   "author": {
@@ -22,7 +22,7 @@
   },
 
   "dependencies": {
-    "grunt-closure-tools": "0.7.0",
+    "grunt-closure-tools": "0.7.1",
     "grunt-contrib-copy": "0.4.0rc7"
   },
   "devDependencies": {

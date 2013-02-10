@@ -7,7 +7,7 @@
  * Licensed under the MIT license.
  */
 
-var deppy = require('./tasks/deppy-grunt');
+var deppy = require('./tasks/grunt_deps');
 
 module.exports = function( grunt ) {
   'use strict';
@@ -31,37 +31,34 @@ module.exports = function( grunt ) {
     // ---------------------
     //
 
-    deppyRun: {
+    deppyDeps: {
       options: {
-        foo: 'bar'
+
       },
-      racket: {
-        src: ['test/*.js', 'foo', 'tasks/*.js'],
-        dst: 'goala.js',
-        cst: 1,
-        forever: true
-      },
-      basket: {
-        src: ['one', 'test/todoApp/*'],
-        dst: 'mon.js'
+      todoApp: {
+        src: 'test/todoApp',
+        dest: 'test/todoApp/deps.js'
       }
     },
 
 
     closureDepsWriter: {
+      options: {
+        closureLibraryPath: 'closure-library'
+      },
       deppy: {
-        closureLibraryPath: 'closure-library',
         output_file: 'lib/deps.js',
         options: {
           root_with_prefix: ['"lib ../../../lib"']
         }
       },
       todoApp: {
-        closureLibraryPath: 'closure-library',
-        output_file: 'test/todoApp/deps.js',
         options: {
           root_with_prefix: ['"test/todoApp/ ./"']
-        }
+        },
+
+        dest: 'test/todoApp/deps.js'
+
       }
 
     },
@@ -73,7 +70,7 @@ module.exports = function( grunt ) {
       },
       gruntFile: {
         files: ['Gruntfile.js', 'tasks/*.js'],
-        tasks: ['deppyRun']
+        tasks: ['deppyDeps']
       }
     },
 
