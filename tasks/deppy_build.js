@@ -13,7 +13,8 @@ var cTools = require('grunt-closure-tools')(),
 var build = {};
 
 // Define the path to the closure compiler jar file.
-var CLOSURE_COMPILER = 'build/closure_compiler/sscompiler.jar';
+var CLOSURE_COMPILER = 'build/closure_compiler/sscompiler.jar',
+    CLOSURE_BUILDER  = 'closure-bin/build/closurebuilder.py';
 
 /**
  * Run the build task.
@@ -71,10 +72,10 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
   //
   //
   var cToolsOptions = {
-    builder: CLOSURE_COMPILER,
+    builder: CLOSURE_BUILDER,
     inputs: path.dirname( confFile ) + '/' + config.build.input,
     compile: true,
-    compilerFile: 'closure-bin/compiler/compiler.jar',
+    compilerFile: CLOSURE_COMPILER,
     compilerOpts: {
       compilation_level: 'WHITESPACE_ONLY',
       jscomp_off: [
