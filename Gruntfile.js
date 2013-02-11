@@ -19,8 +19,8 @@ module.exports = function( grunt ) {
 
   var externsPath = 'build/externs/';
 
-  // grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-closure-tools');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -171,13 +171,30 @@ module.exports = function( grunt ) {
     shell: {
       mochaPhantom: {
           command: '<%= mochaPhantom %>',
-          stdout: true
+          options: {
+            stdout: true
+          }
       },
       mochaPhantomSpec: {
           command: '<%= mochaPhantom %> -R spec',
-          stdout: true
+          options: {
+            stdout: true
+          }
+      }
+    },
+
+    mochaTest: {
+      gruntTasks: [ 'test/grunt-task/**/*.js' ]
+    },
+
+    mochaTestConfig: {
+      gruntTasks: {
+        options: {
+          reporter: 'nyan'
+        }
       }
     }
+
 
   });
 
@@ -185,8 +202,24 @@ module.exports = function( grunt ) {
 
   grunt.registerTask('build', ['closureBuilder:build', 'concat:dist', 'copy:build']);
 
-  // Test using mocha-phantom
-  grunt.registerTask('test', ['shell:mochaPhantom']);
+  grunt.registerTask('test', 'Test all or specific targets', function(target) {
+    var gruntTest = 'mochaTest:gruntTasks',
+        webTest   = 'shell:mochaPhantom';
+
+    switch( target ) {
+      case 'tasks':
+        grunt.task.run(gruntTest);
+      break;
+      case 'web':
+        grunt.task.run(webTest);
+      break;
+      default:
+        grunt.task.run(webTest);
+        grunt.task.run(gruntTest);
+      break;
+    }
+
+  });
 
   grunt.registerTask('default', ['test']);
 
