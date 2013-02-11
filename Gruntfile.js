@@ -24,6 +24,7 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-closure-tools');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
   //
   // Grunt configuration:
@@ -77,6 +78,10 @@ module.exports = function( grunt ) {
     },
 
     watch: {
+      todo: {
+        files: 'lib/**/*.js',
+        tasks: ['build', 'copy:todoApp']
+      },
       autoBuild: {
         files: 'lib/**/*.js',
         tasks: ['build', 'test']
@@ -94,39 +99,44 @@ module.exports = function( grunt ) {
      *
      */
 
+    tempFile: 'temp/compiled.js',
     distFile: 'dist/deppy.js',
+    todoDest: 'test/todoApp/js/lib/deppy/deppy.js',
 
     closureBuilder: {
       build: {
-        closureLibraryPath: 'closure-library',
-        inputs: ['lib/main.js'],
-        root: ['lib', 'closure-library'],
-        output_mode: 'script',
-        namespaces: ['Deppy', 'deppy'],
-        output_file: 'temp/tempBuilt.js',
-        compile: true,
-        compiler: 'build/closure_compiler/sscompiler.jar',
-        compiler_options: {
-          compilation_level: 'SIMPLE_OPTIMIZATIONS',
-          externs: [externsPath + '*.js'],
-          define: [
-            "'goog.DEBUG=false'"
+        options: {
+          closureLibraryPath: 'closure-library',
+          inputs: ['lib/main.js'],
+          output_mode: 'script',
+          namespaces: ['Deppy', 'deppy'],
+          compile: true,
+          compilerFile: 'build/closure_compiler/sscompiler.jar',
+          compilerOpts: {
+            compilation_level: 'SIMPLE_OPTIMIZATIONS',
+            externs: [externsPath + '*.js'],
+            define: [
+              '\'goog.DEBUG=false\'',
+              '\'COMPILED=false\''
+              ],
+            warning_level: 'verbose',
+            jscomp_off: [
+              'checkTypes',
+              'strictModuleDepCheck'
             ],
-          warning_level: 'verbose',
-          jscomp_off: [
-            '"checkTypes"',
-            '"strictModuleDepCheck"'
-          ],
-          summary_detail_level: 3,
-          only_closure_dependencies: null,
-          closure_entry_point: 'Deppy'
-        }
+            summary_detail_level: 3,
+            only_closure_dependencies: null,
+            closure_entry_point: 'Deppy'
+          }
+        },
+        src: ['lib', 'closure-library'],
+        dest: '<%= tempFile %>'
       }
     },
 
     concat: {
       dist: {
-        src: ['lib/core/closure-hacks.js', 'temp/tempBuilt.js'],
+        src: ['lib/core/closure-hacks.js', '<%= tempFile %>'],
         dest: '<%= distFile %>'
       }
     },
@@ -138,6 +148,11 @@ module.exports = function( grunt ) {
         },
         options: {
           processContent: hackClosureSig
+        }
+      },
+      todoApp: {
+        files: {
+          '<%= todoDest %>': '<%= distFile %>'
         }
       }
     },

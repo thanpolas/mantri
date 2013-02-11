@@ -89,13 +89,14 @@ describe('The web API', function() {
         expect( stubWrite.getCall(2).args[0] ).to.equal('lib/ember-latest.min.js');
         expect( stubWrite.getCall(3).args[0] ).to.equal('../assets/jasmine/jasmine.js');
       });
-    });
-    it('should have the baseUrl prepended on write calls', function() {
-      deppy.config(fix.conf.baseUrl);
-      expect( stubWrite.getCall(0).args[0] ).to.equal('js/../assets/jquery.min.js');
-      expect( stubWrite.getCall(1).args[0] ).to.equal('js/../assets/handlebars.min.js');
-      expect( stubWrite.getCall(2).args[0] ).to.equal('js/lib/ember-latest.min.js');
-      expect( stubWrite.getCall(3).args[0] ).to.equal('js/../assets/jasmine/jasmine.js');
+
+      it('should have the baseUrl prepended on write calls', function() {
+        deppy.config(fix.conf.baseUrl);
+        expect( stubWrite.getCall(0).args[0] ).to.equal('js/../assets/jquery.min.js');
+        expect( stubWrite.getCall(1).args[0] ).to.equal('js/../assets/handlebars.min.js');
+        expect( stubWrite.getCall(2).args[0] ).to.equal('js/lib/ember-latest.min.js');
+        expect( stubWrite.getCall(3).args[0] ).to.equal('js/../assets/jasmine/jasmine.js');
+      });
     });
   });
 });

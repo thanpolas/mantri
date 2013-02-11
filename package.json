@@ -42,7 +42,8 @@
     "grunt-contrib-nodeunit": "0.1.2rc6",
     "grunt-mocha-test": "~0.2.0",
     "chai": "~1.5.0",
-    "sinon": "~1.5.2"
+    "sinon": "~1.5.2",
+    "grunt-contrib-concat": "~0.1.2rc6"
   },
   "keywords": [
     "gruntplugin",
