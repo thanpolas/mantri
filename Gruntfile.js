@@ -86,6 +86,10 @@ module.exports = function( grunt ) {
         files: 'lib/**/*.js',
         tasks: ['build', 'test']
       },
+      test: {
+        files: 'test/**/*.js',
+        tasks: ['test']
+      },
       gruntFile: {
         files: ['Gruntfile.js', 'tasks/*.js'],
         tasks: ['deppyDeps']
