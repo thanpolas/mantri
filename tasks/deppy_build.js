@@ -77,12 +77,11 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
     compile: true,
     compilerFile: CLOSURE_COMPILER,
     compilerOpts: {
-      compilation_level: 'WHITESPACE_ONLY',
-      jscomp_off: [
-        '"checkTypes"',
-        '"strictModuleDepCheck"'
-      ]
-
+      compilation_level: 'SIMPLE_OPTIMIZATIONS',
+      warning_level: 'QUIET',
+      // go wild here, name every exception in the book to be ignored
+      // WE BE NO SCARE HAXORShh
+      jscomp_off: cTools.closureOpts.compiler.jscomp_off
     }
   };
   var cToolsFileObj = {
@@ -104,7 +103,7 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
   //
   var commands = [ {cmd: command, dest: target} ];
 
-  cTools.helpers.runCommands( commands, cb );
+  cTools.helpers.runCommands( commands, cb , true);
 
 };
 

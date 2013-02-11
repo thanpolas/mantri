@@ -107,7 +107,7 @@ module.exports = function( grunt ) {
         compile: true,
         compiler: 'build/closure_compiler/sscompiler.jar',
         compiler_options: {
-          compilation_level: 'WHITESPACE_ONLY',
+          compilation_level: 'SIMPLE_OPTIMIZATIONS',
           externs: [externsPath + '*.js'],
           define: [
             "'goog.DEBUG=false'"
