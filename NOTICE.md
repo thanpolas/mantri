@@ -4,8 +4,8 @@
 
 The deppy package distributable, includes parts or fragments of the following packages:
 
-* [Google Closure Library](https://developers.google.com/closure/library/)
-
+* [Google Closure Library](https://developers.google.com/closure/library/).
+* [Ajax](https://github.com/ForbesLindesay/ajax) Tiny AJAX library to perform synchonous calls.
 
 ## Included in the repository
 
@@ -47,6 +47,13 @@ distributed under the License is distributed on an "AS-IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+
+### ajax
+
+Standalone AJAX library inspired by jQuery/zepto
+LICENSE MIT
+
 
 ### Sinon
 
