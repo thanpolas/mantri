@@ -42,6 +42,11 @@ module.exports = function( grunt ) {
       todoApp: {
         src: 'test/todoApp',
         dest: 'test/todoApp/deps.js'
+      },
+
+      testCase: {
+        src: 'test/fixtures/case',
+        dest: 'test/fixtures/case/deps.js'
       }
     },
 
@@ -52,7 +57,12 @@ module.exports = function( grunt ) {
       todoApp: {
         src: 'test/todoApp/deppyConf.json',
         dest: 'test/todoApp/js/dist/build.js'
+      },
+      testCase: {
+        src: 'test/fixtures/case/deppyConf.json',
+        dest: 'test/fixtures/case/js/dist/build.js'
       }
+
     },
 
 
