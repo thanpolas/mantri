@@ -1,0 +1,13 @@
+{
+  "baseUrl": "js/",
+  "paths": {
+    "jquery": "lib/jquery.min",
+    "handlebars": "lib/handlebars.min",
+    "ember": "lib/ember-latest.min",
+    "hbsCompiled": "app/templates/hbsCompiled"
+  },
+
+  "build": {
+    "input": "js/app.js"
+  }
+}
