@@ -8,6 +8,7 @@
   },
 
   "build": {
-    "input": "js/app.js"
+    "input": "js/app.js",
+    "exclude": ["jquery"]
   }
 }
