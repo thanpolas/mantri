@@ -3,7 +3,7 @@
  */
 
 
-describe('The web API', function() {
+describe('The web API :: Config :: ', function() {
   var stubWrite;
   var deppy;
   var stubStart;
@@ -21,7 +21,7 @@ describe('The web API', function() {
     stubWrite.restore();
   });
 
-  describe('Config fetching on init', function() {
+  describe('fetching on init :: ', function() {
     it('should not do anything when instanciating on test environment', function(){
       expect( stubWrite.called ).to.be.false;
       expect( stubAjax.called ).to.be.false;
@@ -40,7 +40,7 @@ describe('The web API', function() {
     });
   });
 
-  describe('Options to alter config file', function() {
+  describe('Options to alter config file :: ', function() {
     var stubDataGet;
     beforeEach(function() {
       stubDataGet = sinon.stub(goog.dom.dataset, 'get');
@@ -60,9 +60,9 @@ describe('The web API', function() {
 
   });
 
-  describe('Configuration file directives', function() {
+  describe('Directives :: ', function() {
 
-    describe('third party requirements', function() {
+    describe('Third Party requirements', function() {
       beforeEach(function() {
       });
       afterEach(function() {
