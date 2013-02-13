@@ -1,6 +1,33 @@
-# deppy
+# Mantri
 
-A Javascript dependency management system for everyone.
+Traditionaλ JS Dependency System.
+
+Mantri uses the powerful [Google Closure Library tools][closure-tools], hacks it and exposes a robust and developer friendly API to manage your project's dependencies.
+
+## **Mantri** is:
+
+* A Robust and discreet Dependency Management System.
+* A Javascript source bundling and minifying tool.
+* An intuitive debugging tool.
+
+## **Mantri** does not:
+
+* *does not* Dictate how you write your code. Vanilla JS, AMD, common JS, knock yourselves out.
+* *does not* Leave any footprint on the final, production ready, bundled file. No dependencies, no runtime requirements, not a single bit.
+* *does not* Require to have any dependency declarations in your production file.
+
+
+## Quick Start
+
+```shell
+npm install mantri --save-dev
+```
+
+
+
+The **Mantri** API is exposed via the awesome [Grunt][] plugin or as a command line tool.
+
+
 
 ## Status
 
