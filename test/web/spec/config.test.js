@@ -32,7 +32,7 @@ describe('The web API :: Config :: ', function() {
     });
     it('should fetch the default config file', function() {
       mantri.fetchConfig();
-      expect( stubAjax.getCall(0).args[0].url ).to.equal('mantriConf.json');
+      expect( stubAjax.getCall(0).args[0].url ).to.equal('/mantriConf.json');
     });
     it('should not do anything after fetching the config file', function() {
       mantri.fetchConfig();
@@ -79,21 +79,6 @@ describe('The web API :: Config :: ', function() {
         expect( stubWrite.callCount ).to.equal(4);
       });
 
-      it('should produce the correct docwrite calls at the right sequence', function() {
-        mantri.config(fix.conf.plain);
-        expect( stubWrite.getCall(0).args[0] ).to.equal('../assets/jquery.min.js');
-        expect( stubWrite.getCall(1).args[0] ).to.equal('../assets/handlebars.min.js');
-        expect( stubWrite.getCall(2).args[0] ).to.equal('lib/ember-latest.min.js');
-        expect( stubWrite.getCall(3).args[0] ).to.equal('../assets/jasmine/jasmine.js');
-      });
-
-      it('should have the baseUrl prepended on write calls', function() {
-        mantri.config(fix.conf.baseUrl);
-        expect( stubWrite.getCall(0).args[0] ).to.equal('js/../assets/jquery.min.js');
-        expect( stubWrite.getCall(1).args[0] ).to.equal('js/../assets/handlebars.min.js');
-        expect( stubWrite.getCall(2).args[0] ).to.equal('js/lib/ember-latest.min.js');
-        expect( stubWrite.getCall(3).args[0] ).to.equal('js/../assets/jasmine/jasmine.js');
-      });
     });
   });
 });

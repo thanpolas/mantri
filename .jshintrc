@@ -77,7 +77,8 @@
    */
   "predef": [
       "goog",
-      "Deppy",
+      "Mantri",
+      "mantri",
       "ajax"
   ]
 }

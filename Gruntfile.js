@@ -1,21 +1,21 @@
 /*jshint camelcase:false */
 /*
- * deppy
- * https://github.com/thanpolas/deppy
+ * mantri
+ * https://github.com/thanpolas/mantri
  *
  * Copyright (c) 2013 Thanasis Polychronakis
  * Licensed under the MIT license.
  */
 
-var deppy = require('./tasks/grunt_deps');
-var deppyBuild = require('./tasks/grunt_build');
+var mantri = require('./tasks/grunt_deps');
+var mantriBuild = require('./tasks/grunt_build');
 
 
 module.exports = function( grunt ) {
   'use strict';
 
-  deppy(grunt);
-  deppyBuild(grunt);
+  mantri(grunt);
+  mantriBuild(grunt);
 
   var externsPath = 'build/externs/';
 
@@ -25,6 +25,7 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-connect');
 
   //
   // Grunt configuration:
@@ -35,7 +36,7 @@ module.exports = function( grunt ) {
     // ---------------------
     //
 
-    deppyDeps: {
+    mantriDeps: {
       options: {
 
       },
@@ -50,16 +51,16 @@ module.exports = function( grunt ) {
       }
     },
 
-    deppyBuild: {
+    mantriBuild: {
       options: {
 
       },
       todoApp: {
-        src: 'test/todoApp/deppyConf.json',
+        src: 'test/todoApp/mantriConf.json',
         dest: 'test/todoApp/js/dist/build.js'
       },
       testCase: {
-        src: 'test/fixtures/case/deppyConf.json',
+        src: 'test/fixtures/case/mantriConf.json',
         dest: 'test/fixtures/case/js/dist/build.js'
       }
 
@@ -70,7 +71,7 @@ module.exports = function( grunt ) {
       options: {
         closureLibraryPath: 'closure-library'
       },
-      deppy: {
+      mantri: {
         output_file: 'lib/deps.js',
         options: {
           root_with_prefix: ['"lib ../../../lib"']
@@ -102,7 +103,7 @@ module.exports = function( grunt ) {
       },
       gruntFile: {
         files: ['Gruntfile.js', 'tasks/*.js'],
-        tasks: ['deppyDeps']
+        tasks: ['mantriDeps']
       }
     },
 
@@ -114,8 +115,8 @@ module.exports = function( grunt ) {
      */
 
     tempFile: 'temp/compiled.js',
-    distFile: 'dist/deppy.js',
-    todoDest: 'test/todoApp/js/lib/deppy/deppy.js',
+    distFile: 'dist/mantri.js',
+    todoDest: 'test/todoApp/js/lib/mantri/mantri.js',
 
     closureBuilder: {
       build: {
@@ -123,9 +124,9 @@ module.exports = function( grunt ) {
           closureLibraryPath: 'closure-library',
           inputs: ['lib/main.js'],
           output_mode: 'script',
-          namespaces: ['Deppy', 'deppy'],
+          namespaces: ['Mantri', 'mantri'],
           compile: true,
-          compilerFile: 'build/closure_compiler/sscompiler.jar',
+          compilerFile: 'node_modules/superstartup-closure-compiler/build/sscompiler.jar',
           compilerOpts: {
             compilation_level: 'SIMPLE_OPTIMIZATIONS',
             externs: [externsPath + '*.js'],
@@ -140,7 +141,7 @@ module.exports = function( grunt ) {
             ],
             summary_detail_level: 3,
             only_closure_dependencies: null,
-            closure_entry_point: 'Deppy'
+            closure_entry_point: 'Mantri'
           }
         },
         src: ['lib', 'closure-library'],
@@ -194,8 +195,18 @@ module.exports = function( grunt ) {
      * TESTING
      *
      */
+
+    connect: {
+      test: {
+        options: {
+          port: 4242,
+          base: './',
+          keepalive: false
+        }
+      }
+    },
     mochaPhantom: 'node_modules/mocha-phantomjs/bin/mocha-phantomjs' +
-      ' test/web/index.html',
+      ' http://localhost:4242/test/web/index.html',
 
     shell: {
       mochaPhantom: {
@@ -233,7 +244,7 @@ module.exports = function( grunt ) {
 
   grunt.registerTask('test', 'Test all or specific targets', function(target) {
     var gruntTest = 'mochaTest:gruntTasks',
-        webTest   = 'shell:mochaPhantom';
+        webTest   = ['connect:test', 'shell:mochaPhantom'];
 
     switch( target ) {
       case 'tasks':
