@@ -18,17 +18,21 @@ Mantri takes the powerful [Google Closure tools][closure-tools], hacks them and 
 * **✗** Dictate how you write your code. Vanilla JS, [AMD][], [commonJS][], knock yourselves out.
 * **✗** Leave any footprint on the final, production bundled file. No dependencies, no runtime requirements, not a single bit.
 * **✗** Need to have any dependency declarations in your production file.
-* **✗** have any problem working with other dependency systems.
-* **✗** polute your namespace. *But you are free to if you want*.
+* **✗** Have any problem with moving around your JS files or folders in your codebase.
+* **✗** Have any problem working with other dependency systems.
+* **✗** Polute your namespace. *But you are free to if you want*.
 
-## Quick Start Guide
+## Quick Start
 
 Currently **Mantri** is only available as a Grunt plugin. Install it via npm:
+
 ```
 npm install mantri --save-dev
 ```
 
-And go to the [Mantri as a grunt plugin wiki][grunt-wiki] for the documentation.
+You now need to add the Grunt directives, go to the [Mantri as a grunt plugin wiki][grunt-wiki] for details on that.
+
+And visit the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
 ## The Web API
 
@@ -70,6 +74,7 @@ Read more about the [web API in this wiki page][web-wiki]
 [commonjs]: http://www.commonjs.org/ "CommonJS Module System"
 [config-wiki]: https://github.com/thanpolas/mantri/wiki/The-Web-Configuration-File "The Mantri web configuration file"
 [cli-wiki]: https://github.com/thanpolas/mantri/wiki/Mantri-on-the-Command-Line "Mantri on the Command Line"
+[start-wiki]: https://github.com/thanpolas/mantri/wiki/Getting-Started-Guide "Mantri Getting Started Guide"
 [web-wiki]: https://github.com/thanpolas/mantri/wiki/Mantri-Web-API "Mantri's Web API"
 [grunt-wiki]: https://github.com/thanpolas/mantri/wiki/Mantri-As-a-Grunt-Plugin "Using Mantri as a Grunt Plugin"
 [grunt]: http://gruntjs.com/
