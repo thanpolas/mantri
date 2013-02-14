@@ -5,15 +5,15 @@
 
 describe('The web API :: Config :: ', function() {
   var stubWrite;
-  var deppy;
+  var mantri;
   var stubStart;
   var stubAjax;
 
   beforeEach(function() {
-    stubStart = sinon.stub(Deppy.ModuleLoader.prototype, 'start');
-    stubWrite = sinon.stub(Deppy.ModuleLoader.prototype, 'writeScript');
+    stubStart = sinon.stub(Mantri.ModuleLoader.prototype, 'start');
+    stubWrite = sinon.stub(Mantri.ModuleLoader.prototype, 'writeScript');
     stubAjax  = sinon.stub(window, 'ajax');
-    deppy = new Deppy.Core();
+    mantri = new Mantri.Core();
   });
   afterEach(function() {
     stubStart.restore();
@@ -27,15 +27,15 @@ describe('The web API :: Config :: ', function() {
       expect( stubAjax.called ).to.be.false;
     });
     it('should attempt to fetch the config on demand', function() {
-      deppy.fetchConfig();
+      mantri.fetchConfig();
       expect( stubAjax.calledOnce ).to.be.true;
     });
     it('should fetch the default config file', function() {
-      deppy.fetchConfig();
-      expect( stubAjax.getCall(0).args[0].url ).to.equal('deppyConf.json');
+      mantri.fetchConfig();
+      expect( stubAjax.getCall(0).args[0].url ).to.equal('mantriConf.json');
     });
     it('should not do anything after fetching the config file', function() {
-      deppy.fetchConfig();
+      mantri.fetchConfig();
       expect( stubWrite.called ).to.be.false;
     });
   });
@@ -45,7 +45,7 @@ describe('The web API :: Config :: ', function() {
     beforeEach(function() {
       stubDataGet = sinon.stub(goog.dom.dataset, 'get');
       stubDataGet.returns('one/foo/bar');
-      deppy.fetchConfig();
+      mantri.fetchConfig();
     });
     afterEach(function() {
       stubDataGet.restore();
@@ -69,18 +69,18 @@ describe('The web API :: Config :: ', function() {
       });
 
       it ('should move on even without a config invocation', function() {
-        deppy.configFinished();
+        mantri.configFinished();
         expect( stubStart.calledOnce ).to.be.true;
       });
 
       it('should make the proper amount of calls on writeScript', function() {
-        deppy.config(fix.conf.plain);
+        mantri.config(fix.conf.plain);
         // 4 calls for third party
         expect( stubWrite.callCount ).to.equal(4);
       });
 
       it('should produce the correct docwrite calls at the right sequence', function() {
-        deppy.config(fix.conf.plain);
+        mantri.config(fix.conf.plain);
         expect( stubWrite.getCall(0).args[0] ).to.equal('../assets/jquery.min.js');
         expect( stubWrite.getCall(1).args[0] ).to.equal('../assets/handlebars.min.js');
         expect( stubWrite.getCall(2).args[0] ).to.equal('lib/ember-latest.min.js');
@@ -88,7 +88,7 @@ describe('The web API :: Config :: ', function() {
       });
 
       it('should have the baseUrl prepended on write calls', function() {
-        deppy.config(fix.conf.baseUrl);
+        mantri.config(fix.conf.baseUrl);
         expect( stubWrite.getCall(0).args[0] ).to.equal('js/../assets/jquery.min.js');
         expect( stubWrite.getCall(1).args[0] ).to.equal('js/../assets/handlebars.min.js');
         expect( stubWrite.getCall(2).args[0] ).to.equal('js/lib/ember-latest.min.js');

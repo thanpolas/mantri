@@ -8,7 +8,7 @@ var CLOSURE_COMPILER = 'path/to/compiler.jar',
 
 
 configs.deps.plain = {
-  deppyDeps: {
+  mantriDeps: {
     todoApp: {
       src: 'test/todoApp',
       dest: 'test/todoApp/deps.js'
