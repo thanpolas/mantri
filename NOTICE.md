@@ -2,24 +2,21 @@
 
 ## Included in the distributable
 
-The deppy package distributable, includes parts or fragments of the following packages:
+The Stani package distributable, includes parts or fragments of the following packages:
 
 * [Google Closure Library](https://developers.google.com/closure/library/).
 * [Ajax](https://github.com/ForbesLindesay/ajax) Tiny AJAX library to perform synchonous calls.
 
 ## Included in the repository
 
-The deppy repository, includes the following packages:
+The Stani repository, includes the following packages:
 
 * [sinon.js](http://sinonjs.org/) Test helper for Spying, Stubbing and Mocking
 * [jQuery](http://jquery.com) For testing purposes
 
-
-
-
 ## Required for development
 
-Development of the deppy package requires the use of the following packages that are not included in the repository:
+Development of the Stani package requires the use of the following packages that are not included in the repository:
 
 * [mocha](http://visionmedia.github.com/mocha/) testing framework
 * [mocha-phantomjs](http://metaskills.net/mocha-phantomjs/)
