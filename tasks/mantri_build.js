@@ -25,7 +25,7 @@ var CLOSURE_COMPILER = 'build/closure_compiler/sscompiler.jar',
 /**
  * Run the build task.
  *
- * We require the deppy configuration file that bootstraps the web.
+ * We require the mantri configuration file that bootstraps the web.
  *
  * We expect to find there information about how to perform the build.
  *
@@ -207,12 +207,12 @@ build._appendVendorLibs = function( options ) {
  */
 build.validate = function( options ) {
   if ( !__.isObject( options.webConfig.build ) ) {
-    cTools.helpers.log.error('There is no \'build\' key in your deppyConf file.');
+    cTools.helpers.log.error('There is no \'build\' key in your mantriConf file.');
     return false;
   }
 
   if ( !__.isString( options.webConfig.build.input ) ) {
-    cTools.helpers.log.error('There is no \'build.input\' key in your deppyConf file.');
+    cTools.helpers.log.error('There is no \'build.input\' key in your mantriConf file.');
     return false;
   }
 

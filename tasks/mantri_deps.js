@@ -7,12 +7,12 @@
 var cTools = require('grunt-closure-tools'),
     grunt  = require('grunt');
 
-var deppy = {};
+var mantri = {};
 
 /**
  * Run the dependency task.
  */
-deppy.deps = function( cb, target, documentRoot, optDest, optOptions ) {
+mantri.deps = function( cb, target, documentRoot, optDest, optOptions ) {
 
   var tools = cTools();
 
@@ -39,4 +39,4 @@ deppy.deps = function( cb, target, documentRoot, optDest, optOptions ) {
 
 };
 
-module.exports = deppy;
+module.exports = mantri;
