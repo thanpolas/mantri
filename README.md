@@ -50,7 +50,9 @@ Read more about the [web API in this wiki page][web-wiki]
 * **Java** [Java 1.6](http://java.com/) or later.
 * **Python** [Python 2.7](http://python.org/).
 
+## Full Documentation
 
+... [can be found in the wiki](https://github.com/thanpolas/mantri/wiki)
 
 ## A Fair Warning
 
