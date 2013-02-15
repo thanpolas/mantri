@@ -46,7 +46,8 @@ build.webConfigProps = {
 
 // Define the path to the closure compiler jar file.
 var CLOSURE_COMPILER = 'node_modules/superstartup-closure-compiler/build/sscompiler.jar',
-    CLOSURE_BUILDER  = 'closure-bin/build/closurebuilder.py';
+    CLOSURE_BUILDER  = 'closure-bin/build/closurebuilder.py',
+    VENDOR_BUNDLE    = 'libs.js';
 
 /**
  * Run the build task.
@@ -83,7 +84,8 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
     target: target,
     webConfig: webConfig,
     dest: optDest,
-    buildOpts: optOptions || {}
+    buildOpts: optOptions || {},
+    cb: cb
   };
 
 
@@ -100,6 +102,7 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
   // create new temp dir and prep google mock.
   options._tmpDir      = new Tempdir();
   options.googMock     = options._tmpDir.path + '/' + build.GOOG_BASE_FILE;
+  options.vendorFiles  = options._tmpDir.path + '/' + VENDOR_BUNDLE;
   options.jsDirFrag    = path.dirname( webConfig.build.input );
   options.documentRoot = path.dirname( confFile );
   // resolve what the source and dest will be for the builder
@@ -117,12 +120,11 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
     return;
   }
 
-  helpers.log.debug( options.debug, 'Created temp dir and google mock: ', options._tmpDir.path);
+  helpers.log.debug( options.debug, 'Created temp dir and google mock: ' + options._tmpDir.path);
 
   //
   //
-  // Resolve and append all third party dependencies
-  // to google closure mock file.
+  // Resolve and bundle all third party dependencies
   //
   //
   if ( !build._appendVendorLibs( options ) ) {
@@ -131,7 +133,7 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
     return;
   }
 
-  helpers.log.debug( options.debug, 'Vendor libs appended. Constructing builder cli');
+  helpers.log.debug( options.debug, 'Vendor libs bundled. Constructing builder command...');
 
   //
   //
@@ -147,7 +149,7 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
     compilerFile: helpers.getPath( CLOSURE_COMPILER ),
     compilerOpts: {
       compilation_level: 'SIMPLE_OPTIMIZATIONS',
-      warning_level: 'QUIET',
+      warning_level: (options.debug ? 'VERBOSE' : 'QUIET'),
       // go wild here, name every exception in the book to be ignored
       // WE BE NO SCARE HAXORShh
       jscomp_off: cTools.closureOpts.compiler.jscomp_off
@@ -171,13 +173,34 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
   // Run the command.
   //
   //
+  helpers.log.debug( options.debug, 'Builder command constructed. Executing...');
   var commands = [ {cmd: command, dest: target} ];
 
+  helpers.runCommands( commands, __.partial( build._finishBuild, options ), !options.debug);
+};
 
-  helpers.runCommands( commands, function( status ) {
+/**
+ * Last step in the build process.
+ * Is the callback of the command execution.
+ *
+ * @param  {Object} options The options object.
+ * @param  {boolean} status The status of the command execution.
+ * @private
+ */
+build._finishBuild = function( options, status ) {
+    if ( !status ) {
+      options._tmpDir.rmdir();
+      options.cb(false);
+      return;
+    }
+
+    // minify the libs using uglify.
+    // For reasons i cannot explain certain patterns of libs make the
+    // closure compiler to blow up (litteraly)
+
+
     options._tmpDir.rmdir();
-    cb( status );
-  } , !options.debug);
+    options.cb( status );
 
 };
 
@@ -227,6 +250,12 @@ build._appendVendorLibs = function( options ) {
   var exclude = webConfig.build.exclude || [],
       vendorFile, // string, the current vendor file.
       fileSrc = '';
+
+  helpers.log.debug( options.debug, 'Starting itterating on vendor libs');
+
+  // initialize the file
+  grunt.file.write( options.vendorFile, '' );
+
   for ( var lib in webConfig[libs] ) {
     if ( 0 <= exclude.indexOf( lib ) ) {
       continue;
@@ -240,7 +269,10 @@ build._appendVendorLibs = function( options ) {
     }
 
     fileSrc = grunt.file.read( vendorFile );
-    fs.appendFileSync( options.googMock, fileSrc );
+    helpers.log.debug( options.debug, 'Appending vendor lib: ' + lib +
+      ' :: ' + fileSrc.length + ' :: ' + vendorFile);
+
+    fs.writeFileSync( options.vendorFiles, fileSrc );
   }
 
   return true;
