@@ -8,10 +8,12 @@ describe('The web API :: module-loader :: ', function() {
   var stubWrite;
   var mantri;
   var stubDataGet;
+  var stubRequire;
 
   beforeEach(function() {
     stubWrite = sinon.stub(Mantri.ModuleLoader.prototype, 'writeScript');
     stubDataGet = sinon.stub(goog.dom.dataset, 'get');
+    stubRequire = sinon.stub(goog, 'require');
 
     mantri = new Mantri.Core();
     //mantri.configFinished();
@@ -19,21 +21,31 @@ describe('The web API :: module-loader :: ', function() {
   afterEach(function() {
     stubWrite.restore();
     stubDataGet.restore();
+    stubRequire.restore();
   });
 
+  it('should check for element\'s data-require once.', function() {
+    mantri.startApp();
+    expect( stubDataGet.calledOnce ).to.be.true;
+  });
+
+  it('should check for data-require to find the starting namespace.', function() {
+    mantri.startApp();
+    expect( stubDataGet.getCall(0).args[1] ).to.equal( 'require' );
+  });
+
+
   describe('goog.require()', function() {
-    var stubRequire,
-        stubConfig;
+    var stubConfig;
 
     beforeEach( function() {
-      stubRequire = sinon.stub(goog, 'require');
       stubConfig = sinon.stub(Mantri.Config.prototype, 'getEntryPoint');
       stubConfig.returns( null );
     });
     afterEach( function() {
       stubConfig.restore();
-      stubRequire.restore();
     });
+
     it('should call goog.require() once', function() {
       mantri.startApp();
       expect( stubRequire.calledOnce ).to.be.true;
