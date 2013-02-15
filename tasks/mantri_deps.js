@@ -4,38 +4,40 @@
  *
  */
 
-var cTools = require('grunt-closure-tools'),
+var cTools = require('grunt-closure-tools')(),
+    helpers= require('./helpers'),
     grunt  = require('grunt');
 
-var mantri = {};
+var mantri = {},
+    DEPSWRITER = 'closure-bin/build/depswriter.py';
 
 /**
  * Run the dependency task.
+ *
  */
 mantri.deps = function( cb, target, documentRoot, optDest, optOptions ) {
 
-  var tools = cTools();
-
   var dest = optDest || documentRoot + '/deps.js';
   var depsOptions = {
-    depswriter: 'closure-bin/build/depswriter.py',
-    root_with_prefix: ['"' + documentRoot + ' ./"']
+    depswriter: helpers.getPath( DEPSWRITER ),
+    root_with_prefix: ['"' + documentRoot + ' ./"'],
+    buildOpts: optOptions || {}
   };
   var depsFileObj = {
     dest: dest
   };
 
-  var command = tools.depsWriter.createCommand( depsOptions, depsFileObj );
+  var command = cTools.depsWriter.createCommand( depsOptions, depsFileObj );
 
   if ( !command ) {
-    tools.helpers.log.error('Create command failed for depsWriter');
+    helpers.log.error('Create command failed for depsWriter');
     cb( false );
     return;
   }
 
   var commands = [ {cmd: command, dest: target} ];
 
-  tools.helpers.runCommands( commands, cb );
+  helpers.runCommands( commands, cb );
 
 };
 

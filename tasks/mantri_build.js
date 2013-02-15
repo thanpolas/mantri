@@ -5,6 +5,7 @@
  */
 
 var cTools = require('grunt-closure-tools')(),
+    helpers= require('./helpers'),
     grunt  = require('grunt'),
     __     = require('underscore'),
     path   = require('path'),
@@ -18,8 +19,33 @@ var build = {
 
 };
 
+
+/**
+ * ===== THIS IS A COPY FROM lib/config/config.js =====
+ *
+ * The properties available via the config JSON file.
+ *
+ * This enum does not describe structure of the config
+ * map, although it tries via intendation.
+ *
+ * Plainly do a static declaration of keys used.
+ *
+ * @enum {string}
+ */
+build.webConfigProps = {
+  BASEURL: 'baseUrl',
+  LIBS: 'libs',
+  NAMESPACE: 'require',
+
+  // the build tree
+  BUILD: 'build',
+    INPUT: 'input',
+    DEST: 'dest'
+
+};
+
 // Define the path to the closure compiler jar file.
-var CLOSURE_COMPILER = 'build/closure_compiler/sscompiler.jar',
+var CLOSURE_COMPILER = 'node_modules/superstartup-closure-compiler/build/sscompiler.jar',
     CLOSURE_BUILDER  = 'closure-bin/build/closurebuilder.py';
 
 /**
@@ -32,6 +58,7 @@ var CLOSURE_COMPILER = 'build/closure_compiler/sscompiler.jar',
  * After we are satisfied with what we collect we start the build process.
  */
 build.build = function( cb, target, confFile, optDest, optOptions ) {
+
   // cast to string
   confFile = confFile + '';
   // reset internals
@@ -42,22 +69,35 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
   //
   //
   // require the config file. Flow continues at start() function.
-  var webConfig = grunt.file.readJSON(confFile);
+  var webConfig = {};
+  if ( !grunt.file.isFile(confFile) ) {
+    helpers.log.error('Could not locate mantriConf.json file.');
+    cb( false );
+    return;
+  } else {
+    webConfig = grunt.file.readJSON( confFile );
+  }
 
   // bundle all option files
   var options = {
     target: target,
     webConfig: webConfig,
     dest: optDest,
-    buildOpts: optOptions
+    buildOpts: optOptions || {}
   };
+
 
   if (! build.validate( options )) {
     // error messages sent by validate
     cb( false );
     return;
   }
+  helpers.log.debug( options.debug, 'Passe Validations.');
 
+  // Define debug mode
+  options.debug = !!options.buildOpts.debug;
+
+  // create new temp dir and prep google mock.
   options._tmpDir      = new Tempdir();
   options.googMock     = options._tmpDir.path + '/' + build.GOOG_BASE_FILE;
   options.jsDirFrag    = path.dirname( webConfig.build.input );
@@ -77,6 +117,8 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
     return;
   }
 
+  helpers.log.debug( options.debug, 'Created temp dir and google mock: ', options._tmpDir.path);
+
   //
   //
   // Resolve and append all third party dependencies
@@ -89,6 +131,7 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
     return;
   }
 
+  helpers.log.debug( options.debug, 'Vendor libs appended. Constructing builder cli');
 
   //
   //
@@ -98,10 +141,10 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
   var src = [ options.jsRoot ];
   src.push( options._tmpDir.path );
   var cToolsOptions = {
-    builder: CLOSURE_BUILDER,
+    builder: helpers.getPath( CLOSURE_BUILDER ),
     inputs: path.dirname( confFile ) + '/' + webConfig.build.input,
     compile: true,
-    compilerFile: CLOSURE_COMPILER,
+    compilerFile: helpers.getPath( CLOSURE_COMPILER ),
     compilerOpts: {
       compilation_level: 'SIMPLE_OPTIMIZATIONS',
       warning_level: 'QUIET',
@@ -117,7 +160,7 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
 
   var command = cTools.builder.createCommand( cToolsOptions, cToolsFileObj );
   if ( !command ) {
-    cTools.helpers.log.error('Create shell command failed for builder');
+    helpers.log.error('Create shell command failed for builder');
     options._tmpDir.rmdir();
     cb( false );
     return;
@@ -130,10 +173,11 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
   //
   var commands = [ {cmd: command, dest: target} ];
 
-  cTools.helpers.runCommands( commands, function( status ) {
+
+  helpers.runCommands( commands, function( status ) {
     options._tmpDir.rmdir();
     cb( status );
-  } , true);
+  } , !options.debug);
 
 };
 
@@ -162,7 +206,10 @@ build._createGoogleMock = function( options ) {
 build._appendVendorLibs = function( options ) {
   var webConfig = options.webConfig;
 
-  if ( !__.isObject( webConfig.paths ) ) {
+  // shortcut assign libs namespace
+  var libs = build.webConfigProps.LIBS;
+
+  if ( !__.isObject( webConfig[libs] ) ) {
     return true;
   }
 
@@ -180,15 +227,15 @@ build._appendVendorLibs = function( options ) {
   var exclude = webConfig.build.exclude || [],
       vendorFile, // string, the current vendor file.
       fileSrc = '';
-  for ( var lib in webConfig.paths ) {
+  for ( var lib in webConfig[libs] ) {
     if ( 0 <= exclude.indexOf( lib ) ) {
       continue;
     }
 
-    vendorFile = vendorRoot + webConfig.paths[lib] + '.js';
+    vendorFile = vendorRoot + webConfig[libs][lib] + '.js';
 
     if ( !grunt.file.isFile( vendorFile ) ) {
-      cTools.helpers.log.error('Could not find third party library: ' + vendorFile.red);
+      helpers.log.error('Could not find third party library: ' + vendorFile.red);
       return false;
     }
 
@@ -207,17 +254,18 @@ build._appendVendorLibs = function( options ) {
  */
 build.validate = function( options ) {
   if ( !__.isObject( options.webConfig.build ) ) {
-    cTools.helpers.log.error('There is no \'build\' key in your mantriConf file.');
+    helpers.log.error('There is no \'build\' key in your mantriConf file.');
     return false;
   }
 
   if ( !__.isString( options.webConfig.build.input ) ) {
-    cTools.helpers.log.error('There is no \'build.input\' key in your mantriConf file.');
+    helpers.log.error('There is no \'build.input\' key in your mantriConf file.');
     return false;
   }
 
   return true;
 };
+
 
 
 module.exports = build;

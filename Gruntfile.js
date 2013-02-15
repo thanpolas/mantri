@@ -7,15 +7,12 @@
  * Licensed under the MIT license.
  */
 
-var mantri = require('./tasks/grunt_deps');
-var mantriBuild = require('./tasks/grunt_build');
-
+var mantri = require('./tasks/grunt_mantri');
 
 module.exports = function( grunt ) {
   'use strict';
 
   mantri(grunt);
-  mantriBuild(grunt);
 
   var externsPath = 'build/externs/';
 
@@ -60,6 +57,9 @@ module.exports = function( grunt ) {
         dest: 'test/todoApp/js/dist/build.js'
       },
       testCase: {
+        options: {
+          debug: true
+        },
         src: 'test/fixtures/case/mantriConf.json',
         dest: 'test/fixtures/case/js/dist/build.js'
       }
@@ -243,11 +243,13 @@ module.exports = function( grunt ) {
   grunt.registerTask('build', ['closureBuilder:build', 'concat:dist', 'copy:build']);
 
   grunt.registerTask('test', 'Test all or specific targets', function(target) {
-    var gruntTest = 'mochaTest:gruntTasks',
+    var gruntTest = ['mantriBuild:testCase', 'mochaTest:gruntTasks'],
         webTest   = ['connect:test', 'shell:mochaPhantom'];
 
     switch( target ) {
       case 'tasks':
+      case 'grunt':
+      case 'node':
         grunt.task.run(gruntTest);
       break;
       case 'web':

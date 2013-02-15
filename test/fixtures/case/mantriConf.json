@@ -1,6 +1,6 @@
 {
   "baseUrl": "js/",
-  "paths": {
+  "libs": {
     "jquery": "lib/jquery.min",
     "handlebars": "lib/handlebars.min",
     "ember": "lib/ember-latest.min",

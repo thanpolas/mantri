@@ -4,7 +4,7 @@ var expects = {
 };
 
 expects.deps.defaults = [{
-  cmd: 'closure-bin/build/depswriter.py  --root_with_prefix="test/todoApp ./" --output_file=test/todoApp/deps.js',
+  cmd: '/Users/thanpolas/Projects/mantri/tasks/../closure-bin/build/depswriter.py  --root_with_prefix="test/todoApp ./" --output_file=test/todoApp/deps.js',
   dest: 'target'
 }];
 
