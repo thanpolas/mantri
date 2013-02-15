@@ -67,6 +67,17 @@ describe('The web API :: Proper paths :: ', function() {
       expect( stubWrite.getCall(3).args[0] ).to.equal( buildScript( '/js/../assets/jasmine/jasmine.js' ));
     });
 
+    it('should treat a path starting with dot slash properly, ignoring the current path.', function() {
+      stubAjax.yieldsTo('success', fix.conf.baseUrlDotSlash);
+      mantri.fetchConfig();
+      expect( stubWrite.getCall(0).args[0] ).to.equal( buildScript( './../assets/jquery.min.js' ));
+      expect( stubWrite.getCall(1).args[0] ).to.equal( buildScript( './../assets/handlebars.min.js' ));
+      expect( stubWrite.getCall(2).args[0] ).to.equal( buildScript( './lib/ember-latest.min.js' ));
+      expect( stubWrite.getCall(3).args[0] ).to.equal( buildScript( './../assets/jasmine/jasmine.js' ));
+    });
+
+
+
 
     it('should compensate for paths even if alternative config file is defined', function() {
 
