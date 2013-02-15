@@ -10,6 +10,7 @@ var cTools = require('grunt-closure-tools')(),
     __     = require('underscore'),
     path   = require('path'),
     Tempdir = require('temporary/lib/dir'),
+    gUglify = require('grunt-contrib-uglify')().uglify.init( grunt ),
     fs     = require('fs');
 
 // define the namespace we'll work on
@@ -83,7 +84,7 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
   var options = {
     target: target,
     webConfig: webConfig,
-    dest: optDest,
+    dest: optDest || webConfig.build.dest,
     buildOpts: optOptions || {},
     cb: cb
   };
@@ -102,7 +103,9 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
   // create new temp dir and prep google mock.
   options._tmpDir      = new Tempdir();
   options.googMock     = options._tmpDir.path + '/' + build.GOOG_BASE_FILE;
-  options.vendorFiles  = options._tmpDir.path + '/' + VENDOR_BUNDLE;
+  options.vendorFile   = options._tmpDir.path + '/' + VENDOR_BUNDLE;
+  // temporary file to save the compiled app.
+  options.appMin       = options._tmpDir.path + '/appCompiled.js';
   options.jsDirFrag    = path.dirname( webConfig.build.input );
   options.documentRoot = path.dirname( confFile );
   // resolve what the source and dest will be for the builder
@@ -124,10 +127,11 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
 
   //
   //
-  // Resolve and bundle all third party dependencies
+  // Resolve and bundle all third party dependencies.
+  // Minify them.
   //
   //
-  if ( !build._appendVendorLibs( options ) ) {
+  if ( !build._bundleLibs( options, options.dest ) ) {
     options._tmpDir.rmdir();
     cb ( false );
     return;
@@ -157,7 +161,7 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
   };
   var cToolsFileObj = {
     src: src,
-    dest: optDest || webConfig.build.dest
+    dest: options.appMin
   };
 
   var command = cTools.builder.createCommand( cToolsOptions, cToolsFileObj );
@@ -188,20 +192,79 @@ build.build = function( cb, target, confFile, optDest, optOptions ) {
  * @private
  */
 build._finishBuild = function( options, status ) {
-    if ( !status ) {
-      options._tmpDir.rmdir();
-      options.cb(false);
-      return;
-    }
-
-    // minify the libs using uglify.
-    // For reasons i cannot explain certain patterns of libs make the
-    // closure compiler to blow up (litteraly)
-
-
+  if ( !status ) {
     options._tmpDir.rmdir();
     options.cb( status );
+    return;
+  }
 
+  helpers.log.debug( options.debug, 'Compilation complete. Concatenating files...');
+
+  var compiledApp = grunt.file.read( options.appMin );
+  fs.appendFileSync( options.dest, compiledApp );
+  options._tmpDir.rmdir();
+  options.cb( status );
+};
+
+/**
+ * Bundles the vendor libraries into one file and minifies them.
+ *
+ * Currently using uglify.
+ *
+ * For reasons i cannot explain certain patterns of libs make the
+ * closure compiler to blow up (litteraly)
+ *
+ * @param  {Object} options The options object.
+ * @param {string} dest The dest file of the operation.
+ * @return {boolean} success or not.
+ */
+build._bundleLibs = function( options, dest ) {
+
+  helpers.log.debug( options.debug, 'Will resolve and bundle all vendor libraries...');
+
+  if ( !build._appendVendorLibs( options ) ) {
+    options._tmpDir.rmdir();
+    options.cb ( false );
+    return;
+  }
+
+
+  helpers.log.debug( options.debug, 'Will now minify the vendor libs to dest: ' + dest.blue);
+  // minify the libs using uglify.
+  if ( !build.minify( options.vendorFile, dest ) ) {
+    helpers.log.warn( 'Uglification of vendor libs failed');
+    options.cb( false );
+    return;
+  }
+
+  return true;
+};
+
+/**
+ * [minify description]
+ * @return {[type]} [description]
+ */
+build.minify = function(src, dest) {
+  var uglifyOpts = {
+    banner: '',
+    compress: {
+      warnings: false
+    },
+    mangle: {},
+    beautify: false
+  };
+
+  // Minify files, warn and fail on error.
+  var result;
+  try {
+    result = gUglify.minify([ src ], dest, uglifyOpts);
+  } catch (e) {
+    return false;
+  }
+
+  grunt.file.write( dest, result.min );
+
+  return true;
 };
 
 /**
@@ -272,7 +335,7 @@ build._appendVendorLibs = function( options ) {
     helpers.log.debug( options.debug, 'Appending vendor lib: ' + lib +
       ' :: ' + fileSrc.length + ' :: ' + vendorFile);
 
-    fs.writeFileSync( options.vendorFiles, fileSrc );
+    fs.appendFileSync( options.vendorFile, fileSrc );
   }
 
   return true;
