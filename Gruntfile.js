@@ -10,7 +10,7 @@
 var mantri = require('./tasks/grunt_mantri'),
     compiler = require( 'superstartup-closure-compiler' );
 
-var CLOSURE_LIBRARY = '../libs/google-closure-library';
+var CLOSURE_LIBRARY = 'closure-library';
 
 module.exports = function( grunt ) {
   'use strict';
