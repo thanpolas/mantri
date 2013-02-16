@@ -6,7 +6,7 @@
  * Licensed under the MIT license.
  */
 
-var mantriDeps = require('./mantri_deps');
+var mantriDeps = require('../lib/mantri_deps');
 
 module.exports = function(grunt) {
   // Please see the grunt documentation for more information regarding task

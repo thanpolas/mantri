@@ -26,10 +26,12 @@ describe('Grunt task :: dependency', function(){
 
   it('produce the proper result', function(){
     var spy = sinon.spy();
-    tasks.deps.deps( spy, 'target', 'test/todoApp', 'test/todoApp/deps.js');
+    tasks.deps.deps( spy, 'target', 'test/case', 'test/case/deps.js');
 
     expect( spyDeps.calledOnce ).to.be.true;
     expect( stubCmd.calledOnce ).to.be.true;
-    expect( expects.deps.defaults ).to.deep.equal( stubCmd.getCall(0).args[0] );
+    expect( stubCmd.getCall(0).args[0] ).to.deep.equal( expects.deps.defaults );
+
+
   });
 });

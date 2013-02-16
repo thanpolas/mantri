@@ -13,8 +13,8 @@ module.exports = function(grunt) {
   if ('object' !== typeof(grunt)) {
     return {
       helpers: cTools.helpers,
-      deps: require('./mantri_deps'),
-      build: require('./mantri_build'),
+      deps: require('../lib/mantri_deps'),
+      build: require('../lib/mantri_build'),
       gruntDeps: gruntDeps,
       gruntBuild: gruntBuild
     };

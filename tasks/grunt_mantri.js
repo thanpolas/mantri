@@ -3,10 +3,9 @@
  *
  */
 
-var helpers = require('./helpers'),
+var helpers = require('../lib/helpers'),
     build   = require('./grunt_build'),
-    deps    = require('./grunt_deps'),
-    tasks   = require('./grunt_tasks');
+    deps    = require('./grunt_deps');
 
 module.exports = function(grunt) {
 

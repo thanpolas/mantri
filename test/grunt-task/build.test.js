@@ -22,7 +22,7 @@ describe('Grunt task :: build :: ', function(){
 
   it('produce the proper result', function() {
 
-    var actual = grunt.file.read('test/fixtures/case/js/dist/build.js');
+    var actual = grunt.file.read('test/case/js/dist/build.js');
     var expected = grunt.file.read('test/expected/testCase.build.js');
     assert.equal(expected, actual, 'Should produce identical build file');
 
