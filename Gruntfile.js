@@ -257,12 +257,15 @@ module.exports = function( grunt ) {
       case 'tasks':
       case 'grunt':
       case 'node':
+        gruntTest.unshift( 'build' );
         grunt.task.run(gruntTest);
       break;
       case 'web':
+        gruntTest.unshift( 'build' );
         grunt.task.run(webTest);
       break;
       default:
+        gruntTest.unshift( 'build' );
         grunt.task.run(webTest);
         grunt.task.run(gruntTest);
       break;
