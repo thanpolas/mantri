@@ -31,8 +31,8 @@ describe('Grunt task :: dependency', function(){
     // this breaks tests in each different setup.
     //
     // so, remove first line from both files
-    actual = actual.split('\n').splice(0,1).join('\n');
-    expected = expected.split('\n').splice(0,1).join('\n');
+    actual = actual.split('\n').splice(1).join('\n');
+    expected = expected.split('\n').splice(1).join('\n');
 
     assert.equal(actual, expected, 'task output should equal: ' + actualFile);
 
