@@ -29,7 +29,7 @@ describe('Grunt task :: build :: ', function(){
     var actual = grunt.file.read(tmp + actualFile);
     var expected = grunt.file.read(fixtures + actualFile);
 
-    assert.equal(expected, actual, 'task output should equal: ' + actualFile);
+    assert.equal(actual, expected, 'task output should equal: ' + actualFile);
 
   });
 });
