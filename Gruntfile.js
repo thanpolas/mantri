@@ -190,22 +190,24 @@ module.exports = function( grunt ) {
   grunt.registerTask('build', ['closureBuilder:build', 'concat:dist', 'copy:build']);
 
   grunt.registerTask('test', 'Test all or specific targets', function(target) {
-    var gruntTest = ['mantriBuild:testCase', 'mochaTest:gruntTasks'],
+    var gruntTest = [
+      'mantriDeps:testCase',
+      'mantriBuild:testCase',
+      'mantriBuild:testCase',
+      'mochaTest:gruntTasks'
+    ],
         webTest   = ['connect:test', 'shell:mochaPhantom'];
 
     switch( target ) {
       case 'tasks':
       case 'grunt':
       case 'node':
-        gruntTest.unshift( 'build' );
         grunt.task.run(gruntTest);
       break;
       case 'web':
-        webTest.unshift( 'build' );
         grunt.task.run(webTest);
       break;
       default:
-        webTest.unshift( 'build' );
         grunt.task.run(webTest);
         grunt.task.run(gruntTest);
       break;
