@@ -8,8 +8,11 @@ var tasks  = require('../../tasks/grunt_tasks')(),
     expect = require('chai').expect,
     assert = require('chai').assert,
     configs= require('../fixtures/grunt_configs.fixture'),
-    expects= require('../expected/grunt_default.expects'),
     grunt  = require('grunt');
+
+var tmp = 'temp/';
+var fixtures = 'test/expected/';
+
 
 describe('Grunt task :: build :: ', function(){
 
@@ -22,9 +25,11 @@ describe('Grunt task :: build :: ', function(){
 
   it('produce the proper result', function() {
 
-    var actual = grunt.file.read('test/case/js/dist/build.js');
-    var expected = grunt.file.read('test/expected/testCase.build.js');
-    assert.equal(expected, actual, 'Should produce identical build file');
+    var actualFile = 'testCase.build.js';
+    var actual = grunt.file.read(tmp + actualFile);
+    var expected = grunt.file.read(fixtures + actualFile);
+
+    assert.equal(expected, actual, 'task output should equal: ' + actualFile);
 
   });
 });

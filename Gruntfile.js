@@ -43,7 +43,7 @@ module.exports = function( grunt ) {
       },
       testCase: {
         src: 'test/case',
-        dest: 'test/case/deps.js'
+        dest: 'temp/deps.js'
       }
     },
 
@@ -56,7 +56,7 @@ module.exports = function( grunt ) {
           debug: false
         },
         src: 'test/case/mantriConf.json',
-        dest: 'test/case/js/dist/build.js'
+        dest: 'temp/testCase.build.js'
       }
 
     },
