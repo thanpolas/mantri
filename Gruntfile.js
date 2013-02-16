@@ -23,6 +23,7 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   //
   // Grunt configuration:
@@ -87,7 +88,13 @@ module.exports = function( grunt ) {
       }
 
     },
-
+    uglify: {
+      my_target: {
+        files: {
+          'temp/check.uglify.js': ['test/fixtures/case/js/**/*.js']
+        }
+      }
+    },
     watch: {
       todo: {
         files: 'lib/**/*.js',
