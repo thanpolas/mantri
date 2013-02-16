@@ -4,7 +4,7 @@ var expects = {
 };
 
 expects.deps.defaults = [{
-  cmd: '/Users/thanpolas/Projects/mantri/lib/../closure-bin/build/depswriter.py  --root_with_prefix="test/case ./" --output_file=test/case/deps.js',
+  cmd: '/Users/thanpolas/Projects/mantri/lib/../node_modules/closure-tools/closure-bin/build/depswriter.py  --root_with_prefix="test/case ./" --output_file=test/case/deps.js',
   dest: 'target'
 }];
 

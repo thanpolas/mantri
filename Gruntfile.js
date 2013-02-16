@@ -7,7 +7,10 @@
  * Licensed under the MIT license.
  */
 
-var mantri = require('./tasks/grunt_mantri');
+var mantri = require('./tasks/grunt_mantri'),
+    compiler = require( 'superstartup-closure-compiler' );
+
+var CLOSURE_LIBRARY = '../libs/google-closure-library';
 
 module.exports = function( grunt ) {
   'use strict';
@@ -89,12 +92,12 @@ module.exports = function( grunt ) {
     closureBuilder: {
       build: {
         options: {
-          closureLibraryPath: 'closure-library',
+          closureLibraryPath: CLOSURE_LIBRARY,
           inputs: ['src/main.js'],
           output_mode: 'script',
           namespaces: ['Mantri', 'mantri'],
           compile: true,
-          compilerFile: 'node_modules/superstartup-closure-compiler/build/sscompiler.jar',
+          compilerFile: compiler.getPathSS(),
           compilerOpts: {
             compilation_level: 'SIMPLE_OPTIMIZATIONS',
             externs: [externsPath + '*.js'],
@@ -112,7 +115,7 @@ module.exports = function( grunt ) {
             closure_entry_point: 'Mantri'
           }
         },
-        src: ['src', 'closure-library'],
+        src: ['src', CLOSURE_LIBRARY],
         dest: '<%= tempFile %>'
       }
     },
@@ -198,11 +201,11 @@ module.exports = function( grunt ) {
         grunt.task.run(gruntTest);
       break;
       case 'web':
-        gruntTest.unshift( 'build' );
+        webTest.unshift( 'build' );
         grunt.task.run(webTest);
       break;
       default:
-        gruntTest.unshift( 'build' );
+        webTest.unshift( 'build' );
         grunt.task.run(webTest);
         grunt.task.run(gruntTest);
       break;
