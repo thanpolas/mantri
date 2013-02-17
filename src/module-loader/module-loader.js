@@ -64,7 +64,7 @@ Mantri.ModuleLoader.ENTRY_POINT_DEFAULT = 'app';
 Mantri.ModuleLoader.DEPS_DATA_KEY = 'deps';
 
 /** @const {string} the default deps file */
-Mantri.ModuleLoader.DEPS_DEFAULT = 'deps';
+Mantri.ModuleLoader.DEPS_DEFAULT = '/deps';
 
 /**
  * [get description]

@@ -7,21 +7,19 @@ Mantri takes the powerful [Google Closure tools][closure-tools], hacks them and 
 
 ~~~~~~~~-----========= THE NOT READY YET RIBBON =========------~~~~~~~~
 
--- NOT WORKING YET / COMMING SOON --
-
 ## **Mantri** is...
 
 * **✓** A Robust and discreet Dependency Management System.
-* **✓** A Javascript source bundling and minifying tool.
-* **✓** An intuitive debugging tool.
+* **✓** Synchronous. Everything is done before [DOMContentLoaded event][DOMContentLoaded] triggers.
+* **✓** A web library for your development environment.
 * **✓** A [Grunt][] plugin.
 * **✓** A command line tool (soon).
-* **✓** Cross-browser. Really dude, even mosaic will work!.
+* **✓** Cross-browser.
 
 ## **Mantri** does not...
 
 * **✗** Dictate how you write your code. Vanilla JS, [AMD][], [commonJS][], knock yourselves out.
-* **✗** Leave any footprint on the final, production bundled file. No dependencies, no runtime requirements, not a single bit.
+* **✗** Leave any footprint on the final, production file. No dependencies, no runtime requirements no overhead.
 * **✗** Need to have any dependency declarations in your production file.
 * **✗** Have any problem with moving around your JS files or folders in your codebase.
 * **✗** Have any problem working with other dependency systems.
@@ -85,4 +83,4 @@ Read more about the [web API in this wiki page][web-wiki]
 [grunt]: http://gruntjs.com/
 [Getting Started]: https://github.com/gruntjs/grunt/wiki/Getting-started
 [package.json]: https://npmjs.org/doc/json.html
-
+[DOMContentLoaded]: https://developer.mozilla.org/en-US/docs/Mozilla_event_reference/DOMContentLoaded_(event) "MDN DOMContentLoaded event"
