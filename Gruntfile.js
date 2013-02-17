@@ -39,7 +39,7 @@ module.exports = function( grunt ) {
 
     mantriDeps: {
       options: {
-
+        root: 'test/case'
       },
       testCase: {
         src: 'test/case/js',

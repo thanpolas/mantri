@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('mantriDeps', 'Run the dependency script', function() {
     var done = this.async();
-    mantriDeps.deps(done, this.target, this.files[0].src, this.files[0].dest);
+    mantriDeps.deps(done, this.files[0], this.options(), this.target);
   });
 
 
