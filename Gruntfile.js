@@ -42,7 +42,7 @@ module.exports = function( grunt ) {
 
       },
       testCase: {
-        src: 'test/case',
+        src: 'test/case/js',
         dest: 'temp/deps.js'
       }
     },
