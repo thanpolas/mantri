@@ -2,3 +2,4 @@ node_modules
 closure-library
 build/closure_compiler/sscompiler.jar
 wiki
+test/todoApp
