@@ -93,7 +93,7 @@ module.exports = function( grunt ) {
      */
 
     tempFile: 'temp/compiled.js',
-    distFile: 'dist/mantri.js',
+    distFile: 'dist/mantri.web.js',
 
     closureBuilder: {
       build: {

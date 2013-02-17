@@ -1,8 +1,10 @@
 /**
- * This file is prepended on the final built in order to perform
- * hacks, stubs and mocks for the closure library and its flow.
+ * mantri.web.js
  *
- * Look in grunt config.
+ * Traditionaλ Dependency System.
+ *
+ * This file should only be used in your development environment.
+ *
  */
 
 // do not allow closure to ask for deps.js
