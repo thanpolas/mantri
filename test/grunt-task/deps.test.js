@@ -21,7 +21,7 @@ describe('Grunt task :: dependency', function(){
   afterEach(function() {
   });
 
-  it('produce the proper result', function(){
+  it('should produce the right result for project == root', function(){
 
     var actualFile = 'deps.js';
     var actual = grunt.file.read(tmp + actualFile);
@@ -37,4 +37,21 @@ describe('Grunt task :: dependency', function(){
     assert.equal(actual, expected, 'task output should equal: ' + actualFile);
 
   });
+  it('should produce the right result for project != root', function(){
+
+    var actualFile = 'deps.two.js';
+    var actual = grunt.file.read(tmp + actualFile);
+    var expected = grunt.file.read(fixtures + actualFile);
+
+    // cheat a little, first line is the depsWriter.py full path declaration.
+    // this breaks tests in each different setup.
+    //
+    // so, remove first line from both files
+    actual = actual.split('\n').splice(1).join('\n');
+    expected = expected.split('\n').splice(1).join('\n');
+
+    assert.equal(actual, expected, 'task output should equal: ' + actualFile);
+
+  });
+
 });

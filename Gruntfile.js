@@ -38,13 +38,19 @@ module.exports = function( grunt ) {
     //
 
     mantriDeps: {
-      options: {
-        root: 'test/case'
-      },
       testCase: {
+        options: {
+          root: 'test/case'
+        },
         src: 'test/case/js',
         dest: 'temp/deps.js'
+      },
+
+      testCaseTwo: {
+        src: 'test/caseTwo/web',
+        dest: 'temp/deps.two.js'
       }
+
     },
 
     mantriBuild: {
@@ -192,11 +198,16 @@ module.exports = function( grunt ) {
   grunt.registerTask('test', 'Test all or specific targets', function(target) {
     var gruntTest = [
       'mantriDeps:testCase',
+      'mantriDeps:testCaseTwo',
       'mantriBuild:testCase',
       'mantriBuild:testCase',
       'mochaTest:gruntTasks'
-    ],
-        webTest   = ['connect:test', 'shell:mochaPhantom'];
+    ];
+
+    var webTest = [
+      'connect:test',
+      'shell:mochaPhantom'
+    ];
 
     switch( target ) {
       case 'tasks':
