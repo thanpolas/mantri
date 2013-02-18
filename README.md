@@ -4,8 +4,9 @@ Traditionaλ JS Dependency System.
 
 Mantri takes the powerful [Google Closure tools][closure-tools], hacks them and exposes a robust and developer friendly API to manage your projects' dependencies.
 
-
 ~~~~~~~~-----========= THE NOT READY YET RIBBON =========------~~~~~~~~
+
+[![Build Status](https://travis-ci.org/thanpolas/mantri.png?branch=master)](https://travis-ci.org/thanpolas/mantri)
 
 ## **Mantri** is...
 
