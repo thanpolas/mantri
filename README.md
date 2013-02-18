@@ -38,13 +38,13 @@ After Mantri is installed, use the `mantriInit` grunt task to initialize your we
 ```shell
 grunt mantriInit:www
 ```
-You now need to edit the [Gruntfile.js][] and add the `mantriDeps` and `mantriBuild` tasks. More details on this in the [Mantri as a grunt plugin wiki][grunt-wiki].
+You now need to edit the [Gruntfile.js][Gruntfile] and add the `mantriDeps` and `mantriBuild` tasks. More details on this in the [Mantri as a grunt plugin wiki][grunt-wiki].
 
 ### Two things to keep in mind
 
-Every time you create or edit a dependency declaration in your js app you need to run the [`mantriDeps`][] task to re-calculate your dependencies.
+Every time you create or edit a dependency declaration in your js app you need to run the [`mantriDeps`][mantriDeps] task to re-calculate your dependencies.
 
-Mantri is not meant to be used on your production environment. Whenever you want to deploy your app use the [`mantriBuild`][] task to bundle and minify your application into one file.
+Mantri is not meant to be used on your production environment. Whenever you want to deploy your app use the [`mantriBuild`][mantriBuild] task to bundle and minify your application into one file.
 
 ## The Web API
 
@@ -97,4 +97,5 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
 [DOMContentLoaded]: https://developer.mozilla.org/en-US/docs/Mozilla_event_reference/DOMContentLoaded_(event) "MDN DOMContentLoaded event"
 [mantriDeps]: https://github.com/thanpolas/mantri/wiki/Grunt-Task-mantriDeps "The mantriDeps grunt task"
 [mantriBuild]: https://github.com/thanpolas/mantri/wiki/Grunt-Task-mantriBuild "The mantriBuild grunt task"
+[Gruntfile]: https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile "Grunt's Gruntfile.js"
 
