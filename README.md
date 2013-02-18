@@ -12,7 +12,6 @@ Mantri takes the powerful [Google Closure tools][closure-tools], hacks them and 
 
 * **✓** A Robust and discreet Dependency Management System.
 * **✓** Synchronous. Everything is done before [DOMContentLoaded event][DOMContentLoaded] triggers.
-* **✓** A web library for your development environment.
 * **✓** A [Grunt][] plugin.
 * **✓** A command line tool (soon).
 * **✓** Cross-browser.
@@ -20,23 +19,32 @@ Mantri takes the powerful [Google Closure tools][closure-tools], hacks them and 
 ## **Mantri** does not...
 
 * **✗** Dictate how you write your code. Vanilla JS, [AMD][], [commonJS][], knock yourselves out.
-* **✗** Leave any footprint on the final, production file. No dependencies, no runtime requirements no overhead.
-* **✗** Need to have any dependency declarations in your production file.
-* **✗** Have any problem with moving around your JS files or folders in your codebase.
+* **✗** Need any runtime on your production file.
+* **✗** Need any dependency declarations in your production file.
+* **✗** Have any problem moving around JS files or folders.
 * **✗** Have any problem working with other dependency systems.
 * **✗** Polute your namespace. *But you are free to if you want*.
 
 ## Quick Start
 
-Currently **Mantri** is only available as a Grunt plugin. Install it via npm:
+Currently **Mantri** is only available as a [Grunt][] plugin. Install it via npm:
 
-```
+```shell
 npm install mantri --save-dev
 ```
 
-You now need to add the Grunt directives, go to the [Mantri as a grunt plugin wiki][grunt-wiki] for details on that.
+After Mantri is installed, use the `mantriInit` grunt task to initialize your web app. If your web root is in the folder `www` here's what you need to do:
 
-And visit the [Getting Started Guide][start-wiki] for a more detailed introduction.
+```shell
+grunt mantriInit:www
+```
+You now need to edit the [Gruntfile.js][] and add the `mantriDeps` and `mantriBuild` tasks. More details on this in the [Mantri as a grunt plugin wiki][grunt-wiki].
+
+### Two things to keep in mind
+
+Every time you create or edit a dependency declaration in your js app you need to run the [`mantriDeps`][] task to re-calculate your dependencies.
+
+Mantri is not meant to be used on your production environment. Whenever you want to deploy your app use the [`mantriBuild`][] task to bundle and minify your application into one file.
 
 ## The Web API
 
@@ -62,6 +70,8 @@ Read more about the [web API in this wiki page][web-wiki]
 
 ... [can be found in the wiki](https://github.com/thanpolas/mantri/wiki)
 
+Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
+
 ## A Fair Warning
 
 **Mantri** is fresh. So fresh the paint hasn't yet dried. We are in the `0.0.x` stage and the API may change radically in the future. Your comments, suggestions, use cases and love are more than required to drive this project forward. So please share your thoughts and concerns by opening an issue.
@@ -85,3 +95,6 @@ Read more about the [web API in this wiki page][web-wiki]
 [Getting Started]: https://github.com/gruntjs/grunt/wiki/Getting-started
 [package.json]: https://npmjs.org/doc/json.html
 [DOMContentLoaded]: https://developer.mozilla.org/en-US/docs/Mozilla_event_reference/DOMContentLoaded_(event) "MDN DOMContentLoaded event"
+[mantriDeps]: https://github.com/thanpolas/mantri/wiki/Grunt-Task-mantriDeps "The mantriDeps grunt task"
+[mantriBuild]: https://github.com/thanpolas/mantri/wiki/Grunt-Task-mantriBuild "The mantriBuild grunt task"
+
