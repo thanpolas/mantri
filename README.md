@@ -1,4 +1,4 @@
-# Mantri
+# Mantri [![Build Status](https://travis-ci.org/thanpolas/mantri.png?branch=master)](https://travis-ci.org/thanpolas/mantri)
 
 Traditionaλ JS Dependency System.
 

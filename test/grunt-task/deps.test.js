@@ -2,7 +2,7 @@
  * @fileOverview The dependency task test.
  */
 
-var tasks  = require('../../tasks/grunt_tasks')(),
+var tasks  = require('../../tasks/grunt_mantri')(),
     cTools = require('grunt-closure-tools')(),
     sinon  = require('sinon'),
     expect = require('chai').expect,

@@ -5,7 +5,8 @@
 
 var helpers = require('../lib/helpers'),
     build   = require('./grunt_build'),
-    deps    = require('./grunt_deps');
+    deps    = require('./grunt_deps'),
+    path         = require('path');
 
 module.exports = function(grunt) {
 
@@ -13,8 +14,11 @@ module.exports = function(grunt) {
   if ('object' !== typeof(grunt)) {
     return {
       helpers: helpers,
-      build: require('./mantri_build'),
-      deps: require('./mantro_deps')
+      build: require('../lib/mantri_build'),
+      deps: require('../lib/mantri_deps'),
+      gruntDeps: deps,
+      gruntBuild: build
+
     };
   }
 
@@ -33,5 +37,25 @@ module.exports = function(grunt) {
   // register the rest of the tasks
   build( grunt );
   deps( grunt );
+
+  grunt.registerTask('mantriInit', function( optPath ) {
+    var savePath = path.join ('./', optPath || '' );
+
+    var copyFiles = [
+      'dist/mantri.web.js',
+      'dist/mantriConf.json'
+    ];
+
+    var dest, src;
+    copyFiles.forEach( function( file ) {
+      src = helpers.getPath( file );
+      dest = path.join( savePath, path.basename( src ) );
+      helpers.log.info( 'Copying ' + src.cyan + ' -> ' + dest.cyan );
+      grunt.file.copy( src, dest );
+    });
+
+    helpers.log.info( 'You are ready to get started!' );
+
+  });
 
 };

@@ -1,0 +1,9 @@
+{
+  "baseUrl": "js/",
+  "libs": {},
+
+  "build": {
+    "input": "js/app.js",
+    "exclude": [""]
+  }
+}

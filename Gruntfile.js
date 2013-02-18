@@ -201,6 +201,7 @@ module.exports = function( grunt ) {
       'mantriDeps:testCaseTwo',
       'mantriBuild:testCase',
       'mantriBuild:testCase',
+      'mantriInit:temp/',
       'mochaTest:gruntTasks'
     ];
 
@@ -209,6 +210,11 @@ module.exports = function( grunt ) {
       'shell:mochaPhantom'
     ];
 
+    // clear temp folder
+    grunt.file.expand( ['temp/*'] )
+      .forEach( grunt.file.delete );
+
+    //return;
     switch( target ) {
       case 'tasks':
       case 'grunt':
