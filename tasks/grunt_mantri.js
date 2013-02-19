@@ -50,6 +50,15 @@ module.exports = function(grunt) {
     copyFiles.forEach( function( file ) {
       src = helpers.getPath( file );
       dest = path.join( savePath, path.basename( src ) );
+
+      // do not overwrite the conf file!
+      if ( grunt.file.isFile( dest ) &&
+        'mantriConf.json' === path.basename( dest )) {
+        helpers.log.warn( 'Did not copy ' + path.basename( dest ).red +
+          ' file, it already exists');
+        return;
+      }
+
       helpers.log.info( 'Copying ' + src.cyan + ' -> ' + dest.cyan );
       grunt.file.copy( src, dest );
     });
