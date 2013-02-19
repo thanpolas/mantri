@@ -2,7 +2,8 @@
 
 Traditionaλ JS Dependency System.
 
-Mantri takes the powerful [Google Closure tools][closure-tools], hacks them and exposes a robust and developer friendly API to manage your projects' dependencies.
+Mantri exposes a robust and developer friendly API to manage your projects' dependencies, by hacking the powerful [Google Closure Tools][closure-tools].
+
 
 ~~~~~~~~-----========= THE NOT READY YET RIBBON =========------~~~~~~~~
 
@@ -42,9 +43,9 @@ You now need to edit the [Gruntfile.js][Gruntfile] and add the `mantriDeps` and 
 
 ### Two things to keep in mind
 
-Every time you create or edit a dependency declaration in your js app you need to run the [`mantriDeps`][mantriDeps] task to re-calculate your dependencies.
+* Every time you create or edit a dependency declaration in your js app you need to run the [`mantriDeps`][mantriDeps] task to re-calculate your dependencies.
 
-Mantri is not meant to be used on your production environment. Whenever you want to deploy your app use the [`mantriBuild`][mantriBuild] task to bundle and minify your application into one file.
+* Mantri is not meant to be used on your production environment. Whenever you want to deploy your app use the [`mantriBuild`][mantriBuild] task to bundle and minify your application into one file.
 
 ## The Web API
 
