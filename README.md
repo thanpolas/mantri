@@ -55,8 +55,6 @@ The classical ToDo MVC application has been refactored to use the Mantri Depende
 git clone git@github.com:thanpolas/todoAppMantri.git
 ```
 
-Find the [Full Documentation in the wiki][wiki].
-
 ## The Web API
 
 Each file should provide a unique namespace and can require any number of other namespaces:
@@ -79,7 +77,7 @@ Read more about the [web API in this wiki page][web-wiki]
 
 ## Full Documentation
 
-... [can be found in the wiki](https://github.com/thanpolas/mantri/wiki)
+... [can be found in the wiki][wiki].
 
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
