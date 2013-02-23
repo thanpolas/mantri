@@ -47,9 +47,19 @@ You now need to edit the [Gruntfile.js][Gruntfile] and add the `mantriDeps` and 
 
 * Mantri is not meant to be used on your production environment. Whenever you want to deploy your app use the [`mantriBuild`][mantriBuild] task to bundle and minify your application into one file.
 
+### Hands On
+
+The classical ToDo MVC application has been refactored to use the Mantri Dependency System. You can [find the repo over here][ToDoApp], or clone it on the spot:
+
+```shell
+git clone git@github.com:thanpolas/todoAppMantri.git
+```
+
+Find the full [Documentation in the wiki][wiki].
+
 ## The Web API
 
-Each javascript file provides a unique namespace and can require any number of other namespaces:
+Each file should provide a unique namespace and can require any number of other namespaces:
 
 ```js
 goog.provide('app');
@@ -87,6 +97,7 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
 [closure-tools]: https://developers.google.com/closure/ "Google Closure Tools"
 [amd]: https://github.com/amdjs/amdjs-api/wiki/AMD "The Asynchronous Module Definition (AMD) API"
 [commonjs]: http://www.commonjs.org/ "CommonJS Module System"
+[wiki]: https://github.com/thanpolas/mantri/wiki "Mantri Documentation home"
 [config-wiki]: https://github.com/thanpolas/mantri/wiki/The-Web-Configuration-File "The Mantri web configuration file"
 [cli-wiki]: https://github.com/thanpolas/mantri/wiki/Mantri-on-the-Command-Line "Mantri on the Command Line"
 [start-wiki]: https://github.com/thanpolas/mantri/wiki/Getting-Started-Guide "Mantri Getting Started Guide"
@@ -99,4 +110,4 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
 [mantriDeps]: https://github.com/thanpolas/mantri/wiki/Grunt-Task-mantriDeps "The mantriDeps grunt task"
 [mantriBuild]: https://github.com/thanpolas/mantri/wiki/Grunt-Task-mantriBuild "The mantriBuild grunt task"
 [Gruntfile]: https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile "Grunt's Gruntfile.js"
-
+[ToDoApp]: https://github.com/thanpolas/todoAppMantri "The classical ToDo MVC app using Mantri's dependency management system"
