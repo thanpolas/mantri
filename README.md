@@ -49,13 +49,13 @@ You now need to edit the [Gruntfile.js][Gruntfile] and add the `mantriDeps` and 
 
 ### Hands On
 
-The classical ToDo MVC application has been refactored to use the Mantri Dependency System. You can [find the repo over here][ToDoApp], or clone it on the spot:
+The classical ToDo MVC application has been refactored to use the Mantri Dependency System. You can [find the repo  here][ToDoApp], or clone it on the spot:
 
 ```shell
 git clone git@github.com:thanpolas/todoAppMantri.git
 ```
 
-Find the full [Documentation in the wiki][wiki].
+Find the [Full Documentation in the wiki][wiki].
 
 ## The Web API
 
