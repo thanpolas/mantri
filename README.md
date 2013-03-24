@@ -5,7 +5,7 @@ Traditionaλ JS Dependency System.
 Mantri exposes a robust and developer friendly API to manage your projects' dependencies, by hacking the powerful [Google Closure Tools][closure-tools].
 
 
-[![Build Status](https://travis-ci.org/thanpolas/mantri.png?branch=master)](https://travis-ci.org/thanpolas/mantri)
+[![Build Status](https://travis-ci.org/closureplease/mantri.png?branch=master)](https://travis-ci.org/closureplease/mantri)
 
 ## **Mantri** is...
 
@@ -50,7 +50,7 @@ You now need to edit the [Gruntfile.js][Gruntfile] and add the `mantriDeps` and 
 The classical ToDo MVC application has been refactored to use the Mantri Dependency System. You can [find the repo  here][ToDoApp], or clone it on the spot:
 
 ```shell
-git clone git@github.com:thanpolas/todoAppMantri.git
+git clone git@github.com:closureplease/todoAppMantri.git
 ```
 
 ## The Web API
@@ -93,17 +93,17 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
 [closure-tools]: https://developers.google.com/closure/ "Google Closure Tools"
 [amd]: https://github.com/amdjs/amdjs-api/wiki/AMD "The Asynchronous Module Definition (AMD) API"
 [commonjs]: http://www.commonjs.org/ "CommonJS Module System"
-[wiki]: https://github.com/thanpolas/mantri/wiki "Mantri Documentation home"
-[config-wiki]: https://github.com/thanpolas/mantri/wiki/The-Web-Configuration-File "The Mantri web configuration file"
-[cli-wiki]: https://github.com/thanpolas/mantri/wiki/Mantri-on-the-Command-Line "Mantri on the Command Line"
-[start-wiki]: https://github.com/thanpolas/mantri/wiki/Getting-Started-Guide "Mantri Getting Started Guide"
-[web-wiki]: https://github.com/thanpolas/mantri/wiki/Mantri-Web-API "Mantri's Web API"
-[grunt-wiki]: https://github.com/thanpolas/mantri/wiki/Mantri-As-a-Grunt-Plugin "Using Mantri as a Grunt Plugin"
+[wiki]: https://github.com/closureplease/mantri/wiki "Mantri Documentation home"
+[config-wiki]: https://github.com/closureplease/mantri/wiki/The-Web-Configuration-File "The Mantri web configuration file"
+[cli-wiki]: https://github.com/closureplease/mantri/wiki/Mantri-on-the-Command-Line "Mantri on the Command Line"
+[start-wiki]: https://github.com/closureplease/mantri/wiki/Getting-Started-Guide "Mantri Getting Started Guide"
+[web-wiki]: https://github.com/closureplease/mantri/wiki/Mantri-Web-API "Mantri's Web API"
+[grunt-wiki]: https://github.com/closureplease/mantri/wiki/Mantri-As-a-Grunt-Plugin "Using Mantri as a Grunt Plugin"
 [grunt]: http://gruntjs.com/
 [Getting Started]: https://github.com/gruntjs/grunt/wiki/Getting-started
 [package.json]: https://npmjs.org/doc/json.html
 [DOMContentLoaded]: https://developer.mozilla.org/en-US/docs/Mozilla_event_reference/DOMContentLoaded_(event) "MDN DOMContentLoaded event"
-[mantriDeps]: https://github.com/thanpolas/mantri/wiki/Grunt-Task-mantriDeps "The mantriDeps grunt task"
-[mantriBuild]: https://github.com/thanpolas/mantri/wiki/Grunt-Task-mantriBuild "The mantriBuild grunt task"
+[mantriDeps]: https://github.com/closureplease/mantri/wiki/Grunt-Task-mantriDeps "The mantriDeps grunt task"
+[mantriBuild]: https://github.com/closureplease/mantri/wiki/Grunt-Task-mantriBuild "The mantriBuild grunt task"
 [Gruntfile]: https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile "Grunt's Gruntfile.js"
 [ToDoApp]: https://github.com/thanpolas/todoAppMantri "The classical ToDo MVC app using Mantri's dependency management system"

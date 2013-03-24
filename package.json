@@ -1,8 +1,8 @@
 {
   "name": "mantri",
   "description": "Traditionaλ JS Dependency System",
-  "version": "0.0.5",
-  "homepage": "https://github.com/thanpolas/mantri",
+  "version": "0.0.6",
+  "homepage": "https://github.com/closureplease/mantri",
   "author": {
     "name": "Thanasis Polychronakis",
     "email": "thanpolas@gmail.com",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/thanpolas/mantri.git"
+    "url": "git://github.com/closureplease/mantri.git"
   },
   "bugs": {
-    "url": "https://github.com/thanpolas/mantri/issues"
+    "url": "https://github.com/closureplease/mantri/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/thanpolas/mantri/blob/master/LICENSE-MIT"
+      "url": "https://github.com/closureplease/mantri/blob/master/LICENSE-MIT"
     }
   ],
   "main": "tasks/grunt_tasks.js",
