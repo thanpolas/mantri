@@ -3,3 +3,7 @@ closure-library
 build/closure_compiler/sscompiler.jar
 wiki
 test/todoApp
+docs
+_site_git
+sandbox
+mantrijs.com
