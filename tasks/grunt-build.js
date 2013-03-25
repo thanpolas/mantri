@@ -6,7 +6,7 @@
  * Licensed under the MIT license.
  */
 
-var mantriBuild = require('../lib/mantri_build');
+var mantriBuild = require('../lib/mantri-build');
 
 module.exports = function(grunt) {
   // Please see the grunt documentation for more information regarding task

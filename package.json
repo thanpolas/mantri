@@ -36,7 +36,8 @@
     "superstartup-closure-compiler": "0.1.4",
     "closure-tools": "0.1.1",
     "grunt-contrib-uglify": "git://github.com/thanpolas/grunt-contrib-uglify",
-    "grunt": "0.4.0rc6"
+    "grunt": "0.4.0rc6",
+    "nopt": "~2.1.1"
   },
   "devDependencies": {
     "grunt-contrib-watch": "0.2.0rc7",

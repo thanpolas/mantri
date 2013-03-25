@@ -4,23 +4,11 @@
  */
 
 var helpers = require('../lib/helpers'),
-    build   = require('./grunt_build'),
-    deps    = require('./grunt_deps'),
+    build   = require('./grunt-build'),
+    deps    = require('./grunt-deps'),
     path         = require('path');
 
-module.exports = function(grunt) {
-
-  // if grunt is not provided, then expose internal API
-  if ('object' !== typeof(grunt)) {
-    return {
-      helpers: helpers,
-      build: require('../lib/mantri_build'),
-      deps: require('../lib/mantri_deps'),
-      gruntDeps: deps,
-      gruntBuild: build
-
-    };
-  }
+function mantriMain(grunt) {
 
   // overwrite helper's logging methods
   helpers.log = {
@@ -67,4 +55,14 @@ module.exports = function(grunt) {
 
   });
 
-};
+}
+
+module.exports = mantriMain;
+
+mantriMain.helpers = helpers;
+mantriMain.build = require('../lib/mantri-build');
+mantriMain.deps = require('../lib/mantri-deps');
+mantriMain.cli = require('../lib/mantri-cli');
+mantriMain.gruntDeps = deps;
+mantriMain.gruntBuild = build;
+
