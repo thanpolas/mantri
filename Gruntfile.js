@@ -7,15 +7,15 @@
  * Licensed under the MIT license.
  */
 
-var mantri = require('./tasks/grunt_mantri'),
-    compiler = require( 'superstartup-closure-compiler' );
+var compiler = require( 'superstartup-closure-compiler' );
 
 var CLOSURE_LIBRARY = 'closure-library';
 
 module.exports = function( grunt ) {
   'use strict';
 
-  mantri(grunt);
+  // Load local tasks
+  grunt.loadTasks('tasks'); // getWiki, docs tasks
 
   var externsPath = 'build/externs/';
 

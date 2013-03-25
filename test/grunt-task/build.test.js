@@ -2,7 +2,7 @@
  * @fileOverview The build task test.
  */
 
-var tasks  = require('../../tasks/grunt_mantri')(),
+var tasks  = require('../../tasks/grunt-mantri'),
     cTools = require('grunt-closure-tools')(),
     sinon  = require('sinon'),
     expect = require('chai').expect,
