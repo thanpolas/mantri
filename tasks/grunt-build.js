@@ -15,11 +15,13 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('mantriBuild', 'Run the build script', function() {
     var done = this.async();
 
-    // TODO Not sure why .orig always works while .get doesn't
-    // maybe a bug, check it out. The issue appears when building for
-    // the testCase
-    mantriBuild.build(done, this.target, this.files[0].src,
-      this.files[0].dest, this.options() );
+    var opts = this.options({
+      src: this.files[0].src,
+      dest: this.files[0].dest,
+      target: this.target
+    });
+
+    mantriBuild.run(opts, done);
   });
 
 
