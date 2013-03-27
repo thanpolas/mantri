@@ -21,7 +21,7 @@
       "url": "https://github.com/closureplease/mantri/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "tasks/grunt-tasks.js",
+  "main": "tasks/grunt-mantri.js",
   "engines": {
     "node": ">= 0.8.0"
   },
