@@ -10,18 +10,6 @@ var helpers = require('../lib/helpers'),
 
 function mantriMain(grunt) {
 
-  // overwrite helper's logging methods
-  helpers.log = {
-    warn: function(msg) { grunt.log.warn(msg); },
-    info: function(msg) { grunt.log.writeln(msg); },
-    error: function(msg) { grunt.log.error(msg); },
-    debug: function(debug, msg) {
-      if ( !debug ) return;
-      grunt.log.writeln( 'debug :: '.blue + msg );
-    }
-
-  };
-
   // register the rest of the tasks
   build( grunt );
   deps( grunt );
@@ -58,6 +46,20 @@ function mantriMain(grunt) {
 }
 
 module.exports = mantriMain;
+
+// overwrite helper's logging methods
+var localGrunt = require('grunt');
+helpers.log = {
+  warn: function(msg) { localGrunt.log.warn(msg); },
+  info: function(msg) { localGrunt.log.writeln(msg); },
+  error: function(msg) { localGrunt.log.error(msg); },
+  debug: function(debug, msg) {
+    if ( !debug ) return;
+    localGrunt.log.writeln( 'debug :: '.blue + msg );
+  }
+
+};
+
 
 mantriMain.helpers = helpers;
 mantriMain.build = require('../lib/mantri-build');
