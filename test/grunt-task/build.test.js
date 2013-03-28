@@ -3,7 +3,7 @@
  */
 
 var tasks  = require('../../tasks/grunt-mantri'),
-    cTools = require('grunt-closure-tools')(),
+    cTools = require('grunt-closure-tools'),
     sinon  = require('sinon'),
     expect = require('chai').expect,
     assert = require('chai').assert,
