@@ -1,7 +1,7 @@
 {
   "name": "mantri",
   "description": "Traditionaλ JS Dependency System",
-  "version": "0.0.6",
+  "version": "0.1.0rc1",
   "homepage": "https://github.com/closureplease/mantri",
   "author": {
     "name": "Thanasis Polychronakis",
@@ -30,25 +30,24 @@
   },
   "dependencies": {
     "grunt-closure-tools": "~0.8.0",
-    "grunt-contrib-copy": "0.4.0rc7",
     "underscore": "1.4.4",
     "temporary": "~0.0.5",
     "superstartup-closure-compiler": "0.1.4",
     "closure-tools": "0.1.1",
     "grunt-contrib-uglify": "git://github.com/thanpolas/grunt-contrib-uglify",
-    "grunt": "0.4.0rc6",
-    "nopt": "~2.1.1"
+    "nopt": "~2.1.1",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt": "~0.4.1"
   },
   "devDependencies": {
-    "grunt-contrib-watch": "0.2.0rc7",
     "mocha-phantomjs": "2.0.0",
     "grunt-shell": "~0.2.0",
-    "grunt-contrib-nodeunit": "0.1.2rc6",
     "grunt-mocha-test": "~0.2.0",
     "chai": "~1.5.0",
     "sinon": "~1.5.2",
-    "grunt-contrib-concat": "~0.1.2rc6",
-    "grunt-contrib-connect": "~0.1.1rc6"
+    "grunt-contrib-concat": "~0.1.3",
+    "grunt-contrib-connect": "~0.2.0",
+    "grunt-contrib-watch": "~0.3.1"
   },
   "keywords": [
     "gruntplugin",
