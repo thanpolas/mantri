@@ -28,8 +28,15 @@ describe('Grunt task :: build :: ', function(){
     var actualFile = 'testCase.build.js';
     var actual = grunt.file.read(tmp + actualFile);
     var expected = grunt.file.read(fixtures + actualFile);
+    assert.equal(actual, expected, 'task output should equal: ' + actualFile);
+  });
+
+  it('should produce the proper result with outputWrapper', function() {
+    var actualFile = 'testCaseAlt.build.js';
+    var actual = grunt.file.read(tmp + actualFile);
+    var expected = grunt.file.read(fixtures + actualFile);
 
     assert.equal(actual, expected, 'task output should equal: ' + actualFile);
-
   });
+
 });

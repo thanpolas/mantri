@@ -1,0 +1,16 @@
+{
+  "baseUrl": "js/",
+  "libs": {
+    "jquery": "lib/jquery.min",
+    "handlebars": "lib/handlebars.min",
+    "ember": "lib/ember-latest.min",
+    "hbsCompiled": "app/templates/hbsCompiled"
+  },
+
+  "build": {
+    "input": "js/app.js",
+    "dest": "temp/testCaseAlt.build.js",
+    "outputWrapper": "(function(){<%=output%>}).call(this);",
+    "exclude": ["jquery"]
+  }
+}
