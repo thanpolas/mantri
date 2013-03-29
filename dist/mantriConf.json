@@ -4,6 +4,8 @@
 
   "build": {
     "input": "js/app.js",
+    "dest": "dest/app.min.js",
+    "outputWrapper": "",
     "exclude": [""]
   }
 }
