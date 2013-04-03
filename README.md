@@ -13,7 +13,7 @@ Visit http://mantrijs.com
 * **✓** A Robust and discreet Dependency Management System.
 * **✓** Synchronous. Everything is done before [DOMContentLoaded event][DOMContentLoaded] triggers.
 * **✓** A [Grunt][] plugin.
-* **✓** A command line tool (soon).
+* **✓** A command line tool.
 * **✓** Cross-browser.
 
 ## **Mantri** does not...
@@ -25,30 +25,35 @@ Visit http://mantrijs.com
 * **✗** Have any problem working with other dependency systems.
 * **✗** Polute your namespace. *But you are free to if you want*.
 
-## Quick Start
+## Getting Started
 
-Currently **Mantri** is only available as a [Grunt][] plugin. Install it via npm:
+Mantri consinsts of the Web API and the command line tools. The Web API will manage your application dependencies during development. The command line tools will build your application and calculate dependencies.
 
-```shell
-npm install mantri --save-dev
-```
+### Install
 
-After Mantri is installed, use the `mantriInit` grunt task to initialize your web app. If your web root is in the folder `www` here's what you need to do:
+Install the global Command Line Interface of Mantri. You only need to run this command once, and possibly it needs superuser rights so `sudo` may be required:
 
 ```shell
-grunt mantriInit:www
+npm install mantri-cli -g --silent
 ```
-You now need to edit the [Gruntfile.js][Gruntfile] and add the `mantriDeps` and `mantriBuild` tasks. More details on this in the [Mantri as a grunt plugin wiki][grunt-wiki].
+
+On your project, install the mantri library localy:
+
+```shell
+npm install mantri --silent --save-dev
+```
+
+Type `mantri` in the command line to get a list of available commands. Continue to the [Getting Started Guide][Getting Started].
 
 ### Two things to keep in mind
 
-* Every time you create or edit a dependency declaration in your js app you need to run the [`mantriDeps`][mantriDeps] task to re-calculate your dependencies.
+* Every time you edit or create a dependency declaration you need to run the [`mantriDeps`][mantriDeps] task or the `mantri deps` command to re-calculate your dependencies.
 
-* Mantri is not meant to be used on your production environment. Whenever you want to deploy your app use the [`mantriBuild`][mantriBuild] task to bundle and minify your application into one file.
+* Mantri is not meant to be used on your production environment. Whenever you want to deploy your app use the [`mantriBuild`][mantriBuild] task or the `mantri build` command to bundle and minify your application into one file.
 
-### Hands On
+## Hands On
 
-The classical ToDo MVC application has been refactored to use the Mantri Dependency System. You can [find the repo  here][ToDoApp], or clone it on the spot:
+The classical ToDo MVC application has been refactored to use the Mantri Dependency System. You can [find the repo  here][ToDoApp], or clone it:
 
 ```shell
 git clone git@github.com:closureplease/todoAppMantri.git
@@ -67,16 +72,18 @@ goog.require('app.view');
 ```
 
 Read more about the [web API in this wiki page][web-wiki]
+
 ## Dependencies
 
 [Google Closure Tools][closure-tools] have a couple dependencies, which are reasonable enough for any developer:
 
+* **Node** [Node.js 0.8.0](http://nodejs.org) or later.
 * **Java** [Java 1.6](http://java.com/) or later.
 * **Python** [Python 2.7](http://python.org/).
 
 ## Full Documentation
 
-... [can be found in the wiki][wiki].
+... [can be found in the wiki][wiki] or view the same on a more cozy web version at [mantrijs.com][]
 
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
@@ -108,3 +115,4 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
 [mantriBuild]: https://github.com/closureplease/mantri/wiki/Grunt-Task-mantriBuild "The mantriBuild grunt task"
 [Gruntfile]: https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile "Grunt's Gruntfile.js"
 [ToDoApp]: https://github.com/thanpolas/todoAppMantri "The classical ToDo MVC app using Mantri's dependency management system"
+[mantrijs.com]: http://mantrijs.com "Mantri Homepage"
