@@ -90,13 +90,10 @@ git clone git@github.com:closureplease/todoAppMantri.git
 
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
-## A Fair Warning
-
-**Mantri** is fresh. So fresh the paint hasn't yet dried. We are in the `0.0.x` stage and the API may change radically in the future. Your comments, suggestions, use cases and love are more than required to drive this project forward. So please share your thoughts and concerns by opening an issue.
-
-
-
 ## Release History
+- **v0.1.0**, *03 Apr 2013*
+  - First stable version
+  - Added CLI support
 - **v0.0.1**, *Mid Feb 2013*
   - Big Bang
 
