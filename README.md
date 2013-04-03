@@ -27,7 +27,7 @@ Visit http://mantrijs.com
 
 ## Getting Started
 
-Mantri consinsts of the Web Runtime and the Command Line Tools. The Web Runtime's job is to load the files of your application during development. The Command Line Tools perform various tasks like building your application and calculating dependencies.
+Mantri consists of the Web Runtime and the Command Line Tools. The Web Runtime's job is to load the files of your application during development. The Command Line Tools perform various tasks like building your application and calculating dependencies.
 
 ### Install
 
