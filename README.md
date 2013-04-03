@@ -46,21 +46,13 @@ On your project, install the mantri library localy:
 npm install mantri --silent --save-dev
 ```
 
-Type `mantri` in the command line to get a list of available commands. Continue to the [Getting Started Guide][Getting Started].
+Read the [Getting Started Guide][Getting Started] for a more detailed introduction.
 
 ### Two things to keep in mind
 
 * Every time you edit or create a dependency declaration you need to run the [`mantriDeps`][mantriDeps] task or the `mantri deps` command to re-calculate your dependencies.
 
 * Mantri is not meant to be used on your production environment. Whenever you want to deploy your app use the [`mantriBuild`][mantriBuild] task or the `mantri build` command to bundle and minify your application into one file.
-
-## Hands On
-
-The classical ToDo MVC application has been refactored to use the Mantri Dependency System. You can [find the repo  here][ToDoApp], or clone it:
-
-```shell
-git clone git@github.com:closureplease/todoAppMantri.git
-```
 
 ## The Web API
 
@@ -83,6 +75,14 @@ Read more about the [web API in this wiki page][web-wiki]
 * **Node** [Node.js 0.8.0](http://nodejs.org) or later.
 * **Java** [Java 1.6](http://java.com/) or later.
 * **Python** [Python 2.7](http://python.org/).
+
+## Hands On
+
+The classical ToDo MVC application has been refactored to use the Mantri Dependency System. You can [find the repo  here][ToDoApp], or clone it:
+
+```shell
+git clone git@github.com:closureplease/todoAppMantri.git
+```
 
 ## Full Documentation
 
