@@ -27,15 +27,18 @@ Visit http://mantrijs.com
 
 ## Getting Started
 
-Mantri consinsts of the Web API and the command line tools. The Web API will manage your application dependencies during development. The command line tools will build your application and calculate dependencies.
+Mantri consinsts of the Web Runtime and the Command Line Tools. The Web Runtime's job is to load the files of your application during development. The Command Line Tools perform various tasks like building your application and calculating dependencies.
 
 ### Install
 
-Install the global Command Line Interface of Mantri. You only need to run this command once, and possibly it needs superuser rights so `sudo` may be required:
+In order to get started, you'll want to install Mantri's command line interface (CLI) globally. You may need to use sudo (for OSX, *nix, BSD etc) or run your command shell as Administrator (for Windows) to do this.
 
 ```shell
-npm install mantri-cli -g --silent
+npm install -g mantri-cli --silent
 ```
+This will put the `mantri` command in your system path, allowing it to be run from any directory.
+
+Note that installing `mantri-cli` does not install the mantri library! The job of the mantri CLI is simple: run the version of mantri which has been installed in your application. This allows multiple versions of mantri to be installed on the same machine simultaneously.
 
 On your project, install the mantri library localy:
 
