@@ -15,10 +15,16 @@ var CLOSURE_LIBRARY = 'closure-library';
 module.exports = function( grunt ) {
   'use strict';
 
+  var pkg = grunt.file.readJSON('package.json');
+
   // Load local tasks
-  grunt.loadTasks('tasks'); // getWiki, docs tasks
+  grunt.loadTasks('tasks');
 
   var externsPath = 'build/externs/';
+
+  // load all grunt tasks
+  //require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+
 
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-mocha-test');
@@ -28,6 +34,7 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-release');
 
   //
   // Grunt configuration:
@@ -37,6 +44,8 @@ module.exports = function( grunt ) {
     // Project configuration
     // ---------------------
     //
+
+    pkg: pkg,
 
     mantriDeps: {
       testCase: {
@@ -85,6 +94,22 @@ module.exports = function( grunt ) {
       test: {
         files: ['dist/*.js', 'test/**/*.js'],
         tasks: ['test']
+      }
+    },
+
+    release: {
+      options: {
+        bump: false, //default: true
+        file: 'package.json', //default: package.json
+        add: true, //default: true
+        commit: true, //default: true
+        tag: true, //default: true
+        push: true, //default: true
+        pushTags: true, //default: true
+        npm: true, //default: true
+        tagName: 'v<%= version %>', //default: '<%= version %>'
+        commitMessage: 'releasing v<%= version %>', //default: 'release <%= version %>'
+        tagMessage: 'v<%= version %>' //default: 'Version <%= version %>'
       }
     },
 
@@ -202,7 +227,11 @@ module.exports = function( grunt ) {
   grunt.registerTask('deps', ['closureDepsWriter']);
   grunt.registerTask('server', ['connect:debug']);
 
-  grunt.registerTask('build', ['closureBuilder:build', 'concat:dist', 'copy:build']);
+  grunt.registerTask('build', [
+    'closureBuilder:build',
+    'concat:dist',
+    'copy:build'
+  ]);
 
   grunt.registerTask('test', 'Test all or specific targets', function(target) {
     var gruntTest = [
@@ -255,7 +284,11 @@ module.exports = function( grunt ) {
   function hackClosureSig (contents) {
     var closureSig = 'var goog = goog || {}; // Identifies this file as the Closure base.';
     var JSreplace = 'var goog = {};';
-    return contents.replace(closureSig, JSreplace);
+    contents = contents.replace(closureSig, JSreplace);
+
+    var verPlaceholder = '<--VERSION-->';
+    var replaceWith = pkg.version;
+    return contents.replace(verPlaceholder, replaceWith);
   }
 
 };
