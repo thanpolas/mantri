@@ -91,6 +91,8 @@ git clone git@github.com:closureplease/todoAppMantri.git
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
 ## Release History
+- **v0.1.1**, *12 Apr 2013*
+  - Bug fixes on web component for IE6,7,8,9
 - **v0.1.0**, *03 Apr 2013*
   - First stable version
   - Added CLI support
