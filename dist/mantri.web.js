@@ -1,5 +1,5 @@
 /**
- * mantri.web.js 0.1.2
+ * mantri.web.js 0.1.4
  *
  * Traditionaλ Dependency System.
  *
