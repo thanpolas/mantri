@@ -56,15 +56,10 @@ Mantri.Core = function() {
   this.init = goog.bind(this._config.fetch, this._config);
 };
 
-console.log('Checking TEST...');
 if ('undefined' === typeof(TESTTESTTEST)) {
-  console.log('TEST Passed...');
   // go
   window.mantri = new Mantri.Core();
   // roll the ball
   window.mantri.init();
 
 }
-
-console.log('Core Finish');
-

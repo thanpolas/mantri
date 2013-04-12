@@ -8,6 +8,7 @@
  */
 
 var compiler = require( 'superstartup-closure-compiler' );
+var gcTools = require('grunt-closure-tools');
 
 var CLOSURE_LIBRARY = 'closure-library';
 
@@ -114,10 +115,11 @@ module.exports = function( grunt ) {
               '\'COMPILED=false\''
             ],
             warning_level: 'verbose',
-            jscomp_off: [
-              'checkTypes',
-              'strictModuleDepCheck'
-            ],
+            jscomp_off: gcTools.closureOpts.compiler.jscomp_off,
+            // [
+            //   'checkTypes',
+            //   'strictModuleDepCheck'
+            // ],
             summary_detail_level: 3,
             only_closure_dependencies: null,
             closure_entry_point: 'Mantri'

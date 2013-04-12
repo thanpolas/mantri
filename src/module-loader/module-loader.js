@@ -8,6 +8,7 @@ goog.require('goog.dom');
 goog.require('goog.dom.dataset');
 goog.require('goog.Uri');
 goog.require('goog.events.EventTarget');
+goog.require('jQuery');
 
 
 /**
@@ -176,17 +177,6 @@ Mantri.ModuleLoader.prototype.getPathPrefix = function() {
  * @param {goog.events.Event} ev
  */
 Mantri.ModuleLoader.prototype.fetchDeps = function(ev) {
-  // stub goog.addDependency
-  // var gadd = goog.addDependency;
-  // var _this = this;
-  // goog.addDependency = function(relPath, provides, requires) {
-  //   if (!_this._depsLoaded) {
-  //     _this._depsLoaded = true;
-
-  //   }
-  //   gadd(relPath, provides, requires);
-  // };
-
   this._fetchDepsFile();
 };
 
@@ -218,7 +208,7 @@ Mantri.ModuleLoader.prototype._fetchDepsFile = function() {
 
   depsFile += Mantri.ModuleLoader.JS_EXT;
 
-  ajax({
+  jQuery.ajax({
     url: depsFile,
     async: false,
     dataType: 'text',

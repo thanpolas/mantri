@@ -7,18 +7,18 @@ describe('The web API :: Config :: ', function() {
   var stubWrite;
   var stubDataGet;
   var mantri;
-  var stubStart;
+  var stubFetchDeps;
   var stubAjax;
 
   beforeEach(function() {
-    stubStart = sinon.stub(Mantri.ModuleLoader.prototype, 'start');
+    stubFetchDeps = sinon.stub(Mantri.ModuleLoader.prototype, 'fetchDeps');
     stubWrite = sinon.stub(Mantri.ModuleLoader.prototype, 'writeScript');
     stubDataGet = sinon.stub(goog.dom.dataset, 'get');
-    stubAjax  = sinon.stub(window, 'ajax');
+    stubAjax  = sinon.stub(window.jQuery, 'ajax');
     mantri = new Mantri.Core();
   });
   afterEach(function() {
-    stubStart.restore();
+    stubFetchDeps.restore();
     stubDataGet.restore();
     stubAjax.restore();
     stubWrite.restore();
@@ -83,7 +83,7 @@ describe('The web API :: Config :: ', function() {
 
       it ('should move on even without a config invocation', function() {
         mantri.configFinished();
-        expect( stubStart.calledOnce ).to.be.true;
+        expect( stubFetchDeps.calledOnce ).to.be.true;
       });
 
       it('should make the proper amount of calls on writeScript', function() {

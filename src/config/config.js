@@ -6,7 +6,7 @@ goog.provide('Mantri.Config');
 goog.provide('Mantri.Config.EventType');
 goog.provide('Mantri.Config.Properties');
 
-goog.require('ajax');
+goog.require('jQuery');
 goog.require('goog.json');
 goog.require('goog.events.EventTarget');
 goog.require('goog.object');
@@ -133,11 +133,12 @@ Mantri.Config.prototype.fetch = function() {
     configPath = Mantri.Config.CONFIG_FILE;
   }
 
-  ajax({
+  jQuery.ajax({
     url: configPath,
     async: false,
     dataType: 'json',
     error: goog.bind( function( jqXHR, textStatus, errorThrown ) {
+      console.log('Mantri :: Config failed to load: ', textStatus, errorThrown);
       this._configDone();
     }, this ),
     success: goog.bind( function( data, text ) {
@@ -163,6 +164,7 @@ Mantri.Config.prototype.configFinished = function() {
  * @param  {Object} config The config object from the user.
  */
 Mantri.Config.prototype.parse = function(config) {
+
   if (!goog.isObject(config)) {
     this._configDone();
     return;
@@ -187,11 +189,8 @@ Mantri.Config.prototype.parse = function(config) {
  * @private
  */
 Mantri.Config.prototype._startLoading = function() {
-  console.log('Mantri.Config._startLoading():: this._scriptsToLoad: ', this._scriptsToLoad);
   var scriptPath = this._scriptsToLoad.shift();
-  console.log('Mantri.Config._startLoading():: scriptPath: ', scriptPath);
   while(scriptPath) {
-    console.log('Mantri.Config._startLoading():: loop scriptPath: ', scriptPath);
     scriptPath = this._baseUrl + scriptPath + Mantri.ModuleLoader.JS_EXT;
 
     this._loader.writeScript(scriptPath);

@@ -12,7 +12,7 @@ describe('The web API :: Proper paths :: ', function() {
 
   beforeEach(function() {
     stubDataGet = sinon.stub(goog.dom.dataset, 'get');
-    stubAjax  = sinon.stub(window, 'ajax');
+    stubAjax  = sinon.stub(window.jQuery, 'ajax');
 
 
     mantri = new Mantri.Core();
