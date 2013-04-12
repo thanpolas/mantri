@@ -41,8 +41,15 @@ Mantri.Core = function() {
   // expose startApp method (invoked internally)
   this.startApp = goog.bind(this._moduleLoader.startApp, this._moduleLoader);
 
+  // when config finishes fetch the dependencies file
   goog.events.listen(this._config, Mantri.Config.EventType.CONFIG_FINISH,
-    this._moduleLoader.start, false, this._moduleLoader);
+    this._moduleLoader.fetchDeps, false, this._moduleLoader);
+
+  // when dependencies finish loading start loading consumer's files
+  goog.events.listen(this._moduleLoader,
+    Mantri.ModuleLoader.EventType.DEPS_FINISH,
+    this._moduleLoader.loadModules, false, this._moduleLoader);
+
 
 
   // expose the starting point
@@ -59,6 +66,5 @@ if ('undefined' === typeof(TESTTESTTEST)) {
 
 }
 
-console.log('mantri:', mantri);
-console.log('mantri.startApp:', mantri.startApp);
+console.log('Core Finish');
 

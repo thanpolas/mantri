@@ -7,14 +7,18 @@ goog.provide('Mantri.ModuleLoader');
 goog.require('goog.dom');
 goog.require('goog.dom.dataset');
 goog.require('goog.Uri');
+goog.require('goog.events.EventTarget');
 
 
 /**
  * Takes care of module loading, starts with config directives.
  *
+ * @extends {goog.events.EventTarget}
  * @constructor
  */
 Mantri.ModuleLoader = function() {
+
+  goog.base(this);
 
   // figure out which is our entry point
   var scriptTags = document.getElementsByTagName('script');
@@ -43,7 +47,16 @@ Mantri.ModuleLoader = function() {
    */
   this._hasPathPrefix = false;
 
+  /**
+   * Switch indicating if deps file has been loaded.
+   *
+   * @type {boolean}
+   * @private
+   */
+  this._depsLoaded = false;
+
 };
+goog.inherits(Mantri.ModuleLoader, goog.events.EventTarget);
 goog.addSingletonGetter(Mantri.ModuleLoader);
 
 /**
@@ -65,6 +78,17 @@ Mantri.ModuleLoader.DEPS_DATA_KEY = 'deps';
 
 /** @const {string} the default deps file */
 Mantri.ModuleLoader.DEPS_DEFAULT = '/deps';
+
+
+/**
+ * Events triggered by this class.
+ *
+ * @enum {string}
+ */
+Mantri.ModuleLoader.EventType = {
+  DEPS_FINISH: 'moduleLoader.depsFinish'
+};
+
 
 /**
  * [get description]
@@ -146,17 +170,37 @@ Mantri.ModuleLoader.prototype.getPathPrefix = function() {
 
 
 /**
+ * Triggers on config finish. Stubs goog's addDependency and waits for
+ * deps to actually load, then emits an event.
+ *
+ * @param {goog.events.Event} ev
+ */
+Mantri.ModuleLoader.prototype.fetchDeps = function(ev) {
+  // stub goog.addDependency
+  // var gadd = goog.addDependency;
+  // var _this = this;
+  // goog.addDependency = function(relPath, provides, requires) {
+  //   if (!_this._depsLoaded) {
+  //     _this._depsLoaded = true;
+
+  //   }
+  //   gadd(relPath, provides, requires);
+  // };
+
+  this._fetchDepsFile();
+};
+
+/**
  * Triggers on config finish. Required assets have finished loading by now,
  * it's time to get the deps file if one exists, figure out what the entry point
  * of the application is and load it.
  *
  * @param {goog.events.Event} ev
  */
-Mantri.ModuleLoader.prototype.start = function(ev) {
-  this._fetchDepsFile();
-
-  this.writeScript('console.log(mantri);console.log(mantri.startApp);mantri.startApp();', true);
+Mantri.ModuleLoader.prototype.loadModules = function(ev) {
+  this.writeScript('mantri.startApp();', true);
 };
+
 
 /**
  * Determine the path of the dependency file and fetch it.
@@ -172,7 +216,37 @@ Mantri.ModuleLoader.prototype._fetchDepsFile = function() {
   var depsFile = elementDepFile || configDepFile ||
       Mantri.ModuleLoader.DEPS_DEFAULT;
 
-  this.writeScript(depsFile + Mantri.ModuleLoader.JS_EXT);
+  depsFile += Mantri.ModuleLoader.JS_EXT;
+
+  ajax({
+    url: depsFile,
+    async: false,
+    dataType: 'text',
+    error: goog.bind( function( jqXHR, textStatus, errorThrown ) {
+      console.log('ERROR LOADING DEPS FILE:', textStatus, errorThrown);
+      console.log('Mantri aborts');
+    }, this ),
+    success: goog.bind( function( data ) {
+      this._parseDeps(data);
+    }, this )
+  });
+};
+
+/**
+ * Parse the deps file.
+ *
+ * @param  {string} deps deps file in plain text.
+ * @private
+ */
+Mantri.ModuleLoader.prototype._parseDeps = function(deps) {
+  try {
+    eval(deps);
+  } catch (ex) {
+    console.log('FAILED TO PARSE DEPS FILE:', ex);
+    console.log('Mantri aborts');
+  }
+
+  this.dispatchEvent(Mantri.ModuleLoader.EventType.DEPS_FINISH);
 };
 
 
