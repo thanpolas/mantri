@@ -187,9 +187,11 @@ Mantri.Config.prototype.parse = function(config) {
  * @private
  */
 Mantri.Config.prototype._startLoading = function() {
+  console.log('Mantri.Config._startLoading():: this._scriptsToLoad: ', this._scriptsToLoad);
   var scriptPath = this._scriptsToLoad.shift();
+  console.log('Mantri.Config._startLoading():: scriptPath: ', scriptPath);
   while(scriptPath) {
-
+    console.log('Mantri.Config._startLoading():: loop scriptPath: ', scriptPath);
     scriptPath = this._baseUrl + scriptPath + Mantri.ModuleLoader.JS_EXT;
 
     this._loader.writeScript(scriptPath);
