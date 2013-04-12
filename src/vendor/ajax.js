@@ -497,11 +497,14 @@ function param(obj, traditional){
 
 function extend(target) {
   var slice = Array.prototype.slice;
-  slice.call(arguments, 1).forEach(function(source) {
+  var args = slice.call(arguments, 1);
+  var source;
+  for (var i = 0, len = args.length; i < len; i++) {
+    source = args[i];
     for (key in source)
       if (source[key] !== undefined)
         target[key] = source[key]
-  })
+  }
   return target
 }
 });
