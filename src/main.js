@@ -1,12 +1,12 @@
 /**
- * mantri. Javascript dependency management.
+ * Mantri Javascript dependency management.
  * @author Athanasios Polychronakis (thanpolas@gmail.com)
  * @license BSD
  */
 
 
 /**
- * @package mantri Javascript dependency management.
+ * Mantri Javascript dependency management.
  * createdate 01/Feb/2013
  */
 

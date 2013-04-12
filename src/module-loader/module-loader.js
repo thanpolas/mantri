@@ -1,5 +1,5 @@
 /**
- * @fileOverview Takes care of module loading, starts with config directives.
+ * @fileoverview Takes care of module loading, starts with config directives.
  */
 
 goog.provide('Mantri.ModuleLoader');
@@ -150,12 +150,12 @@ Mantri.ModuleLoader.prototype.getPathPrefix = function() {
  * it's time to get the deps file if one exists, figure out what the entry point
  * of the application is and load it.
  *
- * @param {goog.events.Event} e
+ * @param {goog.events.Event} ev
  */
-Mantri.ModuleLoader.prototype.start = function(e) {
+Mantri.ModuleLoader.prototype.start = function(ev) {
   this._fetchDepsFile();
 
-  this.writeScript('mantri.startApp();', true);
+  this.writeScript('console.log(mantri);console.log(mantri.startApp);mantri.startApp();', true);
 };
 
 /**

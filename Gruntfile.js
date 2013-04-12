@@ -112,7 +112,7 @@ module.exports = function( grunt ) {
             define: [
               '\'goog.DEBUG=false\'',
               '\'COMPILED=false\''
-              ],
+            ],
             warning_level: 'verbose',
             jscomp_off: [
               'checkTypes',
@@ -157,6 +157,13 @@ module.exports = function( grunt ) {
           base: './',
           keepalive: false
         }
+      },
+      debug: {
+        options: {
+          port: 4343,
+          base: './',
+          keepalive: true
+        }
       }
     },
     mochaPhantom: 'node_modules/mocha-phantomjs/bin/mocha-phantomjs' +
@@ -168,31 +175,30 @@ module.exports = function( grunt ) {
           options: {
             stdout: true
           }
-      },
-      mochaPhantomSpec: {
+        },
+        mochaPhantomSpec: {
           command: '<%= mochaPhantom %> -R spec',
           options: {
             stdout: true
           }
-      }
-    },
+        }
+      },
 
-    mochaTest: {
-      gruntTasks: [ 'test/grunt-task/**/*.js' ]
-    },
+      mochaTest: {
+        gruntTasks: [ 'test/grunt-task/**/*.js' ]
+      },
 
-    mochaTestConfig: {
-      gruntTasks: {
-        options: {
-          reporter: 'nyan'
+      mochaTestConfig: {
+        gruntTasks: {
+          options: {
+            reporter: 'nyan'
+          }
         }
       }
-    }
-
-
-  });
+    });
 
   grunt.registerTask('deps', ['closureDepsWriter']);
+  grunt.registerTask('server', ['connect:debug']);
 
   grunt.registerTask('build', ['closureBuilder:build', 'concat:dist', 'copy:build']);
 
@@ -217,17 +223,17 @@ module.exports = function( grunt ) {
 
     //return;
     switch( target ) {
-      case 'tasks':
-      case 'grunt':
-      case 'node':
-        grunt.task.run(gruntTest);
+    case 'tasks':
+    case 'grunt':
+    case 'node':
+      grunt.task.run(gruntTest);
       break;
-      case 'web':
-        grunt.task.run(webTest);
+    case 'web':
+      grunt.task.run(webTest);
       break;
-      default:
-        grunt.task.run(webTest);
-        grunt.task.run(gruntTest);
+    default:
+      grunt.task.run(webTest);
+      grunt.task.run(gruntTest);
       break;
     }
 

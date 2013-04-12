@@ -1,6 +1,6 @@
 /*jshint camelcase:false */
 /**
- * @fileOverview Handles loading, parsing and executing the config file.
+ * @fileoverview Handles loading, parsing and executing the config file.
  */
 goog.provide('Mantri.Config');
 goog.provide('Mantri.Config.EventType');
@@ -81,8 +81,8 @@ Mantri.Config.Properties = {
 
   // the build tree
   BUILD: 'build',
-    INPUT: 'input',
-    DEST: 'dest'
+  INPUT: 'input',
+  DEST: 'dest'
 
 };
 

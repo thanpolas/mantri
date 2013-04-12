@@ -44,14 +44,21 @@ Mantri.Core = function() {
   goog.events.listen(this._config, Mantri.Config.EventType.CONFIG_FINISH,
     this._moduleLoader.start, false, this._moduleLoader);
 
-  if ('undefined' === typeof(TESTTESTTEST)) {
-    // roll the ball
-    this._config.fetch();
-  }
 
+  // expose the starting point
+  this.init = goog.bind(this._config.fetch, this._config);
 };
 
+console.log('Checking TEST...');
 if ('undefined' === typeof(TESTTESTTEST)) {
+  console.log('TEST Passed...');
   // go
   window.mantri = new Mantri.Core();
+  // roll the ball
+  window.mantri.init();
+
 }
+
+console.log('mantri:', mantri);
+console.log('mantri.startApp:', mantri.startApp);
+
