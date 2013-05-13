@@ -91,6 +91,8 @@ git clone git@github.com:closureplease/todoAppMantri.git
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
 ## Release History
+- **v0.1.5**, *13 May 2013*
+  - Fix bug in Firefox. Not a permanent fix, [issue will remain open](https://github.com/closureplease/mantri/issues/5), [bugzilla issue created](https://bugzilla.mozilla.org/show_bug.cgi?id=871719).
 - **v0.1.1**, *12 Apr 2013*
   - Bug fixes on web component for IE6,7,8,9
 - **v0.1.0**, *03 Apr 2013*

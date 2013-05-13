@@ -99,7 +99,7 @@ module.exports = function( grunt ) {
 
     release: {
       options: {
-        bump: false, //default: true
+        bump: true, //default: true
         file: 'package.json', //default: package.json
         add: true, //default: true
         commit: true, //default: true
