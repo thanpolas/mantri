@@ -182,6 +182,7 @@ Mantri.ModuleLoader.prototype.fetchDeps = function(ev) {
 
 /**
  * Triggers on config finish. Required assets have finished loading by now,
+ * Triggers on config finish. Required vendor libs have finished loading by now,
  * it's time to get the deps file if one exists, figure out what the entry point
  * of the application is and load it.
  *
@@ -234,6 +235,7 @@ Mantri.ModuleLoader.prototype._parseDeps = function(deps) {
   } catch (ex) {
     console.log('FAILED TO PARSE DEPS FILE:', ex);
     console.log('Mantri aborts');
+    return;
   }
 
   this.dispatchEvent(Mantri.ModuleLoader.EventType.DEPS_FINISH);
