@@ -180,7 +180,7 @@ module.exports = function( grunt ) {
     connect: {
       test: {
         options: {
-          port: 4242,
+          port: 4243,
           base: './',
           keepalive: false
         }
@@ -194,7 +194,7 @@ module.exports = function( grunt ) {
       }
     },
     mochaPhantom: 'node_modules/mocha-phantomjs/bin/mocha-phantomjs' +
-      ' http://localhost:4242/test/web/index.html',
+      ' http://localhost:4243/test/web/index.html',
 
     shell: {
       mochaPhantom: {
