@@ -107,6 +107,22 @@ Mantri.ModuleLoader.prototype.getOwnScript = function() {
  */
 Mantri.ModuleLoader.prototype.writeScript = function (src, optInline) {
 
+  // Firefox hack.
+  //
+  // Firefox will screw up the order of how libs are written in the Document
+  // after the Synchronous XHR operation.
+  // This hack ensures the libs load in proper sequence.
+  //
+  // GH Issue: https://github.com/closureplease/mantri/issues/5
+  // Bugzilla issue: https://bugzilla.mozilla.org/show_bug.cgi?id=871719
+  // Plunk replicating issue: http://run.plnkr.co/plunks/qcgwOGHh6yDDHBPUEtVT/
+  var is_firefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+
+  if (is_firefox) {
+    this._writeScriptFF(src, optInline);
+    return;
+  }
+
   var pathPrefix = this.getPathPrefix();
   var out = '<script type="text/javascript"';
   if (!optInline) {
@@ -117,6 +133,28 @@ Mantri.ModuleLoader.prototype.writeScript = function (src, optInline) {
   out += '</script>';
   document.write(out);
 };
+
+/**
+ * https://bugzilla.mozilla.org/show_bug.cgi?id=871719
+ *
+ * @param  {string} src A canonical path.
+ * @param  {boolean=} optInline set to true to append inline javascript.
+ * @private
+ */
+Mantri.ModuleLoader.prototype._writeScriptFF = function (src, optInline) {
+
+  var script = document.createElement('script');
+
+  if (!optInline) {
+    var pathPrefix = this.getPathPrefix();
+    script.src= pathPrefix + src;
+  } else {
+    script.text = src;
+  }
+
+  document.body.appendChild(script);
+};
+
 
 /**
  * Figure out what prefix is required for the scripts to load.
