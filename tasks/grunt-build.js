@@ -21,8 +21,6 @@ module.exports = function(grunt) {
       target: this.target
     });
 
-    mantriBuild.run(opts, done);
+    mantriBuild.useMantriConf(opts, done);
   });
-
-
 };
