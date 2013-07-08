@@ -50,8 +50,6 @@ Mantri.Core = function() {
     Mantri.ModuleLoader.EventType.DEPS_FINISH,
     this._moduleLoader.loadModules, false, this._moduleLoader);
 
-
-
   // expose the starting point
   this.init = goog.bind(this._config.fetch, this._config);
 };
