@@ -6,6 +6,10 @@
  * Licensed under the MIT license.
  */
 
+var path = require('path');
+
+var __ = require('lodash');
+
 var mantriBuild = require('../lib/mantri-build');
 
 module.exports = function(grunt) {
@@ -15,12 +19,38 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('mantriBuild', 'Run the build script', function() {
     var done = this.async();
 
+    var src = this.files[0].src[0];
+
+    if (!src) {
+      grunt.log.error('No valid value was found in the "src" field');
+      return done(false);
+    }
+
+    // validate and check extension of source
+    if (!__.isString(src)) {
+      grunt.log.error('Mantri only accepts type String as value for "src" field');
+      return done(false);
+    }
+
+    var srcExt = src.split('.').pop();
+    if (0 > ['js', 'json'].indexOf(srcExt)) {
+      grunt.log.error('Mantri only accepts files with ".js" or ".json" extention' +
+        ' as value for "src" field (case sensitive)');
+      return done(false);
+    }
+
     var opts = this.options({
-      src: this.files[0].src,
+      src: src,
       dest: this.files[0].dest,
       target: this.target
     });
 
-    mantriBuild.useMantriConf(opts, done);
+    // determine if mantriConf.json was defined or a .js file
+    if ('json' === srcExt) {
+      mantriBuild.useMantriConf(opts, done);
+    } else {
+      opts.jsRoot = opts.jsRoot || path.dirname(src);
+      mantriBuild.run(opts, done);
+    }
   });
 };
