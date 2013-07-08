@@ -65,7 +65,6 @@ module.exports = function( grunt ) {
 
     mantriBuild: {
       options: {
-
       },
       testCase: {
         options: {
@@ -76,7 +75,15 @@ module.exports = function( grunt ) {
       },
       testCaseAlt: {
         src: 'test/case/mantriAlt.json'
-      }
+      },
+
+      testCaseNoConf: {
+        options: {
+          documentRoot: 'test/case',
+        },
+        src: 'test/case/js/app.js',
+        dest: 'temp/testCaseNoConf.build.js',
+      },
     },
     closureDepsWriter: {
       options: {
@@ -239,6 +246,7 @@ module.exports = function( grunt ) {
       'mantriDeps:testCaseTwo',
       'mantriBuild:testCase',
       'mantriBuild:testCaseAlt',
+      'mantriBuild:testCaseNoConf',
       'mantriInit:temp/',
       'mochaTest:gruntTasks'
     ];
