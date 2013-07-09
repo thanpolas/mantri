@@ -76,7 +76,8 @@ module.exports = function( grunt ) {
       testCaseAlt: {
         src: 'test/case/mantriAlt.json'
       },
-
+    },
+    mantriBuiltModules: {
       testCaseNoConf: {
         options: {
           documentRoot: 'test/case',
@@ -246,7 +247,7 @@ module.exports = function( grunt ) {
       'mantriDeps:testCaseTwo',
       'mantriBuild:testCase',
       'mantriBuild:testCaseAlt',
-      'mantriBuild:testCaseNoConf',
+      'mantriBuiltModules:testCaseNoConf',
       'mantriInit:temp/',
       'mochaTest:gruntTasks'
     ];

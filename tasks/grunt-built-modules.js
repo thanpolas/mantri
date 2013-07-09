@@ -1,4 +1,4 @@
-/*
+/**
  * mantri
  * https://github.com/thanpolas/mantri
  *
@@ -16,7 +16,7 @@ module.exports = function(grunt) {
   // Please see the grunt documentation for more information regarding task
   // creation: https://github.com/gruntjs/grunt/blob/devel/docs/toc.md
 
-  grunt.registerMultiTask('mantriBuild', 'Run the build script', function() {
+  grunt.registerMultiTask('mantriBuiltModules', 'Run the built-modules script', function() {
     var done = this.async();
 
     var src = this.files[0].src[0];
@@ -33,9 +33,9 @@ module.exports = function(grunt) {
     }
 
     var srcExt = src.split('.').pop();
-    if (0 > ['json'].indexOf(srcExt)) {
-      grunt.log.error('Mantri only accepts a single file with ".json" extention' +
-        ' as value for "src" field (case sensitive)');
+    if (0 > ['js'].indexOf(srcExt)) {
+      grunt.log.error('Mantri only accepts files with ".js" extention' +
+        ' as value for "src" field (case sensitive) for the built-modules task.');
       return done(false);
     }
 
@@ -45,6 +45,7 @@ module.exports = function(grunt) {
       target: this.target
     });
 
-    mantriBuild.useMantriConf(opts, done);
+    opts.jsRoot = opts.jsRoot || path.dirname(src);
+    mantriBuild.run(opts, done);
   });
 };
