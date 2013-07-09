@@ -1,6 +1,6 @@
 {
-  "baseUrl": "js/",
-  "libs": {
+  "jsRoot": "js/",
+  "vendorLibs": {
     "jquery": "lib/jquery.min",
     "handlebars": "lib/handlebars.min",
     "ember": "lib/ember-latest.min",
@@ -8,7 +8,7 @@
   },
 
   "build": {
-    "input": "js/app.js",
-    "exclude": ["jquery"]
+    "src": "js/app.js",
+    "excludeVendor": ["jquery"]
   }
 }
