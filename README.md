@@ -91,6 +91,13 @@ git clone git@github.com:closureplease/todoAppMantri.git
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
 ## Release History
+- **v0.2.0**, *10 Jul 2013*
+  - New Feature: Can now build multiple targets ([Built-Modules][]) using the new [`mantriBuiltModules` Grunt Task][mantriBuiltModules].
+  - Changed `mantriConf.json` keys:
+    - `baseUrl` --> `jsRoot`
+    - `libs` --> `vendorLibs`
+    - `build.input` --> `build.src`
+    - `build.exclude` --> `build.excludeVendor`
 - **v0.1.5**, *13 May 2013*
   - Fix bug in Firefox. Not a permanent fix, [issue will remain open](https://github.com/closureplease/mantri/issues/5), [bugzilla issue created](https://bugzilla.mozilla.org/show_bug.cgi?id=871719).
 - **v0.1.1**, *12 Apr 2013*
@@ -120,3 +127,6 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
 [Gruntfile]: https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile "Grunt's Gruntfile.js"
 [ToDoApp]: https://github.com/thanpolas/todoAppMantri "The classical ToDo MVC app using Mantri's dependency management system"
 [mantrijs.com]: http://mantrijs.com "Mantri Homepage"
+[built-modules]: http://thanpol.as/javascript/writing-modular-javascript-rewind/#the_builtmodule "The Built-Module - Writing Modular Javascript REWIND by Thanasis Polychronakis"
+[mantriBuiltModules]: http://google.com "FIXME FIXME"
+
