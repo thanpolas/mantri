@@ -8,7 +8,7 @@
   },
 
   "build": {
-    "src": "js/app.js",
+    "src": "test/case/js/app.js",
     "dest": "temp/testCaseAlt.build.js",
     "outputWrapper": "(function(){<%=output%>}).call(this);",
     "excludeVendor": ["jquery"]
