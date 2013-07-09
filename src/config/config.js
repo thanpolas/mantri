@@ -75,13 +75,13 @@ goog.addSingletonGetter(Mantri.Config);
  * @enum {string}
  */
 Mantri.Config.Properties = {
-  BASEURL: 'baseUrl',
-  LIBS: 'libs',
+  BASEURL: 'jsRoot',
+  LIBS: 'vendorLibs',
   NAMESPACE: 'require',
 
   // the build tree
   BUILD: 'build',
-  INPUT: 'input',
+  INPUT: 'src',
   DEST: 'dest'
 
 };
