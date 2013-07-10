@@ -1,6 +1,6 @@
 {
-  "baseUrl": "js/",
-  "libs": {},
+  "jsRoot": "js/",
+  "vendorLibs": {},
 
   "deps": {
     "src": "js/",
@@ -9,9 +9,9 @@
   },
 
   "build": {
-    "input": "js/app.js",
+    "src": "js/app.js",
     "dest": "dist/app.min.js",
     "outputWrapper": "",
-    "exclude": [""]
+    "excludeVendor": [""]
   }
 }
