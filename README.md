@@ -112,7 +112,8 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
 [web-wiki]: https://github.com/closureplease/mantri/wiki#the-web-api "Mantri's Web API"
 [grunt-wiki]: https://github.com/closureplease/mantri/wiki/Mantri-As-a-Grunt-Plugin "Using Mantri as a Grunt Plugin"
 [grunt]: http://gruntjs.com/
-[Getting Started]: https://github.com/gruntjs/grunt/wiki/Getting-started
+[Getting Started]: http://mantrijs.com/getting-started/ "Mantri Getting Started guide"
+[Grunt Getting Started]: https://github.com/gruntjs/grunt/wiki/Getting-started
 [package.json]: https://npmjs.org/doc/json.html
 [DOMContentLoaded]: https://developer.mozilla.org/en-US/docs/Mozilla_event_reference/DOMContentLoaded_(event) "MDN DOMContentLoaded event"
 [mantriDeps]: https://github.com/closureplease/mantri/wiki/Grunt-Task-mantriDeps "The mantriDeps grunt task"
