@@ -109,7 +109,7 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
 [config-wiki]: https://github.com/closureplease/mantri/wiki/The-Web-Configuration-File "The Mantri web configuration file"
 [cli-wiki]: https://github.com/closureplease/mantri/wiki/Mantri-on-the-Command-Line "Mantri on the Command Line"
 [start-wiki]: https://github.com/closureplease/mantri/wiki/Getting-Started-Guide "Mantri Getting Started Guide"
-[web-wiki]: https://github.com/closureplease/mantri/wiki/Mantri-Web-API "Mantri's Web API"
+[web-wiki]: https://github.com/closureplease/mantri/wiki#the-web-api "Mantri's Web API"
 [grunt-wiki]: https://github.com/closureplease/mantri/wiki/Mantri-As-a-Grunt-Plugin "Using Mantri as a Grunt Plugin"
 [grunt]: http://gruntjs.com/
 [Getting Started]: https://github.com/gruntjs/grunt/wiki/Getting-started
