@@ -12,7 +12,7 @@ fix.conf.plain = {
 };
 
 fix.conf.baseUrl = {
-  baseUrl: 'js/',
+  jsRoot: 'js/',
   vendorLibs: {
     jquery: '../assets/jquery.min',
     handlebars: '../assets/handlebars.min',
@@ -22,7 +22,7 @@ fix.conf.baseUrl = {
 };
 
 fix.conf.baseUrlAbsolute = {
-  baseUrl: '/js/',
+  jsRoot: '/js/',
   vendorLibs: {
     jquery: '../assets/jquery.min',
     handlebars: '../assets/handlebars.min',
@@ -32,7 +32,7 @@ fix.conf.baseUrlAbsolute = {
 };
 
 fix.conf.baseUrlDotSlash = {
-  baseUrl: './',
+  jsRoot: './',
   vendorLibs: {
     jquery: '../assets/jquery.min',
     handlebars: '../assets/handlebars.min',

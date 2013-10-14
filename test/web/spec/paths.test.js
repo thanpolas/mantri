@@ -3,7 +3,6 @@
  *
  */
 
-
 describe('3. The web API :: Proper paths :: ', function() {
   var stubWrite,
       mantri,
@@ -52,6 +51,7 @@ describe('3. The web API :: Proper paths :: ', function() {
     it('3.1.2 should prepend the baseUrl on write calls and compensate for paths', function() {
       stubAjax.yieldsTo('success', fix.conf.baseUrl);
       mantri.fetchConfig();
+
       expect( stubWrite.getCall(0).args[0] ).to.equal( buildScript( '../../js/../assets/jquery.min.js' ));
       expect( stubWrite.getCall(1).args[0] ).to.equal( buildScript( '../../js/../assets/handlebars.min.js' ));
       expect( stubWrite.getCall(2).args[0] ).to.equal( buildScript( '../../js/lib/ember-latest.min.js' ));
