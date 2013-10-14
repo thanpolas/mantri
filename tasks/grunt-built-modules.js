@@ -16,7 +16,7 @@ module.exports = function(grunt) {
   // Please see the grunt documentation for more information regarding task
   // creation: https://github.com/gruntjs/grunt/blob/devel/docs/toc.md
 
-  grunt.registerMultiTask('mantriBuiltModules', 'Run the built-modules script', function() {
+  grunt.registerMultiTask('mantriBuildModules', 'Build multiple module targets', function() {
     var done = this.async();
 
     var src = this.files[0].src[0];
@@ -42,7 +42,8 @@ module.exports = function(grunt) {
     var opts = this.options({
       src: src,
       dest: this.files[0].dest,
-      target: this.target
+      target: this.target,
+      noVendorLibs: true,
     });
 
     opts.jsRoot = opts.jsRoot || path.dirname(src);
