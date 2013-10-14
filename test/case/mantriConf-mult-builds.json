@@ -11,7 +11,7 @@
     "src": "test/case/js/app-mult-build-core.js",
     "dest": "temp/app-mult-build-core.min.js",
     "excludeVendor": ["jquery"]
-  }
+  },
   "buildModules": [{
     "name": "moduleOne",
     "src": "test/case/js/app-mult-build-module-one.js",
