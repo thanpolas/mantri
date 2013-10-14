@@ -4,7 +4,7 @@
  */
 
 
-describe('The web API :: Proper paths :: ', function() {
+describe('3. The web API :: Proper paths :: ', function() {
   var stubWrite,
       mantri,
       stubDataGet,
@@ -30,7 +30,7 @@ describe('The web API :: Proper paths :: ', function() {
       '"></script>';
   }
 
-  describe('Config and vendor deps :: ', function() {
+  describe('3.1 Config and vendor deps :: ', function() {
 
     beforeEach( function() {
       stubWrite = sinon.stub(document, 'write');
@@ -39,7 +39,7 @@ describe('The web API :: Proper paths :: ', function() {
       stubWrite.restore();
     });
 
-    it('should require vendor libs, using correct paths (we are 2' +
+    it('3.1.1 should require vendor libs, using correct paths (we are 2' +
       ' folders deep), at the right sequence', function() {
       stubAjax.yieldsTo('success', fix.conf.plain);
       mantri.fetchConfig();
@@ -49,7 +49,7 @@ describe('The web API :: Proper paths :: ', function() {
       expect( stubWrite.getCall(3).args[0] ).to.equal( buildScript( '../../../assets/jasmine/jasmine.js' ));
     });
 
-    it('should prepend the baseUrl on write calls and compensate for paths', function() {
+    it('3.1.2 should prepend the baseUrl on write calls and compensate for paths', function() {
       stubAjax.yieldsTo('success', fix.conf.baseUrl);
       mantri.fetchConfig();
       expect( stubWrite.getCall(0).args[0] ).to.equal( buildScript( '../../js/../assets/jquery.min.js' ));
@@ -58,7 +58,7 @@ describe('The web API :: Proper paths :: ', function() {
       expect( stubWrite.getCall(3).args[0] ).to.equal( buildScript( '../../js/../assets/jasmine/jasmine.js' ));
     });
 
-    it('should treat an absolute baseUrl properly, ignoring the current path.', function() {
+    it('3.2.3 should treat an absolute baseUrl properly, ignoring the current path.', function() {
       stubAjax.yieldsTo('success', fix.conf.baseUrlAbsolute);
       mantri.fetchConfig();
       expect( stubWrite.getCall(0).args[0] ).to.equal( buildScript( '/js/../assets/jquery.min.js' ));
@@ -67,7 +67,7 @@ describe('The web API :: Proper paths :: ', function() {
       expect( stubWrite.getCall(3).args[0] ).to.equal( buildScript( '/js/../assets/jasmine/jasmine.js' ));
     });
 
-    it('should treat a path starting with dot slash properly, ignoring the current path.', function() {
+    it('3.2.4 should treat a path starting with dot slash properly, ignoring the current path.', function() {
       stubAjax.yieldsTo('success', fix.conf.baseUrlDotSlash);
       mantri.fetchConfig();
       expect( stubWrite.getCall(0).args[0] ).to.equal( buildScript( './../assets/jquery.min.js' ));
@@ -79,7 +79,7 @@ describe('The web API :: Proper paths :: ', function() {
 
 
 
-    it('should compensate for paths even if alternative config file is defined', function() {
+    it('3.2.5 should compensate for paths even if alternative config file is defined', function() {
 
       stubAjax.yieldsTo('success', fix.conf.plain);
       stubDataGet.returns('one/foo/bar');

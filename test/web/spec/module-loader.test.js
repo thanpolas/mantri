@@ -4,7 +4,7 @@
  */
 
 
-describe('The web API :: module-loader :: ', function() {
+describe('2. The web API :: module-loader :: ', function() {
   var stubWrite;
   var mantri;
   var stubDataGet;
@@ -24,18 +24,18 @@ describe('The web API :: module-loader :: ', function() {
     stubRequire.restore();
   });
 
-  it('should check for element\'s data-require once.', function() {
+  it('2.1 should check for element\'s data-require once.', function() {
     mantri.startApp();
     expect( stubDataGet.calledOnce ).to.be.true;
   });
 
-  it('should check for data-require to find the starting namespace.', function() {
+  it('2.2 should check for data-require to find the starting namespace.', function() {
     mantri.startApp();
     expect( stubDataGet.getCall(0).args[1] ).to.equal( 'require' );
   });
 
 
-  describe('goog.require()', function() {
+  describe('2.3 goog.require()', function() {
     var stubConfig;
 
     beforeEach( function() {
@@ -46,15 +46,15 @@ describe('The web API :: module-loader :: ', function() {
       stubConfig.restore();
     });
 
-    it('should call goog.require() once', function() {
+    it('2.3.1 should call goog.require() once', function() {
       mantri.startApp();
       expect( stubRequire.calledOnce ).to.be.true;
     });
-    it('should call goog.require() with the default namespace', function() {
+    it('2.3.2 should call goog.require() with the default namespace', function() {
       mantri.startApp();
       expect( stubRequire.getCall(0).args[0] ).to.equal( 'app' );
     });
-    it('should call goog.require() with the defined namespace', function() {
+    it('2.3.3 should call goog.require() with the defined namespace', function() {
       stubDataGet.returns( 'custom.namespace' );
       mantri.startApp();
       expect( stubRequire.getCall(0).args[0] ).to.equal( 'custom.namespace' );

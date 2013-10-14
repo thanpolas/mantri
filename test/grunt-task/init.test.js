@@ -13,7 +13,7 @@ var tasks  = require('../../tasks/grunt-mantri'),
 var tmp = 'temp/';
 var fixtures = 'dist/';
 
-describe('Grunt task :: init', function(){
+describe('12. Grunt task :: init', function(){
 
   beforeEach(function() {
   });
@@ -21,13 +21,13 @@ describe('Grunt task :: init', function(){
   afterEach(function() {
   });
 
-  it('should copy the mantri.web.js file', function(){
+  it('12.1 should copy the mantri.web.js file', function(){
     var actualFile = 'mantri.web.js';
     var actual = grunt.file.read(tmp + actualFile);
     var expected = grunt.file.read(fixtures + actualFile);
     assert.equal(actual, expected, 'task output should equal: ' + actualFile);
   });
-  it('should copy the mantriConf.json file', function(){
+  it('12.2 should copy the mantriConf.json file', function(){
     var actualFile = 'mantriConf.json';
     var actual = grunt.file.read(tmp + actualFile);
     var expected = grunt.file.read(fixtures + actualFile);
