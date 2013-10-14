@@ -77,7 +77,7 @@ module.exports = function( grunt ) {
         src: 'test/case/mantriAlt.json'
       },
     },
-    mantriBuiltModules: {
+    mantriBuildModules: {
       testCaseNoConf: {
         options: {
           documentRoot: 'test/case',
