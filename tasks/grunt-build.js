@@ -34,17 +34,17 @@ module.exports = function(grunt) {
 
     var srcExt = src.split('.').pop();
     if (0 > ['json'].indexOf(srcExt)) {
-      grunt.log.error('Mantri only accepts a single file with ".json" extention' +
+      grunt.log.error('mantriBuild Task only accepts a single file with ".json" extention' +
         ' as value for "src" field (case sensitive)');
       return done(false);
     }
 
     var opts = this.options({
-      src: src,
+      mantriConf: src,
       dest: this.files[0].dest,
       target: this.target
     });
 
-    mantriBuild.useMantriConf(opts, done);
+    mantriBuild.run(opts, done);
   });
 };
