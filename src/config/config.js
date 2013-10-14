@@ -138,12 +138,9 @@ Mantri.Config.prototype.fetch = function() {
     async: false,
     dataType: 'json',
     error: goog.bind( function( jqXHR, textStatus, errorThrown ) {
-      console.log('Mantri :: Config failed to load: ', textStatus, errorThrown);
       this._configDone();
     }, this ),
-    success: goog.bind( function( data, text ) {
-      this.parse( data );
-    }, this )
+    success: goog.bind( this.parse, this)
   });
 
 };
