@@ -3,7 +3,7 @@ var fix = fix || {};
 fix.conf = {};
 
 fix.conf.plain = {
-  libs: {
+  vendorLibs: {
     jquery: '../assets/jquery.min',
     handlebars: '../assets/handlebars.min',
     ember: 'lib/ember-latest.min',
@@ -13,7 +13,7 @@ fix.conf.plain = {
 
 fix.conf.baseUrl = {
   baseUrl: 'js/',
-  libs: {
+  vendorLibs: {
     jquery: '../assets/jquery.min',
     handlebars: '../assets/handlebars.min',
     ember: 'lib/ember-latest.min',
@@ -23,7 +23,7 @@ fix.conf.baseUrl = {
 
 fix.conf.baseUrlAbsolute = {
   baseUrl: '/js/',
-  libs: {
+  vendorLibs: {
     jquery: '../assets/jquery.min',
     handlebars: '../assets/handlebars.min',
     ember: 'lib/ember-latest.min',
@@ -33,7 +33,7 @@ fix.conf.baseUrlAbsolute = {
 
 fix.conf.baseUrlDotSlash = {
   baseUrl: './',
-  libs: {
+  vendorLibs: {
     jquery: '../assets/jquery.min',
     handlebars: '../assets/handlebars.min',
     ember: 'lib/ember-latest.min',
