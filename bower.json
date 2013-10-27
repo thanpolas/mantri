@@ -1,7 +1,22 @@
 {
   "name": "mantri",
-  "version": "0.2.0-rc2",
+  "version": "0.2.0-rc2.1",
   "main": "dist/mantri.web.js",
+  "file": "dist/mantri.web.js",
   "ignore": [
+    ".*",
+    "build",
+    "package.json",
+    "node_modules",
+    "test",
+    "lib",
+    "src",
+    "Gruntfile.js",
+    "README.md",
+    "dist/mantriConf.json",
+    "tasks",
+    "temp",
+    "bower.json"
+
   ]
 }
