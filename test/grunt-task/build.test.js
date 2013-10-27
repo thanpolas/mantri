@@ -38,12 +38,4 @@ describe('10. Grunt task :: build :: ', function(){
 
     assert.equal(actual, expected, 'task output should equal: ' + actualFile);
   });
-
-  it('10.3 should produce the proper result when not using mantriConf', function() {
-    var actualFile = 'testCaseNoConf.build.js';
-    var actual = grunt.file.read(tmp + actualFile);
-    var expected = grunt.file.read(fixtures + actualFile);
-    assert.equal(actual, expected, 'task output should equal: ' + actualFile);
-  });
-
 });
