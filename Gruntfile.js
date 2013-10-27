@@ -77,7 +77,7 @@ module.exports = function( grunt ) {
         src: 'test/case/mantriAlt.json'
       },
       testCaseMultBuild: {
-        src: 'test/case/mantriConf-mult-builds.json'
+        src: 'test/caseMult/mantriConf-mult-builds.json'
       },
     },
     closureDepsWriter: {
