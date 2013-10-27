@@ -91,13 +91,15 @@ git clone git@github.com:closureplease/todoAppMantri.git
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
 ## Release History
-- **v0.2.0**, *10 Jul 2013* **Breaking Changes**
+- **v0.2.0**, *XXXXXXXXXXX 2013* **Breaking Changes**
   - New Feature: Can now build multiple targets ([Built-Modules][]) using the new [`mantriBuiltModules` Grunt Task][mantriBuiltModules].
   - Changed `mantriConf.json` keys:
     - `baseUrl` --> `jsRoot`
     - `libs` --> `vendorLibs`
     - `build.input` --> `build.src` - Now expects a path relative to the package root (i.e. where your `package.json` file is).
     - `build.exclude` --> `build.excludeVendor`
+    - New key: `buildModules`
+    - Changed format of `outputWrapper`, now uses Closure's pattern
 - **v0.1.5**, *13 May 2013*
   - Fix bug in Firefox. Not a permanent fix, [issue will remain open](https://github.com/closureplease/mantri/issues/5), [bugzilla issue created](https://bugzilla.mozilla.org/show_bug.cgi?id=871719).
 - **v0.1.1**, *12 Apr 2013*
