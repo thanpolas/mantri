@@ -8,18 +8,18 @@
   },
 
   "build": {
-    "src": "test/case/js/app-mult-build-core.js",
+    "src": "test/caseMult/js/app-mult-build-core.js",
     "dest": "temp/app-mult-build-core.min.js",
     "excludeVendor": ["jquery"]
   },
   "buildModules": [{
     "name": "moduleOne",
-    "src": "test/case/js/app-mult-build-module-one.js",
-    "dest": "test/case/js/app-mult-build-module-one.min.js",
+    "src": "test/caseMult/js/app-mult-build-module-one.js",
+    "dest": "test/caseMult/js/app-mult-build-module-one.min.js",
     "outputWrapper": "(function(){<%=output%>}).call(this);"
   }, {
     "name": "moduleTwo",
-    "src": "test/case/js/app-mult-build-module-two.js",
-    "dest": "test/case/js/app-mult-build-module-two.min.js"
+    "src": "test/caseMult/js/app-mult-build-module-two.js",
+    "dest": "test/caseMult/js/app-mult-build-module-two.min.js"
   }]
 }
