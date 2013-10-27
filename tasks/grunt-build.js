@@ -42,7 +42,8 @@ module.exports = function(grunt) {
     var opts = this.options({
       mantriConf: src,
       dest: this.files[0].dest,
-      target: this.target
+      target: this.target,
+      debug: false,
     });
 
     mantriBuild.run(opts, done);
