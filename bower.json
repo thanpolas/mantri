@@ -1,0 +1,7 @@
+{
+  "name": "mantri",
+  "version": "0.2.0-rc1",
+  "main": "dist/mantri.web.js",
+  "ignore": [
+  ]
+}
