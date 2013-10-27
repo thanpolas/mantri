@@ -6,20 +6,17 @@
     "ember": "lib/ember-latest.min",
     "hbsCompiled": "app/templates/hbsCompiled"
   },
-
   "build": {
     "src": "test/caseMult/js/app-mult-build-core.js",
     "dest": "temp/app-mult-build-core.min.js",
     "excludeVendor": ["jquery"]
   },
   "buildModules": [{
-    "name": "moduleOne",
-    "src": "test/caseMult/js/app-mult-build-module-one.js",
+    "namespace": "Todos.ctrls.Entries",
     "dest": "temp/app-mult-build-module-one.min.js",
-    "outputWrapper": "(function(){%output%}).call(this);"
+    "outputWrapper": ";var RON=true;%output%"
   }, {
-    "name": "moduleTwo",
-    "src": "test/caseMult/js/app-mult-build-module-two.js",
+    "namespace": "Todos.views.Application",
     "dest": "temp/app-mult-build-module-two.min.js"
   }]
 }
