@@ -16,7 +16,7 @@
     "name": "moduleOne",
     "src": "test/caseMult/js/app-mult-build-module-one.js",
     "dest": "temp/app-mult-build-module-one.min.js",
-    "outputWrapper": "(function(){<%=output%>}).call(this);"
+    "outputWrapper": "(function(){%output%}).call(this);"
   }, {
     "name": "moduleTwo",
     "src": "test/caseMult/js/app-mult-build-module-two.js",
