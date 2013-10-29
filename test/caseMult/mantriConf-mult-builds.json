@@ -11,12 +11,13 @@
     "dest": "temp/app-mult-build-core.min.js",
     "excludeVendor": ["jquery"]
   },
-  "buildModules": [{
-    "namespace": "Todos.ctrls.Entries",
-    "dest": "temp/app-mult-build-module-one.min.js",
-    "outputWrapper": ";var RON=true;%output%"
-  }, {
-    "namespace": "Todos.views.Application",
-    "dest": "temp/app-mult-build-module-two.min.js"
-  }]
+  "buildModules": {
+    "Todos.ctrls.Entries": {
+      "dest": "temp/app-mult-build-module-one.min.js",
+      "outputWrapper": ";var RON=true;%output%"
+    },
+    "Todos.views.Application": {
+      "dest": "temp/app-mult-build-module-two.min.js"
+    }
+  }
 }
