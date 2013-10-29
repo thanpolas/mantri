@@ -1,0 +1,27 @@
+{
+  "jsRoot": "js/",
+  "vendorLibs": {
+    "jquery": "lib/jquery.min",
+    "handlebars": "lib/handlebars.min",
+    "ember": "lib/ember-latest.min",
+    "hbsCompiled": "app/templates/hbsCompiled"
+  },
+  "build": {
+    "src": "test/caseMult/js/app-mult-build-core.js",
+    "dest": "temp/app-sourcemap-build-core.min.js",
+    "excludeVendor": ["jquery"],
+    "sourceMapFile": "temp/app-sourcemap-build-core.src"
+  },
+  "buildModules": {
+    "Todos.ctrls.Entries": {
+      "dest": "temp/app-sourcemap-build-module-one.min.js",
+      "outputWrapper": ";var RON=true;%output%",
+      "sourceMapFile": "temp/app-sourcemap-build-module-one.src"
+
+    },
+    "Todos.views.Application": {
+      "dest": "temp/app-sourcemap-build-module-two.min.js",
+      "sourceMapFile": "temp/app-sourcemap-build-module-two.src"
+    }
+  }
+}
