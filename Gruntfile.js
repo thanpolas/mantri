@@ -65,7 +65,7 @@ module.exports = function( grunt ) {
 
     mantriBuild: {
       options: {
-        debug: true,
+        debug: false,
       },
       testCase: {
         src: 'test/case/mantriConf.json',
@@ -243,6 +243,7 @@ module.exports = function( grunt ) {
       'mantriBuild:testCase',
       'mantriBuild:testCaseAlt',
       'mantriBuild:testCaseMultBuild',
+      'mantriBuild:testCaseMultSourceMaps',
       'mantriInit:temp/',
       'mochaTest:gruntTasks'
     ];

@@ -1,0 +1,16 @@
+{
+  version: 3,
+  file: "",
+  sections: [{
+    offset: {line:2, column:0}, map:{
+      "version":3,
+      "file":"",
+      "lineCount":1,
+      "mappings":"AAAA,IAAIA,KAAOA,IAAPA,EAAe,E,CCAL,IAAA,MAAA,OAAM,EAAN,CAOdC,MAAAC,MAAAD,MAAA,CAAoBE,KAAAC,WAAAC,OAAA,CAAwB,EAAxB,C,CCPA,KAAAC,MAAA,CAAA,EAQpBL,MAAAM,MAAAC,MAAA,CAAoBL,KAAAM,eAAAJ,OAAA,CAA4B,EAA5B,C,CCIpBJ,KAAAS,OAAA,CAAeP,KAAAO,OAAAL,OAAA,CAAoB,EAApB,C,CCZK,KAAAM,OAAA,CAAA,EAOpBV,MAAAW,OAAAC,KAAA,CAAoBV,KAAAW,OAAAT,OAAA,CAAoB,EAApB,C,CCDpBJ,KAAAW,OAAAG,MAAA,CAAqBC,QAAQ,CAAEC,CAAF,CAAS,E,CCLlB,KAAAC,IAAA,CAAA,EAKpBjB,MAAAkB,IAAA,CAAYhB,KAAAiB,YAAAC,OAAA,CAAyB,EAAzB;",
+      "sources":["/var/folders/q2/6hj7fltn36q8hqqdwwpvbn040000gn/T/1383142667267.706/base.js","test/caseMult/js/app/controllers/todos.js","test/caseMult/js/app/views/items.js","test/caseMult/js/app/router.js","test/caseMult/js/app/models/todo.js","test/caseMult/js/app/models/store.js","test/caseMult/js/app-mult-build-core.js"],
+      "names":["goog","Todos","ctrls","Ember","Controller","extend","Todos.views","views","Items","CollectionView","Router","Todos.models","models","Todo","Object","Store","Todos.models.Store","name","Todos.app","App","Application","create"]
+      }
+      
+  }
+]
+}
