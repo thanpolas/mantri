@@ -1,7 +1,7 @@
 {
   "name": "mantri",
   "description": "Traditionaλ JS Dependency System",
-  "version": "0.2.0-rc6",
+  "version": "0.2.0-rc7",
   "homepage": "https://github.com/closureplease/mantri",
   "author": {
     "name": "Thanasis Polychronakis",
