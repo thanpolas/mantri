@@ -30,7 +30,7 @@ describe('14. Sourcefiles :: ', function(){
       'app-sourcemap-build-module-one.min.js',
       'app-sourcemap-build-module-two.min.js',
     ];
-    
+
     var actual, expected;
     files.forEach(function(file){
       actual = grunt.file.read(tmp + file);
@@ -40,9 +40,9 @@ describe('14. Sourcefiles :: ', function(){
   });
 
   it('14.2 Sourcemap files should be created', function() {
-      assert.ok(grunt.file.exists('temp/app-sourcemap-build-core.src'));
-      assert.ok(grunt.file.exists('temp/app-sourcemap-build-module-one.src'));
-      assert.ok(grunt.file.exists('temp/app-sourcemap-build-module-two.src'));
+      assert.ok(grunt.file.exists('temp/app-sourcemap-build-core.js.map'));
+      assert.ok(grunt.file.exists('temp/app-sourcemap-build-module-one.js.map'));
+      assert.ok(grunt.file.exists('temp/app-sourcemap-build-module-two.js.map'));
   });
 
 });

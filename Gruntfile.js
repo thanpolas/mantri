@@ -65,7 +65,7 @@ module.exports = function( grunt ) {
 
     mantriBuild: {
       options: {
-        debug: true,
+        debug: false,
       },
       testCase: {
         src: 'test/case/mantriConf.json',

@@ -100,7 +100,6 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
     - `build.exclude` --> `build.excludeVendor`
     - New key: `buildModules`
     - Changed format of `outputWrapper`, now uses Closure's pattern
-    - Changed what `outputWrapper` wraps, no longer wraps vendor libraries.
     - New experimental key `_noCompile`, to not perform any compilation steps.
     - Added support for SourceMaps, available through the `sourceMapFile` key.
 - **v0.1.5**, *13 May 2013*
