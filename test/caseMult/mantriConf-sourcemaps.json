@@ -10,18 +10,18 @@
     "src": "test/caseMult/js/app-mult-build-core.js",
     "dest": "temp/app-sourcemap-build-core.min.js",
     "excludeVendor": ["jquery"],
-    "sourceMapFile": "temp/app-sourcemap-build-core.src"
+    "sourceMapFile": "temp/app-sourcemap-build-core.js.map"
   },
   "buildModules": {
     "Todos.ctrls.Entries": {
       "dest": "temp/app-sourcemap-build-module-one.min.js",
       "outputWrapper": ";var RON=true;%output%",
-      "sourceMapFile": "temp/app-sourcemap-build-module-one.src"
+      "sourceMapFile": "temp/app-sourcemap-build-module-one.js.map"
 
     },
     "Todos.views.Application": {
       "dest": "temp/app-sourcemap-build-module-two.min.js",
-      "sourceMapFile": "temp/app-sourcemap-build-module-two.src"
+      "sourceMapFile": "temp/app-sourcemap-build-module-two.js.map"
     }
   }
 }
