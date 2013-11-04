@@ -97,7 +97,7 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
   - Changed `mantriConf.json` keys:
     - `baseUrl` --> `jsRoot`
     - `libs` --> `vendorLibs`
-    - `build.input` --> `build.src` - Now expects a path relative to the package root (i.e. where your `package.json` file is).
+    - `build.input` --> `build.src`
     - `build.exclude` --> `build.excludeVendor`
     - New key: `buildModules`
   - Changed format of `outputWrapper`, now uses Closure's pattern.
