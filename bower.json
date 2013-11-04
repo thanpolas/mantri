@@ -1,6 +1,6 @@
 {
   "name": "mantri",
-  "version": "0.2.0-rc2.1",
+  "version": "0.2.0",
   "homepage": "https://github.com/closureplease/mantri",
   "main": "dist/mantri.web.js",
   "license": "MIT",
