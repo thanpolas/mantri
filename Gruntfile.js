@@ -65,17 +65,20 @@ module.exports = function( grunt ) {
 
     mantriBuild: {
       options: {
-
+        debug: false,
       },
       testCase: {
-        options: {
-          debug: false
-        },
         src: 'test/case/mantriConf.json',
-        dest: 'temp/testCase.build.js'
+        dest: 'temp/testCase.build.js',
       },
       testCaseAlt: {
-        src: 'test/case/mantriAlt.json'
+        src: 'test/case/mantriAlt.json',
+      },
+      testCaseMultBuild: {
+        src: 'test/caseMult/mantriConf-mult-builds.json',
+      },
+      testCaseMultSourceMaps: {
+        src: 'test/caseMult/mantriConf-sourcemaps.json',
       }
     },
     closureDepsWriter: {
@@ -239,6 +242,8 @@ module.exports = function( grunt ) {
       'mantriDeps:testCaseTwo',
       'mantriBuild:testCase',
       'mantriBuild:testCaseAlt',
+      'mantriBuild:testCaseMultBuild',
+      'mantriBuild:testCaseMultSourceMaps',
       'mantriInit:temp/',
       'mochaTest:gruntTasks'
     ];

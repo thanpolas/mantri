@@ -54,10 +54,9 @@ Mantri.Core = function() {
   this.init = goog.bind(this._config.fetch, this._config);
 };
 
-if ('undefined' === typeof(TESTTESTTEST)) {
+if (typeof(TESTTESTTEST) === 'undefined') {
   // go
   window.mantri = new Mantri.Core();
   // roll the ball
   window.mantri.init();
-
 }

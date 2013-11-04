@@ -1,7 +1,7 @@
 {
   "name": "mantri",
   "description": "Traditionaλ JS Dependency System",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "homepage": "https://github.com/closureplease/mantri",
   "author": {
     "name": "Thanasis Polychronakis",
@@ -29,15 +29,17 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "grunt-closure-tools": "~0.8.0",
-    "underscore": "1.4.4",
-    "temporary": "~0.0.5",
-    "superstartup-closure-compiler": "0.1.4",
+    "grunt-closure-tools": "0.8.4",
+    "temporary": "0.0.5",
+    "superstartup-closure-compiler": "0.1.6",
     "closure-tools": "0.1.1",
     "grunt-contrib-uglify": "git://github.com/thanpolas/grunt-contrib-uglify",
     "nopt": "~2.1.1",
     "grunt-contrib-copy": "~0.4.1",
-    "grunt": "~0.4.1"
+    "grunt": "~0.4.1",
+    "lodash": "~1.3.1",
+    "fs-extra": "~0.6.3",
+    "async": "~0.2.9"
   },
   "devDependencies": {
     "mocha-phantomjs": "2.0.0",

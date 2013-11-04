@@ -8,6 +8,8 @@ Visit http://mantrijs.com
 
 [![Build Status](https://travis-ci.org/closureplease/mantri.png?branch=master)](https://travis-ci.org/closureplease/mantri)
 
+> **Attention 0.1.x** The current 0.2.x version brings some rather breaking changes. [Read the migration guide for more information][migration].
+
 ## **Mantri** is...
 
 * **✓** A Robust and discreet Dependency Management System.
@@ -91,6 +93,18 @@ git clone git@github.com:closureplease/todoAppMantri.git
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
 ## Release History
+- **v0.2.0**, *XXXXXXXXXXX 2013* **Breaking Changes**
+  - New Feature: Can now build multiple targets ([Built-Modules][]).
+  - Added support for SourceMaps, available through the `sourceMapFile` key.
+  - Changed `mantriConf.json` keys:
+    - `baseUrl` --> `jsRoot`
+    - `libs` --> `vendorLibs`
+    - `build.input` --> `build.src`
+    - `build.exclude` --> `build.excludeVendor`
+    - New key: `buildModules`
+  - Changed format of `outputWrapper`, now uses Closure's pattern.
+  - New experimental key `_noCompile`, to not perform any compilation steps.
+  - Published web component on Bower repo.
 - **v0.1.5**, *13 May 2013*
   - Fix bug in Firefox. Not a permanent fix, [issue will remain open](https://github.com/closureplease/mantri/issues/5), [bugzilla issue created](https://bugzilla.mozilla.org/show_bug.cgi?id=871719).
 - **v0.1.1**, *12 Apr 2013*
@@ -121,3 +135,7 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
 [Gruntfile]: https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile "Grunt's Gruntfile.js"
 [ToDoApp]: https://github.com/thanpolas/todoAppMantri "The classical ToDo MVC app using Mantri's dependency management system"
 [mantrijs.com]: http://mantrijs.com "Mantri Homepage"
+[built-modules]: http://thanpol.as/javascript/writing-modular-javascript-rewind/#the_builtmodule "The Built-Module - Writing Modular Javascript REWIND by Thanasis Polychronakis"
+[mantriBuiltModules]: http://google.com "FIXME FIXME"
+[migration]: http://mantrijs.com/api/migrating-from-0.1.x-to-0.2.x/
+

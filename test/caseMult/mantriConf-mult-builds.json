@@ -1,0 +1,23 @@
+{
+  "jsRoot": "js/",
+  "vendorLibs": {
+    "jquery": "lib/jquery.min",
+    "handlebars": "lib/handlebars.min",
+    "ember": "lib/ember-latest.min",
+    "hbsCompiled": "app/templates/hbsCompiled"
+  },
+  "build": {
+    "src": "test/caseMult/js/app-mult-build-core.js",
+    "dest": "temp/app-mult-build-core.min.js",
+    "excludeVendor": ["jquery"]
+  },
+  "buildModules": {
+    "Todos.ctrls.Entries": {
+      "dest": "temp/app-mult-build-module-one.min.js",
+      "outputWrapper": ";var RON=true;%output%"
+    },
+    "Todos.views.Application": {
+      "dest": "temp/app-mult-build-module-two.min.js"
+    }
+  }
+}

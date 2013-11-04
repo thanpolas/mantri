@@ -1,0 +1,26 @@
+{
+  "name": "mantri",
+  "version": "0.2.0-rc2.1",
+  "homepage": "https://github.com/closureplease/mantri",
+  "main": "dist/mantri.web.js",
+  "license": "MIT",
+  "authors": [
+    "Thanasis Polychronakis <thanpolas@gmail.com>"
+  ],
+  "description": "MantriJS Traditionaλ JS Dependency System",
+  "ignore": [
+    ".*",
+    "build",
+    "package.json",
+    "node_modules",
+    "test",
+    "lib",
+    "src",
+    "Gruntfile.js",
+    "README.md",
+    "dist/mantriConf.json",
+    "tasks",
+    "temp",
+    "bower.json"
+  ]
+}

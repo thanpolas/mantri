@@ -13,7 +13,7 @@ var tasks  = require('../../tasks/grunt-mantri'),
 var tmp = 'temp/';
 var fixtures = 'test/expected/';
 
-describe('Grunt task :: dependency', function(){
+describe('11. Grunt task :: dependency', function(){
 
   beforeEach(function() {
   });
@@ -21,7 +21,7 @@ describe('Grunt task :: dependency', function(){
   afterEach(function() {
   });
 
-  it('should produce the right result for project == root', function(){
+  it('11.1 should produce the right result for project == root', function(){
 
     var actualFile = 'deps.js';
     var actual = grunt.file.read(tmp + actualFile);
@@ -37,7 +37,7 @@ describe('Grunt task :: dependency', function(){
     assert.equal(actual, expected, 'task output should equal: ' + actualFile);
 
   });
-  it('should produce the right result for project != root', function(){
+  it('11.2 should produce the right result for project != root', function(){
 
     var actualFile = 'deps.two.js';
     var actual = grunt.file.read(tmp + actualFile);
