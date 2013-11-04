@@ -8,6 +8,8 @@ Visit http://mantrijs.com
 
 [![Build Status](https://travis-ci.org/closureplease/mantri.png?branch=master)](https://travis-ci.org/closureplease/mantri)
 
+> **Attention 0.1.x** The current 0.2.x version brings some rather breaking changes. [Read the migration guide for more information][migration].
+
 ## **Mantri** is...
 
 * **✓** A Robust and discreet Dependency Management System.
@@ -134,4 +136,5 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
 [mantrijs.com]: http://mantrijs.com "Mantri Homepage"
 [built-modules]: http://thanpol.as/javascript/writing-modular-javascript-rewind/#the_builtmodule "The Built-Module - Writing Modular Javascript REWIND by Thanasis Polychronakis"
 [mantriBuiltModules]: http://google.com "FIXME FIXME"
+[migration]: http://mantrijs.com/api/migrating-from-0.1.x-to-0.2.x/
 
