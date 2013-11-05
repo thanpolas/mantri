@@ -1,6 +1,6 @@
 {
   "jsRoot": "js/",
-  "closureLibrary": "closure-library/",
+  "closureLibrary": "test/closure-library-mock/",
   "vendorLibs": {
     "jquery": "lib/jquery.min",
     "handlebars": "lib/handlebars.min",
