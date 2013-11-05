@@ -46,6 +46,9 @@ module.exports = function(grunt) {
       debug: false,
     });
 
+    // sanitize possible 'src' leak
+    delete opts.src;
+
     mantriBuild.run(opts, done);
   });
 };
