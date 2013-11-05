@@ -79,7 +79,11 @@ module.exports = function( grunt ) {
       },
       testCaseMultSourceMaps: {
         src: 'test/caseMult/mantriConf-sourcemaps.json',
-      }
+      },
+      testCaseCL: { // closure library case
+        src: 'test/caseCL/mantriConf.json',
+        dest: 'temp/testCaseCL.build.js',
+      },
     },
     closureDepsWriter: {
       options: {
@@ -244,6 +248,7 @@ module.exports = function( grunt ) {
       'mantriBuild:testCaseAlt',
       'mantriBuild:testCaseMultBuild',
       'mantriBuild:testCaseMultSourceMaps',
+      'mantriBuild:testCaseCL',
       'mantriInit:temp/',
       'mochaTest:gruntTasks'
     ];

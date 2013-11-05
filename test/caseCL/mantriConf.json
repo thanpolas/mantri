@@ -1,0 +1,15 @@
+{
+  "jsRoot": "js/",
+  "closureLibrary": "closure-library/",
+  "vendorLibs": {
+    "jquery": "lib/jquery.min",
+    "handlebars": "lib/handlebars.min",
+    "ember": "lib/ember-latest.min",
+    "hbsCompiled": "app/templates/hbsCompiled"
+  },
+
+  "build": {
+    "src": "test/caseCL/js/app.js",
+    "excludeVendor": ["jquery"]
+  }
+}
