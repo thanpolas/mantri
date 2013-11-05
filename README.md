@@ -93,7 +93,9 @@ git clone git@github.com:closureplease/todoAppMantri.git
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
 ## Release History
-- **v0.2.0**, *XXXXXXXXXXX 2013* **Breaking Changes**
+- **v0.2.1**, *5 Nov 2013*
+  - Added feature to use Closure Library in the codebase. Use the key `closureLibrary` and set the path.
+- **v0.2.0**, *4 Nov 2013* **Breaking Changes** [Read the migration guide][migration].
   - New Feature: Can now build multiple targets ([Built-Modules][]).
   - Added support for SourceMaps, available through the `sourceMapFile` key.
   - Changed `mantriConf.json` keys:
