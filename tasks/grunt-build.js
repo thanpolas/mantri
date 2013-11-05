@@ -6,8 +6,6 @@
  * Licensed under the MIT license.
  */
 
-var path = require('path');
-
 var __ = require('lodash');
 
 var mantriBuild = require('../lib/mantri-build');
