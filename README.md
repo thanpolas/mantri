@@ -138,6 +138,7 @@ Start with the [Getting Started Guide][start-wiki] for a more detailed introduct
 [ToDoApp]: https://github.com/thanpolas/todoAppMantri "The classical ToDo MVC app using Mantri's dependency management system"
 [mantrijs.com]: http://mantrijs.com "Mantri Homepage"
 [built-modules]: http://thanpol.as/javascript/writing-modular-javascript-rewind/#the_builtmodule "The Built-Module - Writing Modular Javascript REWIND by Thanasis Polychronakis"
-[mantriBuiltModules]: http://google.com "FIXME FIXME"
+[sourcemaps]: SourceMaps-on-Mantri
+[built modules]: Building-Multiple-Modules
 [migration]: http://mantrijs.com/api/migrating-from-0.1.x-to-0.2.x/
 
