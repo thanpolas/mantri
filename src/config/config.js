@@ -138,6 +138,9 @@ Mantri.Config.prototype.fetch = function() {
     async: false,
     dataType: 'json',
     error: goog.bind( function( jqXHR, textStatus, errorThrown ) {
+      document.write('<p style="font-size: 22px;color:red;font-weight:900;">' +
+        ' Mantri :: Failed to' +
+        ' load "mantriConf.json" file. Error: &nbsp;' + errorThrown + '</p>');
       this._configDone();
     }, this ),
     success: goog.bind( this.parse, this)
