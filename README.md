@@ -93,6 +93,8 @@ git clone git@github.com:closureplease/todoAppMantri.git
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
 ## Release History
+- **v0.2.2**, *11 Nov 2013*
+  - The web component will now warn if `mantriConf.json` could not be loaded.
 - **v0.2.1**, *5 Nov 2013*
   - Added feature to use Closure Library in the codebase. Use the key `closureLibrary` and set the path.
 - **v0.2.0**, *4 Nov 2013* **Breaking Changes** [Read the migration guide][migration].
