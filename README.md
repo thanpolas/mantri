@@ -8,6 +8,8 @@ Visit http://mantrijs.com
 
 [![Build Status](https://travis-ci.org/closureplease/mantri.png?branch=master)](https://travis-ci.org/closureplease/mantri)
 
+[![NPM](https://nodei.co/npm/mantri.png?downloads=true)](https://npmjs.org/package/mantri)
+
 > **Attention 0.1.x** The current 0.2.x version brings some rather breaking changes. [Read the migration guide for more information][migration].
 
 ## **Mantri** is...
