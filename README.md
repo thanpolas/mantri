@@ -95,6 +95,9 @@ git clone git@github.com:closureplease/todoAppMantri.git
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
 ## Release History
+
+- **v0.2.3**, *26 Feb 2015*
+  - Upgraded all packages to latest.
 - **v0.2.2**, *11 Nov 2013*
   - The web component will now warn if `mantriConf.json` could not be loaded.
 - **v0.2.1**, *5 Nov 2013*
