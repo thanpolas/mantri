@@ -12,6 +12,11 @@ Visit http://mantrijs.com
 
 > **Attention 0.1.x** The current 0.2.x version brings some rather breaking changes. [Read the migration guide for more information][migration].
 
+## WARNING NOT MAINTAINED
+
+MantriJS is no longer actively maintained. We'd suggest you use [browserify](http://browserify.org/) for your frontend packaging needs.
+
+
 ## **Mantri** is...
 
 * **✓** A Robust and discreet Dependency Management System.
@@ -95,6 +100,9 @@ git clone git@github.com:closureplease/todoAppMantri.git
 Start with the [Getting Started Guide][start-wiki] for a more detailed introduction.
 
 ## Release History
+
+- **v0.2.3**, *26 Feb 2015*
+  - Upgraded all packages to latest.
 - **v0.2.2**, *11 Nov 2013*
   - The web component will now warn if `mantriConf.json` could not be loaded.
 - **v0.2.1**, *5 Nov 2013*
