@@ -12,6 +12,11 @@ Visit http://mantrijs.com
 
 > **Attention 0.1.x** The current 0.2.x version brings some rather breaking changes. [Read the migration guide for more information][migration].
 
+## WARNING NOT MAINTAINED
+
+MantriJS is no longer actively maintained. We'd suggest you use [browserify](http://browserify.org/) for your frontend packaging needs.
+
+
 ## **Mantri** is...
 
 * **✓** A Robust and discreet Dependency Management System.
